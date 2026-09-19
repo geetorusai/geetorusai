@@ -702,10 +702,20 @@ function OnboardingWizardInner({
     ? selectedSavedKey.id
     : savedKeys.options[0]?.id;
   const selectedApiKey = savedKeys.options.find((option) => option.id === selectedApiKeyId);
-  const credentialMode = credentialModeChoice ?? (
-    (savedKeys.subscriptions.length > 0 || (adapterType === "claude_local" && savedKeys.storedLogin.data))
-      ? "subscription" : savedKeys.options.length || adapterType === "opencode_local" ? "api" : "subscription"
+  const getCapabilities = useAdapterCapabilities();
+  const adapterCaps = getCapabilities(adapterType);
+  const hasSubscriptionSupport = Boolean(
+    adapterCaps.login != null ||
+    adapterType === "claude_local" ||
+    adapterType === "codex_local" ||
+    adapterType === "grok_local"
   );
+  const credentialMode: CredentialMode = hasSubscriptionSupport
+    ? (credentialModeChoice ?? (
+        (savedKeys.subscriptions.length > 0 || (adapterType === "claude_local" && savedKeys.storedLogin.data))
+          ? "subscription" : savedKeys.options.length ? "api" : "subscription"
+      ))
+    : "api";
   const [createdCompanyPrefix, setCreatedCompanyPrefix] = useState<
     string | null
   >((saved?.createdCompanyPrefix as string) ?? null);
@@ -926,8 +936,6 @@ function OnboardingWizardInner({
     // Models are picked on step 4 (Connect a model).
     enabled: Boolean(createdCompanyId) && effectiveOnboardingOpen && step === 4
   });
-  const getCapabilities = useAdapterCapabilities();
-  const adapterCaps = getCapabilities(adapterType);
 
   // Resolve the login environment at render time, so the wizard can decide
   // whether to show the login panel before any adapter test runs. This
@@ -1009,11 +1017,12 @@ function OnboardingWizardInner({
   const localLoginHealth = useQuery({ queryKey: queryKeys.health, queryFn: healthApi.get });
   const canUseLocalLogin = resolvedLoginEnvironment?.driver === "local" && (localLoginHealth.data?.localAiLoginSupported ?? localLoginHealth.data?.deploymentMode === "local_trusted");
   const localLogin = useLocalAiLogin(createdCompanyId, {
-    provider: managedProvider ?? "anthropic", method: "subscription",
+    provider: (managedProvider === "openai" || managedProvider === "anthropic" || managedProvider === "xai") ? managedProvider : "anthropic",
+    method: "subscription",
     name: `My ${CONNECT_SOURCE_NAMES[adapterType] ?? managedProvider} subscription`,
     ownership: "personal", agentIds: [], allAgents: true,
-  }, effectiveOnboardingOpen && step === 4 && canUseLocalLogin && credentialMode !== "api" &&
-    Boolean(managedProvider) && !savedSubscription && !savedKeys.storedLogin.data && !managedBindingForStep(),
+  }, effectiveOnboardingOpen && step === 4 && canUseLocalLogin && credentialMode !== "api" && hasSubscriptionSupport &&
+    Boolean(managedProvider) && (managedProvider === "openai" || managedProvider === "anthropic" || managedProvider === "xai") && !savedSubscription && !savedKeys.storedLogin.data && !managedBindingForStep(),
   { allowHostClaude: localLoginHealth.data?.deploymentMode === "local_trusted" });
   // A result from a previous selection must not hire or advance this wizard.
   // Environment query updates are not user navigation: the test resolves its
@@ -1380,7 +1389,14 @@ function OnboardingWizardInner({
                 label: "Connect",
                 icon: "arrow",
                 disabled:
-                  !connectStepReady || (credentialMode === "api" && !apiKey.trim() && !selectedApiKey),
+                  !connectStepReady ||
+                  (credentialMode === "api" &&
+                    adapterType !== "ollama_local" &&
+                    adapterType !== "opencode_local" &&
+                    adapterType !== "cursor" &&
+                    adapterType !== "pi_local" &&
+                    !apiKey.trim() &&
+                    !selectedApiKey),
               }
           : // Nothing is chosen on arrival, and the row is what chooses. Until
             // it has been answered the button has nothing to do.
@@ -1789,10 +1805,11 @@ function OnboardingWizardInner({
    */
   async function storeApiKeyUserSecret(companyId: string): Promise<boolean> {
     const key = apiKey.trim();
+    if (!key) return true;
     const envKey = apiKeyEnvKeyFor(adapterType);
     if (apiKeySecretRef.current?.key === key && apiKeySecretRef.current.companyId === companyId && apiKeySecretRef.current.envKey === envKey) return true;
     try {
-      if (managedProvider) {
+      if (managedProvider && (managedProvider === "openai" || managedProvider === "anthropic" || managedProvider === "xai")) {
         await aiConnectionsApi.create(companyId, { provider: managedProvider, method: "api_key", name: `My ${CONNECT_SOURCE_NAMES[adapterType] ?? managedProvider} API`, ownership: "personal", apiKey: key, agentIds: [], allAgents: true });
         apiKeySecretRef.current = { key, companyId, envKey, aiConnection: { provider: managedProvider, method: "api_key", mode: "responsible_user" } };
         return true;
@@ -1824,7 +1841,9 @@ function OnboardingWizardInner({
             ? model || DEFAULT_CURSOR_LOCAL_MODEL
             : adapterType === "opencode_local"
               ? model || DEFAULT_OPENCODE_LOCAL_MODEL
-              : model,
+              : adapterType === "ollama_local"
+                ? model || DEFAULT_OLLAMA_LOCAL_MODEL
+                : model,
       command,
       args,
       url,
@@ -2667,6 +2686,10 @@ function OnboardingWizardInner({
                         else if (id === "kimi_local") setModel(DEFAULT_KIMI_LOCAL_MODEL);
                         else if (id === "cursor") setModel(DEFAULT_CURSOR_LOCAL_MODEL);
                         else if (id !== "codex_local") setModel("");
+                        const caps = getCapabilities(id);
+                        if (caps.login == null && id !== "claude_local" && id !== "codex_local" && id !== "grok_local") {
+                          setCredentialModeChoice("api");
+                        }
                         setConnectPhase("collapsing");
                       }}
                     />
@@ -2694,7 +2717,9 @@ function OnboardingWizardInner({
                       transition={{ opacity: SOURCE_LINK_EXIT, height: MAKE_ROOM }}
                     >
                       <div className="-ml-3 mt-1">
-                        <CredentialModeLink mode={credentialMode} onChange={setCredentialMode} />
+                        {hasSubscriptionSupport && (
+                          <CredentialModeLink mode={credentialMode} onChange={setCredentialModeChoice} />
+                        )}
                         {savedKeys.options.length > 0 && <p className="px-3 text-sm text-muted-foreground">{savedKeys.options.length} saved API {savedKeys.options.length === 1 ? "key available" : "keys available"}.</p>}
                         {credentialMode === "subscription" && authSignalStatus === "present" && <p className="px-3 text-sm text-muted-foreground">An existing provider connection is available.</p>}
                       </div>
@@ -2742,19 +2767,32 @@ function OnboardingWizardInner({
                         <Loader2 className="size-4 animate-spin" />
                         {connectProgress}
                       </p>
+                    ) : adapterType === "ollama_local" ? (
+                      <OnboardingLoginCard
+                        instruction="Connect to your local Ollama server"
+                      >
+                        <OnboardingCardField
+                          label="Ollama Server URL"
+                          placeholder="http://127.0.0.1:11434"
+                          autoFocus
+                          value={url}
+                          onChange={(value) => setUrl(value)}
+                          onSubmit={() => handleConnectStepPrimary()}
+                        />
+                      </OnboardingLoginCard>
                     ) : credentialMode === "api" ? (
                       <OnboardingLoginCard
                         instruction={savedKeys.options.length ? "Choose a saved API key or enter a new one" : `Provide your ${
                           CONNECT_SOURCE_NAMES[adapterType] ?? adapterType
-                        } API key to connect`}
+                        } API key to connect (or use existing local CLI login)`}
                       >
                         <SavedProviderKeySelect {...savedKeys} disabled={loading || adapterEnvLoading} value={selectedApiKey?.id ?? ""} onChange={(id) => {
                           setSelectedSavedKey(createdCompanyId ? { companyId: createdCompanyId, envKey: apiKeyEnvKeyFor(adapterType), id } : null);
                           setApiKey("");
                         }} />
                         {!selectedApiKey && <OnboardingCardField
-                          label="API key"
-                          placeholder="Enter API key here"
+                          label={adapterType === "cursor" || adapterType === "opencode_local" || adapterType === "pi_local" ? "API key (optional if CLI is logged in)" : "API key"}
+                          placeholder={adapterType === "cursor" || adapterType === "opencode_local" || adapterType === "pi_local" ? "Enter API key or leave blank to use CLI" : "Enter API key here"}
                           masked
                           // The card is the answer to the tile just pressed, so
                           // the field is unambiguously the next thing. Carried
