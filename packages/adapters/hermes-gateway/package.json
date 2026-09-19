@@ -71,7 +71,7 @@
     "@geetorusai/hermes-geetorus-adapter": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^24.13.5",
     "typescript": "^7.0.2",
     "vitest": "^4.1.11"
   },
