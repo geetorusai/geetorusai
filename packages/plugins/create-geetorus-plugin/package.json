@@ -1,0 +1,54 @@
+{
+  "name": "@geetorusai/create-geetorus-plugin",
+  "version": "0.1.0",
+  "license": "MIT",
+  "homepage": "https://github.com/geetorusai/geetorus",
+  "bugs": {
+    "url": "https://github.com/geetorusai/geetorus/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geetorusai/geetorus",
+    "directory": "packages/plugins/create-geetorus-plugin"
+  },
+  "type": "module",
+  "bin": {
+    "create-geetorus-plugin": "./dist/bin.js"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "bin": {
+      "create-geetorus-plugin": "./dist/bin.js"
+    },
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js"
+      }
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "test": "pnpm -w exec vitest run --root packages/plugins/create-geetorus-plugin --config vitest.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@geetorusai/plugin-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

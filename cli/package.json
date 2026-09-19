@@ -1,0 +1,69 @@
+{
+  "name": "geetorusai",
+  "version": "0.3.1",
+  "description": "Geetorus CLI — orchestrate AI agent teams to run a business",
+  "type": "module",
+  "bin": {
+    "geetorusai": "./dist/index.js"
+  },
+  "keywords": [
+    "geetorus",
+    "ai",
+    "agents",
+    "orchestration",
+    "cli"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geetorusai/geetorus",
+    "directory": "cli"
+  },
+  "homepage": "https://github.com/geetorusai/geetorus",
+  "bugs": {
+    "url": "https://github.com/geetorusai/geetorus/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "node --input-type=module -e \"import esbuild from 'esbuild'; import config from './esbuild.config.mjs'; await esbuild.build(config);\" && chmod +x dist/index.js",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "@geetorusai/adapter-claude-local": "workspace:*",
+    "@geetorusai/adapter-codex-local": "workspace:*",
+    "@geetorusai/adapter-cursor-cloud": "workspace:*",
+    "@geetorusai/adapter-cursor-local": "workspace:*",
+    "@geetorusai/adapter-gemini-local": "workspace:*",
+    "@geetorusai/adapter-grok-local": "workspace:*",
+    "@geetorusai/adapter-kimi-local": "workspace:*",
+    "@geetorusai/adapter-opencode-local": "workspace:*",
+    "@geetorusai/adapter-pi-local": "workspace:*",
+    "@geetorusai/adapter-openclaw-gateway": "workspace:*",
+    "@geetorusai/adapter-utils": "workspace:*",
+    "@geetorusai/db": "workspace:*",
+    "@geetorusai/server": "workspace:*",
+    "@geetorusai/shared": "workspace:*",
+    "@geetorusai/hermes-geetorus-adapter": "workspace:*",
+    "drizzle-orm": "0.45.2",
+    "dotenv": "^17.4.2",
+    "commander": "^15.0.0",
+    "embedded-postgres": "^18.1.0-beta.16",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

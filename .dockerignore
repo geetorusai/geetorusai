@@ -1,0 +1,44 @@
+.git
+.github
+.geetorus
+.pnpm-store
+node_modules
+**/node_modules
+coverage
+data
+tmp
+*.log
+packages/geetorus-runner/dist
+packages/geetorus-runner/runner/target
+packages/geetorus-runner/devtools
+packages/geetorus-runner/docs
+packages/geetorus-runner/examples
+packages/geetorus-runner/test
+packages/geetorus-runner/test-fixtures
+packages/geetorus-runner/test-support
+packages/geetorus-runner/**/*.md
+packages/geetorus-runner/**/*.spec.ts
+packages/geetorus-runner/**/*.spec.tsx
+packages/geetorus-runner/**/*.test.cjs
+packages/geetorus-runner/**/*.test.cts
+packages/geetorus-runner/**/*.test.js
+packages/geetorus-runner/**/*.test.jsx
+packages/geetorus-runner/**/*.test.mjs
+packages/geetorus-runner/**/*.test.mts
+packages/geetorus-runner/**/*.test.ts
+packages/geetorus-runner/**/*.test.tsx
+packages/geetorus-runner/runner/crates/*/tests
+packages/geetorus-runner/scripts/*-smoke.mjs
+# Exceptions (last match wins): the image build re-runs the runner's
+# generated-file drift checks, so their committed outputs and inputs must
+# survive the slimming above. 2026-09-04: the *.md rule stripped the
+# committed capability contract out of the context and every image build
+# on master failed its drift check — .github/docker-context-checks.Dockerfile
+# now guards this in PR CI.
+!packages/geetorus-runner/generated/**
+!packages/geetorus-runner/docs/capability-contract.md
+# check:runner-workflow-traceability access()es every regression test the
+# stress-traceability spec names — those are src/**/*.test.ts files, so
+# they must survive the *.test.ts rule above.
+!packages/geetorus-runner/src/**/*.test.ts
+!packages/geetorus-runner/src/**/*.test.tsx

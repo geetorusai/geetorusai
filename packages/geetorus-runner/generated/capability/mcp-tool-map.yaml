@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    {
+      "id": "mcp:geetorusMe",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusMe",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L290:geetorusme",
+      "primaryDisposition": "control_plane_owned",
+      "semanticOperation": "injected_actor_context",
+      "expectedMockState": "runtime_decision_record"
+    },
+    {
+      "id": "mcp:geetorusInboxLite",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusInboxLite",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L296:geetorusinboxlite",
+      "primaryDisposition": "control_plane_owned",
+      "semanticOperation": "runner_work_selection",
+      "expectedMockState": "runtime_decision_record"
+    },
+    {
+      "id": "mcp:geetorusListAgents",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListAgents",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L302:geetoruslistagents",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "list_agents",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListSkills",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListSkills",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L308:geetoruslistskills",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "list_company_skills",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetAgent",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetAgent",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L314:geetorusgetagent",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_agent",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListIssues",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListIssues",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L323:geetoruslistissues",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "search_tasks",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetIssue",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetIssue",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L338:geetorusgetissue",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "get_task_context",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetHeartbeatContext",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetHeartbeatContext",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L344:geetorusgetheartbeatcontext",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "get_task_context",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListComments",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListComments",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L353:geetoruslistcomments",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "get_task_history",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetComment",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetComment",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L366:geetorusgetcomment",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "get_task_history",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListIssueApprovals",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListIssueApprovals",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L373:geetoruslistissueapprovals",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "get_task_context",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListDocuments",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListDocuments",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L379:geetoruslistdocuments",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "list_documents",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetDocument",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetDocument",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L385:geetorusgetdocument",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "read_document",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListDocumentRevisions",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListDocumentRevisions",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L392:geetoruslistdocumentrevisions",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "list_document_revisions",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListProjects",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListProjects",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L402:geetoruslistprojects",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "list_projects",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetProject",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetProject",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L408:geetorusgetproject",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_project",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetIssueWorkspaceRuntime",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetIssueWorkspaceRuntime",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L417:geetorusgetissueworkspaceruntime",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_workspace_runtime",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusControlIssueWorkspaceServices",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusControlIssueWorkspaceServices",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L423:geetoruscontrolissueworkspaceservices",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "control_workspace_service",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusWaitForIssueWorkspaceService",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusWaitForIssueWorkspaceService",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L440:geetoruswaitforissueworkspaceservice",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "wait_for_workspace_service",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListGoals",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListGoals",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L466:geetoruslistgoals",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "list_goals",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetGoal",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetGoal",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L472:geetorusgetgoal",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_goal",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListApprovals",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListApprovals",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L478:geetoruslistapprovals",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "list_approvals",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusCreateApproval",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusCreateApproval",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L487:geetoruscreateapproval",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "request_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetApproval",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetApproval",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L496:geetorusgetapproval",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusGetApprovalIssues",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusGetApprovalIssues",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L502:geetorusgetapprovalissues",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_approval_context",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusListApprovalComments",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusListApprovalComments",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L508:geetoruslistapprovalcomments",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "get_approval_context",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusCreateIssue",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusCreateIssue",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L514:geetoruscreateissue",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "create_task",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusUpdateIssue",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusUpdateIssue",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L521:geetorusupdateissue",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "semantic_task_disposition",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusCheckoutIssue",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusCheckoutIssue",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L528:geetoruscheckoutissue",
+      "primaryDisposition": "control_plane_owned",
+      "semanticOperation": "atomic_checkout",
+      "expectedMockState": "runtime_decision_record"
+    },
+    {
+      "id": "mcp:geetorusReleaseIssue",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusReleaseIssue",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L540:geetorusreleaseissue",
+      "primaryDisposition": "control_plane_owned",
+      "semanticOperation": "runtime_release",
+      "expectedMockState": "runtime_decision_record"
+    },
+    {
+      "id": "mcp:geetorusAddComment",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusAddComment",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L546:geetorusaddcomment",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "report_progress",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusSuggestTasks",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusSuggestTasks",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L553:geetorussuggesttasks",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "request_human_input",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusAskUserQuestions",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusAskUserQuestions",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L565:geetorusaskuserquestions",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "request_human_input",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusRequestConfirmation",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusRequestConfirmation",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L577:geetorusrequestconfirmation",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "request_human_input",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusRequestCheckboxConfirmation",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusRequestCheckboxConfirmation",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L589:geetorusrequestcheckboxconfirmation",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "request_human_input",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusUpsertIssueDocument",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusUpsertIssueDocument",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L601:geetorusupsertissuedocument",
+      "primaryDisposition": "always_agent_tool",
+      "semanticOperation": "write_document",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusRestoreIssueDocumentRevision",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusRestoreIssueDocumentRevision",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L612:geetorusrestoreissuedocumentrevision",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "restore_document_revision",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusLinkIssueApproval",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusLinkIssueApproval",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L627:geetoruslinkissueapproval",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "link_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusUnlinkIssueApproval",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusUnlinkIssueApproval",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L636:geetorusunlinkissueapproval",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "unlink_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusApprovalDecision",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusApprovalDecision",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L646:geetorusapprovaldecision",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "decide_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusAddApprovalComment",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusAddApprovalComment",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L668:geetorusaddapprovalcomment",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "comment_on_approval",
+      "expectedMockState": "operation_result"
+    },
+    {
+      "id": "mcp:geetorusApiRequest",
+      "kind": "legacy_mcp_tool",
+      "name": "geetorusApiRequest",
+      "sourceAnchor": "packages/mcp-server/src/tools.ts#L677:geetorusapirequest",
+      "primaryDisposition": "optional_agent_tool",
+      "semanticOperation": "test_only_api_escape_hatch",
+      "expectedMockState": "operation_result"
+    }
+  ]
+}

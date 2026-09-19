@@ -1,0 +1,90 @@
+{
+  "family": "geetorus-server",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "2048",
+  "memory": "4096",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/geetorus-ecs-execution",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/geetorus-ecs-task",
+  "containerDefinitions": [
+    {
+      "name": "geetorus-server",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/geetorus-server:latest",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 3100,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        { "name": "NODE_ENV", "value": "production" },
+        { "name": "HOST", "value": "0.0.0.0" },
+        { "name": "PORT", "value": "3100" },
+        { "name": "SERVE_UI", "value": "true" },
+        { "name": "GEETORUS_HOME", "value": "/geetorus" },
+        { "name": "GEETORUS_INSTANCE_ID", "value": "default" },
+        { "name": "GEETORUS_CONFIG", "value": "/geetorus/instances/default/config.json" },
+        { "name": "GEETORUS_DEPLOYMENT_MODE", "value": "authenticated" },
+        { "name": "GEETORUS_DEPLOYMENT_EXPOSURE", "value": "public" },
+        { "name": "GEETORUS_PUBLIC_URL", "value": "https://<DOMAIN>" },
+        { "name": "GEETORUS_MIGRATION_AUTO_APPLY", "value": "true" },
+        { "name": "HEARTBEAT_SCHEDULER_ENABLED", "value": "true" }
+      ],
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:geetorus/database-url"
+        },
+        {
+          "name": "BETTER_AUTH_SECRET",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:geetorus/better-auth-secret"
+        },
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:geetorus/anthropic-api-key"
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:geetorus/openai-api-key"
+        },
+        {
+          "name": "GITHUB_TOKEN",
+          "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:geetorus/github-token"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "geetorus-data",
+          "containerPath": "/geetorus",
+          "readOnly": false
+        }
+      ],
+      "healthCheck": {
+        "command": ["CMD-SHELL", "curl -f http://localhost:3100/api/health || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/geetorus",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "server"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "geetorus-data",
+      "efsVolumeConfiguration": {
+        "fileSystemId": "<EFS_ID>",
+        "rootDirectory": "/",
+        "transitEncryption": "ENABLED"
+      }
+    }
+  ]
+}

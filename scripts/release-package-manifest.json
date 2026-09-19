@@ -1,0 +1,172 @@
+[
+  {
+    "dir": "packages/adapter-utils",
+    "name": "@geetorusai/adapter-utils",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/claude-local",
+    "name": "@geetorusai/adapter-claude-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/codex-local",
+    "name": "@geetorusai/adapter-codex-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/cursor-cloud",
+    "name": "@geetorusai/adapter-cursor-cloud",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/cursor-local",
+    "name": "@geetorusai/adapter-cursor-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/gemini-local",
+    "name": "@geetorusai/adapter-gemini-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/grok-local",
+    "name": "@geetorusai/adapter-grok-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/hermes",
+    "name": "@geetorusai/hermes-geetorus-adapter",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/hermes-gateway",
+    "name": "@geetorusai/adapter-hermes-gateway",
+    "publishFromCi": false
+  },
+  {
+    "dir": "packages/adapters/kimi-local",
+    "name": "@geetorusai/adapter-kimi-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/opencode-local",
+    "name": "@geetorusai/adapter-opencode-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/pi-local",
+    "name": "@geetorusai/adapter-pi-local",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/adapters/openclaw-gateway",
+    "name": "@geetorusai/adapter-openclaw-gateway",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/shared",
+    "name": "@geetorusai/shared",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/skills-catalog",
+    "name": "@geetorusai/skills-catalog",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/teams-catalog",
+    "name": "@geetorusai/teams-catalog",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/db",
+    "name": "@geetorusai/db",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sdk",
+    "name": "@geetorusai/plugin-sdk",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/plugin-workspace-diff",
+    "name": "@geetorusai/plugin-workspace-diff",
+    "publishFromCi": true
+  },
+  {
+    "dir": "server",
+    "name": "@geetorusai/server",
+    "publishFromCi": true
+  },
+  {
+    "dir": "cli",
+    "name": "geetorusai",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/mcp-server",
+    "name": "@geetorusai/mcp-server",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/google-sheets-mcp-server",
+    "name": "@geetorusai/google-sheets-mcp-server",
+    "publishFromCi": false
+  },
+  {
+    "dir": "packages/kv-demo-mcp-server",
+    "name": "@geetorusai/kv-demo-mcp-server",
+    "publishFromCi": false
+  },
+  {
+    "dir": "packages/plugins/create-geetorus-plugin",
+    "name": "@geetorusai/create-geetorus-plugin",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/cloudflare",
+    "name": "@geetorusai/plugin-cloudflare-sandbox",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/createos",
+    "name": "@geetorusai/plugin-createos",
+    "publishFromCi": false
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/daytona",
+    "name": "@geetorusai/plugin-daytona",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/exe-dev",
+    "name": "@geetorusai/plugin-exe-dev",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/e2b",
+    "name": "@geetorusai/plugin-e2b",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/modal",
+    "name": "@geetorusai/plugin-modal",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/kubernetes",
+    "name": "@geetorusai/plugin-kubernetes",
+    "publishFromCi": true
+  },
+  {
+    "dir": "packages/plugins/sandbox-providers/novita",
+    "name": "@geetorusai/plugin-novita-sandbox",
+    "publishFromCi": true
+  },
+  {
+    "dir": "ui",
+    "name": "@geetorusai/ui",
+    "publishFromCi": true
+  }
+]

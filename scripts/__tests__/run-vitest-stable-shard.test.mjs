@@ -1,0 +1,300 @@
+import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+
+import {
+  defaultSuiteWeight,
+  loadShardDurations,
+  partitionGeneralServerSuites,
+} from "../general-server-shard.mjs";
+
+import { assertSelectedTests, partitionTestLines } from "../test-line-shard.mjs";
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const script = path.join(repoRoot, "scripts", "run-vitest-stable.mjs");
+const durationsManifest = path.join(repoRoot, "scripts", "general-server-shard-durations.json");
+const serializedDurationsManifest = path.join(
+  repoRoot,
+  "scripts",
+  "serialized-shard-durations.json",
+);
+
+function dryRun(args) {
+  const result = spawnSync(process.execPath, [script, ...args, "--dry-run"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+  });
+  return result;
+}
+
+function dryRunJson(args) {
+  const result = dryRun(args);
+  assert.equal(result.status, 0, `expected success for ${args.join(" ")}: ${result.stderr}`);
+  return JSON.parse(result.stdout);
+}
+
+const SHARD_COUNT = 12;
+const SERIALIZED_SHARD_COUNT = 9;
+
+
+test("the serialized shards form a complete, non-overlapping partition", () => {
+  const shards = Array.from({ length: SERIALIZED_SHARD_COUNT }, (_, index) =>
+    dryRunJson(["--mode", "serialized", "--shard-index", String(index), "--shard-count", String(SERIALIZED_SHARD_COUNT)]),
+  );
+
+  const total = shards[0].serializedSuiteCount;
+  const selected = shards.flatMap((shard) => shard.selectedSerializedSuites);
+  assert.equal(selected.length, total, "every serialized suite must be selected exactly once");
+  assert.equal(new Set(selected).size, total, "serialized shards must not overlap");
+});
+
+test("the general-server shards form a complete, non-overlapping partition", () => {
+  const shards = Array.from({ length: SHARD_COUNT }, (_, index) =>
+    dryRunJson(["--mode", "general", "--group", "general-server", "--shard-index", String(index), "--shard-count", String(SHARD_COUNT)]),
+  );
+
+  const total = shards[0].generalServerSuiteCount;
+  assert.ok(total > 0, "expected a non-empty general-server suite set");
+
+  const seen = new Set();
+  let selectedTotal = 0;
+  for (const shard of shards) {
+    assert.equal(shard.generalServerSuiteCount, total, "suite count must be stable across shards");
+    for (const file of shard.selectedGeneralServerSuites) {
+      assert.ok(!seen.has(file), `suite assigned to more than one shard: ${file}`);
+      seen.add(file);
+      selectedTotal += 1;
+    }
+  }
+
+  // Every suite runs exactly once: union covers the whole set with no overlap.
+  assert.equal(selectedTotal, total, "every suite must be selected exactly once");
+  assert.equal(seen.size, total, "union of shards must cover the whole suite set");
+});
+
+test("a route/authz suite never leaks into the general-server shards", () => {
+  const shard = dryRunJson(["--mode", "general", "--group", "general-server", "--shard-index", "0", "--shard-count", SHARD_COUNT.toString()]);
+  for (const file of shard.selectedGeneralServerSuites) {
+    assert.ok(
+      !/[^/]*(?:route|routes|authz)[^/]*\.test\.ts$/.test(file),
+      `route/authz suite must stay in the serialized lane, not general-server: ${file}`,
+    );
+  }
+});
+
+test("shard flags are rejected for the workspaces-b group", () => {
+  const result = dryRun(["--mode", "general", "--group", "general-workspaces-b", "--shard-index", "0", "--shard-count", "3"]);
+  assert.notEqual(result.status, 0, "workspaces-b must not accept shard flags");
+});
+
+test("workspaces-a shards map to Vitest native --shard slices over a stable project list", () => {
+  const shards = [0, 1].map((index) =>
+    dryRunJson([
+      "--mode", "general", "--group", "general-workspaces-a",
+      "--shard-index", String(index), "--shard-count", "2",
+    ]),
+  );
+
+  assert.deepEqual(
+    shards.map((shard) => shard.workspacesVitestShard),
+    ["1/2", "2/2"],
+    "each matrix job must pass its own --shard slice to vitest",
+  );
+  // Vitest's --shard partitions each project's file list deterministically, so
+  // an identical project list across jobs is what guarantees complete,
+  // non-overlapping coverage of the lane.
+  assert.deepEqual(shards[0].workspaceProjects, shards[1].workspaceProjects);
+  assert.ok(shards[0].workspaceProjects.length > 0, "workspaces-a must run at least one project");
+
+  const unsharded = dryRunJson(["--mode", "general", "--group", "general-workspaces-a"]);
+  assert.deepEqual(
+    unsharded.workspaceProjects,
+    shards[0].workspaceProjects,
+    "sharding must not change which projects the lane covers",
+  );
+  assert.equal(unsharded.workspacesVitestShard, null);
+});
+
+test("duration-aware partition balances skewed weights better than round-robin", () => {
+  // Round-robin puts all three heavy suites on shard 0 (indexes 0, 3, 6).
+  const files = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+  const durations = { a: 30000, d: 30000, g: 30000, b: 100, c: 100, e: 100, f: 100, h: 100, i: 100 };
+
+  const shards = partitionGeneralServerSuites(files, 3, durations);
+  const totals = shards.map((shard) => shard.totalWeight);
+  const maxTotal = Math.max(...totals);
+  const minTotal = Math.min(...totals);
+  assert.ok(
+    maxTotal - minTotal <= 200,
+    `expected near-even shard weights, got ${totals.join(", ")}`,
+  );
+  assert.equal(
+    shards.flatMap((shard) => shard.files).sort().join(","),
+    files.join(","),
+    "partition must cover every file exactly once",
+  );
+});
+
+test("the partition is deterministic for identical inputs", () => {
+  const files = Array.from({ length: 50 }, (_, index) => `suite-${index}.test.ts`);
+  const durations = Object.fromEntries(files.map((file, index) => [file, (index * 37) % 5000]));
+
+  const first = partitionGeneralServerSuites(files, 3, durations);
+  const second = partitionGeneralServerSuites(files, 3, durations);
+  assert.deepEqual(first, second, "same inputs must always produce the same partition");
+});
+
+test("suites missing from the manifest get the median weight", () => {
+  assert.equal(defaultSuiteWeight({ a: 100, b: 300, c: 900 }), 300);
+  assert.equal(defaultSuiteWeight({ a: 100, b: 300, c: 500, d: 900 }), 400);
+  assert.equal(defaultSuiteWeight({}), 1000, "empty manifest falls back to a fixed weight");
+});
+
+test("a missing or malformed manifest degrades to uniform weights", () => {
+  assert.deepEqual(loadShardDurations(path.join(repoRoot, "scripts", "no-such-manifest.json")), {});
+
+  const files = ["a", "b", "c", "d"];
+  const shards = partitionGeneralServerSuites(files, 2, {});
+  assert.equal(shards[0].files.length + shards[1].files.length, files.length);
+  assert.equal(Math.abs(shards[0].files.length - shards[1].files.length), 0);
+});
+
+test("the checked-in manifest loads and covers most of the current suite set", () => {
+  const durations = loadShardDurations(durationsManifest);
+  assert.ok(Object.keys(durations).length > 0, "manifest must parse to a non-empty duration map");
+
+  const shard = dryRunJson(["--mode", "general", "--group", "general-server", "--shard-index", "0", "--shard-count", "1"]);
+  const currentFiles = shard.selectedGeneralServerSuites;
+  const known = currentFiles.filter((file) => durations[file] !== undefined).length;
+  assert.ok(
+    known / currentFiles.length >= 0.5,
+    `manifest is stale: only ${known} of ${currentFiles.length} suites have recorded durations — regenerate it from a recent PR run (see the manifest's $comment)`,
+  );
+});
+
+test("the chat integration suite keeps a measured duration for duration-aware fallbacks", () => {
+  // The PR and release matrices both run the chat suite in dedicated
+  // line-sharded lanes, but the plain general-server group (local full runs)
+  // still weighs it into the LPT partition; a median-fallback weight there
+  // would silently overload whichever shard receives it.
+  const chatSuite = "server/src/__tests__/chat-channels.integration.test.ts";
+  const durations = loadShardDurations(durationsManifest);
+  assert.ok(
+    Number.isFinite(durations[chatSuite]),
+    "the full chat cohort must have a measured duration, not the median fallback",
+  );
+});
+
+test("the checked-in serialized manifest loads and covers most of the current suite set", () => {
+  const durations = loadShardDurations(serializedDurationsManifest);
+  assert.ok(Object.keys(durations).length > 0, "manifest must parse to a non-empty duration map");
+
+  const shard = dryRunJson(["--mode", "serialized", "--shard-index", "0", "--shard-count", "1"]);
+  const currentFiles = shard.selectedSerializedSuites;
+  const known = currentFiles.filter((file) => durations[file] !== undefined).length;
+  assert.ok(
+    known / currentFiles.length >= 0.5,
+    `manifest is stale: only ${known} of ${currentFiles.length} suites have recorded durations — regenerate it from a recent PR run (see the manifest's $comment)`,
+  );
+});
+
+test("the real serialized shard partition is duration-balanced", () => {
+  const durations = loadShardDurations(serializedDurationsManifest);
+  const fallback = defaultSuiteWeight(durations);
+  const shards = Array.from({ length: SERIALIZED_SHARD_COUNT }, (_, index) =>
+    dryRunJson(["--mode", "serialized", "--shard-index", String(index), "--shard-count", String(SERIALIZED_SHARD_COUNT)]),
+  );
+
+  const totals = shards.map((shard) =>
+    shard.selectedSerializedSuites.reduce((sum, file) => sum + (durations[file] ?? fallback), 0),
+  );
+  const maxTotal = Math.max(...totals);
+  const minTotal = Math.min(...totals);
+  // LPT keeps the spread within the heaviest single suite; use that as the bound.
+  const heaviest = Math.max(...Object.values(durations));
+  assert.ok(
+    maxTotal - minTotal <= heaviest,
+    `serialized shard weight spread ${maxTotal - minTotal}ms exceeds heaviest suite ${heaviest}ms: ${totals.join(", ")}`,
+  );
+});
+
+test("the real shard partition is duration-balanced", () => {
+  // Mirrors the PR matrix: general-server-without-chat across SHARD_COUNT
+  // runners, with the chat suite carried by the dedicated general-chat lanes.
+  const durations = loadShardDurations(durationsManifest);
+  const fallback = defaultSuiteWeight(durations);
+  const shards = Array.from({ length: SHARD_COUNT }, (_, index) =>
+    dryRunJson(["--mode", "general", "--group", "general-server-without-chat", "--shard-index", String(index), "--shard-count", String(SHARD_COUNT)]),
+  );
+
+  const totals = shards.map((shard) =>
+    shard.selectedGeneralServerSuites.reduce((sum, file) => sum + (durations[file] ?? fallback), 0),
+  );
+  const maxTotal = Math.max(...totals);
+  const minTotal = Math.min(...totals);
+  // LPT keeps the spread within the heaviest single suite; use that as the
+  // bound. The chat suite runs in its own lanes, so exclude it here.
+  const chat = "server/src/__tests__/chat-channels.integration.test.ts";
+  const heaviest = Math.max(
+    ...Object.entries(durations).filter(([file]) => file !== chat).map(([, ms]) => ms),
+  );
+  assert.ok(
+    maxTotal - minTotal <= heaviest,
+    `shard weight spread ${maxTotal - minTotal}ms exceeds heaviest suite ${heaviest}ms: ${totals.join(", ")}`,
+  );
+});
+
+
+// 12 mirrors pr-trusted.yml, 10 mirrors release-verify.yml.
+for (const withoutChatShardCount of [10, 12]) {
+  test(`${withoutChatShardCount} without-chat shards plus the dedicated chat file cover the original server group exactly`, () => {
+    const full = dryRunJson(["--mode", "general", "--group", "general-server", "--shard-index", "0", "--shard-count", "1"]);
+    const shards = Array.from({ length: withoutChatShardCount }, (_, index) => dryRunJson([
+      "--mode", "general", "--group", "general-server-without-chat",
+      "--shard-index", String(index), "--shard-count", String(withoutChatShardCount),
+    ]));
+    const files = shards.flatMap((shard) => shard.selectedGeneralServerSuites);
+    const chat = "server/src/__tests__/chat-channels.integration.test.ts";
+    assert.ok(!files.includes(chat));
+    assert.deepEqual([...files, chat].sort(), full.selectedGeneralServerSuites.sort());
+    assert.equal(new Set(files).size, files.length);
+    const defaultRun = dryRunJson([]);
+    assert.ok(defaultRun.generalServerSuiteCount === full.generalServerSuiteCount);
+  });
+}
+
+const lineShardFile = path.join(repoRoot, "server/src/__tests__/chat-channels.integration.test.ts");
+const caseAt = (line, name) => ({ name, file: lineShardFile, projectName: "@geetorusai/server", location: { line, column: 3 } });
+
+test("test-line shards cover nested and parameterized cases exactly once without splitting a source line", () => {
+  const cases = [caseAt(10, "suite > nested > first"), caseAt(10, "suite > nested > second"),
+    caseAt(20, "same name"), caseAt(30, "same name"), caseAt(40, "last"), caseAt(50, "new case")];
+  const shards = partitionTestLines(cases, 3, lineShardFile);
+  assert.deepEqual(shards.map((shard) => shard.tests.length), [2, 2, 2]);
+  assert.equal(shards.filter((shard) => shard.lines.includes(10)).length, 1);
+  assert.equal(shards.find((shard) => shard.lines.includes(10)).tests.length, 2);
+  assert.equal(shards.flatMap((shard) => shard.lines).length, 5);
+  assert.deepEqual(shards.flatMap((shard) => shard.tests).sort((a, b) => a.location.line - b.location.line), cases);
+  assert.deepEqual(partitionTestLines([...cases].reverse(), 3, lineShardFile).map((shard) => shard.lines), shards.map((shard) => shard.lines));
+});
+
+test("line-shard collection rejects empty, foreign, or unlocated tests and invalid shard counts", () => {
+  const good = caseAt(10, "valid");
+  for (const input of [[], null, [{ ...good, file: "/another.test.ts" }], [{ ...good, projectName: "wrong" }],
+    [{ ...good, location: undefined }], [{ ...good, location: { line: 0 } }], [{ ...good, name: "" }]]) {
+    assert.throws(() => partitionTestLines(input, 1, lineShardFile));
+  }
+  for (const count of [0, -1, 1.5, Infinity, 2]) assert.throws(() => partitionTestLines([good], count, lineShardFile));
+});
+
+test("filtered collection must match the exact assigned case identities, including duplicates", () => {
+  const expected = [caseAt(10, "same"), caseAt(10, "same"), caseAt(20, "nested > case")];
+  assertSelectedTests(expected, [...expected].reverse(), lineShardFile);
+  for (const actual of [expected.slice(1), [...expected, caseAt(30, "extra")],
+    [expected[0], expected[1], caseAt(20, "renamed")],
+    [expected[0], expected[1], caseAt(21, "nested > case")]]) {
+    assert.throws(() => assertSelectedTests(expected, actual, lineShardFile));
+  }
+});

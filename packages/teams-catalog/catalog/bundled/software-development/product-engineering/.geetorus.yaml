@@ -1,0 +1,5 @@
+schema: geetorus/v1
+agents:
+  cto:
+    permissions:
+      canCreateAgents: true
