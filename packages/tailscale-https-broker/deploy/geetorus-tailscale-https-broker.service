@@ -1,0 +1,26 @@
+[Unit]
+Description=Geetorus Tailscale HTTPS broker
+After=tailscaled.service
+Requires=tailscaled.service
+
+[Service]
+Type=simple
+User=geetorus-tsbroker
+Group=geetorus-tsbroker-sock
+EnvironmentFile=/etc/geetorus/tailscale-https-broker.env
+ExecStart=/usr/bin/node /opt/geetorus/packages/tailscale-https-broker/dist/main.js
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+RuntimeDirectory=geetorus-tailscale-broker
+RuntimeDirectoryMode=0750
+StateDirectory=geetorus-tailscale-broker
+StateDirectoryMode=0700
+LogsDirectory=geetorus-tailscale-broker
+LogsDirectoryMode=0700
+ReadWritePaths=/run/geetorus-tailscale-broker /var/lib/geetorus-tailscale-broker /var/log/geetorus-tailscale-broker
+
+[Install]
+WantedBy=multi-user.target
