@@ -40,7 +40,7 @@
   ],
   "scripts": {
     "prebuild": "pnpm -C ../../../.. --filter @geetorusai/plugin-sdk ensure-build-deps",
-    "build": "rm -rf dist && tsc",
+    "build": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\" && tsc",
     "clean": "rm -rf dist",
     "typecheck": "pnpm -C ../../../.. --filter @geetorusai/plugin-sdk ensure-build-deps && tsc --noEmit",
     "test": "vitest run --config vitest.config.ts",

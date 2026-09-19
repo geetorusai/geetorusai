@@ -11,6 +11,7 @@ import type {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Check, Copy } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Identity } from "./Identity";
 import { InlineEntitySelector, type InlineEntityOption } from "./InlineEntitySelector";
@@ -1039,7 +1040,7 @@ export function CommentThread({
                   disabled={attaching}
                   title="Attach image"
                 >
-                  <Geetorus className="h-4 w-4" />
+                  <AttachmentIcon className="h-4 w-4" />
                 </Button>
               </div>
             )}

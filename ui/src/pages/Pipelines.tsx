@@ -21,6 +21,7 @@ import type {
   SuggestTasksInteraction,
 } from "@geetorusai/shared";
 import { AlertTriangle, ArrowUpDown, ArrowUpRight, BookOpenText, Check, ChevronDown, ChevronRight, ChevronUp, CircleDot, Download, ExternalLink, FileText, GitBranch, Hexagon, Image as ImageIcon, Info, Layers, List, ListTree, Loader2, MessageSquare, MoreHorizontal, Package, Plus, Search, Settings, Trash2, X } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import {
   DndContext,
   DragOverlay,
@@ -3992,7 +3993,7 @@ function ItemOutputAttachmentRow({ item }: { item: PipelineCaseAttachmentOutputI
           <img src={item.contentPath} alt={filename} className="h-full w-full object-cover" loading="lazy" />
         </a>
       ) : (
-        <Geetorus className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+        <AttachmentIcon className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
       )}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
@@ -4073,7 +4074,7 @@ function ItemOutputsSection({
     groups.push({
       key: "attachment",
       label: "Attachments",
-      icon: <Geetorus className="h-4 w-4 text-muted-foreground" />,
+      icon: <AttachmentIcon className="h-4 w-4 text-muted-foreground" />,
       rows: attachments.map((item) => <ItemOutputAttachmentRow key={item.id} item={item} />),
     });
   }

@@ -254,7 +254,7 @@ export const ChatComposer = forwardRef<ChatComposerHandle, ChatComposerProps>(fu
           className="pointer-events-none absolute inset-1.5 z-20 flex items-center justify-center rounded-lg border border-dashed border-muted-foreground/50 bg-background/80 text-xs text-muted-foreground backdrop-blur-(--blur-1px)"
         >
           <span className="inline-flex items-center gap-2">
-            <Geetorus className="h-3.5 w-3.5" />
+            <AttachmentIcon className="h-3.5 w-3.5" />
             Drop to attach
           </span>
         </div>

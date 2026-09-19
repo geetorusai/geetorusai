@@ -1,6 +1,7 @@
 import { clearLegacyChatMessageRequests } from "@/lib/chat-message-request";
 import { agentChatDraft } from "@/lib/agent-chat-draft";
 import { Settings as ChatSettings } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import { agentDetailHref } from "./agent-detail-navigation";
 import { deriveInitials } from "@/components/Identity";
 import { ExecutionBlockerNotice } from "../components/ExecutionBlockerNotice";
@@ -6791,7 +6792,7 @@ export function TaskDetailSurface({ conversation, tasksTab }: { tasksTab?: TaskS
           attachmentDragActive && "border-primary bg-primary/5",
         )}
       >
-        <Geetorus className="h-3.5 w-3.5 mr-1.5" />
+        <AttachmentIcon className="h-3.5 w-3.5 mr-1.5" />
         {uploadAttachment.isPending || importMarkdownDocument.isPending ? (
           "Uploading..."
         ) : (

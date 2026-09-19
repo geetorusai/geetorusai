@@ -56,12 +56,16 @@ export function serviceWorkerBuildIdPlugin(
   const serviceWorkerFileName = options.serviceWorkerFileName ?? "sw.js";
   let buildId: string | null = null;
   let outDir = "dist";
+  let publicDir = "public";
 
   return {
     name: "geetorus-sw-build-id",
     apply: "build",
     configResolved(config) {
       outDir = config.build.outDir;
+      if (config.publicDir) {
+        publicDir = config.publicDir;
+      }
     },
     generateBundle(_options, bundle) {
       const entry = Object.values(bundle).find(
@@ -72,8 +76,11 @@ export function serviceWorkerBuildIdPlugin(
       }
     },
     closeBundle() {
+      const publicSwPath = path.resolve(publicDir, serviceWorkerFileName);
       const swPath = path.resolve(outDir, serviceWorkerFileName);
-      const source = fs.readFileSync(swPath, "utf8");
+      const source = fs.existsSync(publicSwPath)
+        ? fs.readFileSync(publicSwPath, "utf8")
+        : fs.readFileSync(swPath, "utf8");
       const stamped = stampServiceWorkerBuildId(source, buildId ?? "build");
       fs.writeFileSync(swPath, stamped);
     },

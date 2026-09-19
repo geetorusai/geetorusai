@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "packageName": "@geetorusai/skills-catalog",
   "packageVersion": "0.3.1",
-  "generatedAt": "2026-08-11T15:05:34.526Z",
+  "generatedAt": "2026-09-19T12:04:58.475Z",
   "skills": [
     {
       "id": "geetorusai:bundled:docs:doc-maintenance",
@@ -32,11 +32,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4478,
-          "sha256": "fb0353386c5e5e5e13bcbb3233f044e3dccecf371f429d6328f26c26d7cb6169"
+          "sizeBytes": 4477,
+          "sha256": "540f7458f2425ce3efc77485567f726f3b6a3e840e6accebd14ce456d0f3606a"
         }
       ],
-      "contentHash": "sha256:2e02299210fd17c1fe1867b4ee8c144a11b6fe1fe481f83b8268cfbaaf10f9aa"
+      "contentHash": "sha256:35d2f530bfe992ec39aa68e82e4af8a11021deed67ea317a4a516512de2412bf"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:issue-triage",
@@ -67,11 +67,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4042,
-          "sha256": "df5bdc8bf5e017b7ba5f70a4b5323fad51d0c323278f386580f26cf43ad09160"
+          "sizeBytes": 4038,
+          "sha256": "1d3de96a01837b78c6e08720b570c4efa6a1865839f0f53a4a10e67ddd4d811c"
         }
       ],
-      "contentHash": "sha256:88dc13560371fb364963782cb4f6eeb4090fcde92ee3774479428ed6b90e11c1"
+      "contentHash": "sha256:7a1450a3338bb790b713fe64da1c656c1758773e92e1598156c803e839f98d05"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:reflection-coach",
@@ -102,11 +102,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 12028,
-          "sha256": "083d5fa8dc43c3ce7747e89c1afb6f6f42d0603a31808bffc5f8e56735f2d865"
+          "sizeBytes": 12012,
+          "sha256": "1dd38f95ea436313087cd948dde3ee523166459412dba6dc637d7acb86d1c7f8"
         }
       ],
-      "contentHash": "sha256:f2592d81f616628a3eba92636616424f2eed82ec22bb504240a58f6be115e407"
+      "contentHash": "sha256:cfbcf8493617e9cd030f52481d2799da9c92fda4adfeaee7dd3d6cbf83168a9b"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:status-card-query",
@@ -137,11 +137,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 6368,
-          "sha256": "0c6140f51d503cbadc98723ce54c0def48e7e31ea159b0935b8ad6369291498a"
+          "sizeBytes": 6352,
+          "sha256": "e73def890e82d2b981e971dfc3a9557ae02b44b5c5a23a66dfe3725aecceb47a"
         }
       ],
-      "contentHash": "sha256:2b6e53bf8491f027afdbd6961ad84f677cfd385a0a6a73616ea84111ca8886ed"
+      "contentHash": "sha256:6f7223449fbf5b92b5d96010ef5939501a164856c3fddbe54215c7db8d880403"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:summarize-status",
@@ -172,11 +172,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 8877,
-          "sha256": "4cb3d177f5d16e3cc2052d2f80e7fb245ab95e79c1e947abdc84cd4ee3d8c61e"
+          "sizeBytes": 8868,
+          "sha256": "e1208adbaf34b831a94f20f5f98cac5da5d11e54e307790409e10cce067dbe21"
         }
       ],
-      "contentHash": "sha256:3e49ee2b8d83d1371fb0f59197bb96c46b64f722540405f46d4a5a756fbe1b89"
+      "contentHash": "sha256:4c605e26c0f607cce2ca1dee424ed9599735e638be61124b25822f581bc573fa"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:task-planning",
@@ -207,11 +207,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4938,
-          "sha256": "9c52a44a30ec8d306119da51bf298e9e3e6c382a9a9559ffd3054bf5e0c75f36"
+          "sizeBytes": 4931,
+          "sha256": "aacf833ac805cc94d3404429f011bf31bc7ac267e3468f9f6cc540d31cd4f9d2"
         }
       ],
-      "contentHash": "sha256:487c3116eead89fef4f71c984329c41836bd69951b7ef9ed8736c69435e02438"
+      "contentHash": "sha256:6bf6c663c7b2d3ef4b0bff8c9a19caf404eb6b5a2f3fd5aa8ee299ab4115592e"
     },
     {
       "id": "geetorusai:bundled:product:geetorus-capsules",
@@ -245,35 +245,35 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 5831,
-          "sha256": "dd659ccb46e105336eb00fbe689b1d5531347fc69493c3156390d40ee413c93e"
+          "sizeBytes": 5819,
+          "sha256": "e541392ed465a964a1b143dad7e20e2e6755e4cea34da13fe9e43f825221b377"
         },
         {
           "path": "references/generator-workflows.md",
           "kind": "reference",
-          "sizeBytes": 4356,
-          "sha256": "b5f72e5b6683e8f93f2d852e84c2cc19e6ab438b250bf777dfb2480dd4f6e1b6"
+          "sizeBytes": 4345,
+          "sha256": "ab22d3accb0e7232333057fc165028d3ea352e352bba35f71e52430ce5430ece"
         },
         {
           "path": "references/hero-capsule-bank.md",
           "kind": "reference",
-          "sizeBytes": 5981,
-          "sha256": "ec3d34113aa7bb527560d1eb4d8ab7667c73e18284c85a2019122743a767525a"
+          "sizeBytes": 5977,
+          "sha256": "5d3ea5d3dd6a4065e7fa90a239dd797c1b599ace72943f808ef6fcdd4a90914c"
         },
         {
           "path": "references/identicon-prototyper.md",
           "kind": "reference",
-          "sizeBytes": 6669,
-          "sha256": "0b19419efa1396a402097decabe24ea9ae649678569449c8ce855e0678df6bfe"
+          "sizeBytes": 6660,
+          "sha256": "8e77281e90931d200b40912d45252b53e4ddcad4182d3ac92d1222468d5f237a"
         },
         {
           "path": "references/individual-status-capsules.md",
           "kind": "reference",
-          "sizeBytes": 5031,
-          "sha256": "be1f2eccf96b4d2deefe45b3bc1dd0a3597278472c2ffedadc43c57161e9103d"
+          "sizeBytes": 5029,
+          "sha256": "da43b2369f8f3df1dd314eb3f6534135c220895253fb27b055f1a353f01c4e0f"
         }
       ],
-      "contentHash": "sha256:a2b26cf6895affeeb70c85567a061094450a59bd3c4fdcf28ee65858599ac12c"
+      "contentHash": "sha256:c99e633e25cfb9feba5ec8a20c5ed77f93612bc2ac538439b0f0d931d9c15f46"
     },
     {
       "id": "geetorusai:bundled:product:wireframe",
@@ -305,8 +305,8 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 11509,
-          "sha256": "6992047cc97b67211cc8c1183718ab9aa26b8afc34c70d54d20558c215daaf48"
+          "sizeBytes": 11508,
+          "sha256": "269df1bb9bd8d9eefa46a0b155404b00ea0b7444f2ef777f2c3cd26a44bc04a1"
         },
         {
           "path": "assets/site-template.html",
@@ -345,7 +345,7 @@
           "sha256": "017260d2216859d57e5fa869e0efc6b88c7ed4d8a8a4f5af04fe89a3ef2445bd"
         }
       ],
-      "contentHash": "sha256:7106d84fc9db2053090f692706e41cfc586e7dd85a44f568e3319c4eefbdde46"
+      "contentHash": "sha256:ffa5d6eaeedcbc7b7a4ff1f2ee4f177994b2ebca849bcfa2e235d0c0afe786e0"
     },
     {
       "id": "geetorusai:bundled:quality:qa-acceptance",
@@ -376,11 +376,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 3861,
-          "sha256": "c631b437ab26d104af6cdb963d8f679a9341439041b3cb3ec8835f4ff551b378"
+          "sizeBytes": 3860,
+          "sha256": "c079081a0bf7e675ff193308debd6964167cadbaee4322e182fb4604b6ae9b18"
         }
       ],
-      "contentHash": "sha256:32372dacaf62e93454b9855968c4eec96456ba78b509f450b3dfaa48e31ef356"
+      "contentHash": "sha256:7091e69e9d4e44a3025aad770ebabf7fb63a22d56803167116196f1b1c83a6f7"
     },
     {
       "id": "geetorusai:bundled:software-development:github-pr-workflow",
@@ -409,11 +409,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 3970,
-          "sha256": "f498ec4ebb1779dea37adeb1db8a8b22316282798e35ee02e2fc5ff627d7e261"
+          "sizeBytes": 3969,
+          "sha256": "55d449eaf1dc0e8289dfcfc2a3a7f7be34e0606bd5f59dc7427b53c670847529"
         }
       ],
-      "contentHash": "sha256:90f278c89aa0711be150c1cd2456ca25620d02f36995b113ca9837d756a37f6c"
+      "contentHash": "sha256:465d04de1178cf5b5d29940848d57fef40df93ac41382b17fb54602524f96b65"
     },
     {
       "id": "geetorusai:optional:browser:agent-browser",
@@ -444,11 +444,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 5133,
-          "sha256": "362f7b9d02297782bc6f0c093f495b8a0304a75bcf4b42e5c280a42b1f757b7d"
+          "sizeBytes": 5132,
+          "sha256": "1eac0aa628fc472ec0564b1e03573b3847cd70eb85e126688241e2d7117af56a"
         }
       ],
-      "contentHash": "sha256:eabb2c9f7b5e1a27ebb1e05a711d61433a266478154cd671a685e99e67aadea2"
+      "contentHash": "sha256:5e4ef1dcc93d0d8dc991f9f900af5be1e9ecdc2f3f7b9a65765866133fbc281f"
     },
     {
       "id": "geetorusai:optional:content:release-announcement",
@@ -479,11 +479,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 6945,
-          "sha256": "d745cca96350518fabae14f5c407d779e1df2c5d091b5b4a5c55bb888b569e5f"
+          "sizeBytes": 6932,
+          "sha256": "a370a87473febf2b74f9de1aadff58b8e90ee846f0bd2c7dd6665971b3f00bbc"
         }
       ],
-      "contentHash": "sha256:efe8ea89b552df95222609867c9c75f1b40e16f457d34e7e4a124f54daa33efa"
+      "contentHash": "sha256:874e1ddf1b7da112a96718a9f2ac753b6ae320a127b45503b7778fdd177c9e69"
     },
     {
       "id": "geetorusai:optional:content:simplified-english",
@@ -515,11 +515,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 1578,
-          "sha256": "a0f7385599873910e2fabf400346016a07dacbc7ece27c0e3616ae8fd94ebfbb"
+          "sizeBytes": 1577,
+          "sha256": "b48d9cbbf4ad51d15e66d6455a2ff5990cac582581bf970d7f232ad1b7dc4214"
         }
       ],
-      "contentHash": "sha256:642321f40d51e0125df05c6fbace49aeb07ec30392058756909c259c9c5eac6a"
+      "contentHash": "sha256:d9b1e01ea68bf33671c446b11004c33cf4726edb6abfeec3d644779792bf6b14"
     },
     {
       "id": "geetorusai:optional:finance:ramp",
@@ -552,11 +552,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 7016,
-          "sha256": "698cd69ebf2f2481ed83c8e9477b56ae78288cc4c751d7d35f649ff2483802a3"
+          "sizeBytes": 6998,
+          "sha256": "2d032137b812dd6b3d4951520383a64797f7c1556d16d49646ee41a33bbd59e4"
         }
       ],
-      "contentHash": "sha256:276d85e98a4732f278204e26438aa95fde158dd2d15c1e427c4c7c7d492e769d"
+      "contentHash": "sha256:6722ea57988c3b65401e7d4d5fc1449efa7ac11d939b8f46dc6aab59369567f5"
     },
     {
       "id": "geetorusai:optional:product:design-critique",
@@ -587,11 +587,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4851,
-          "sha256": "022e619baf6cc25725946279cb8052d22af090dd6cd6dc8c20f17867f71a5d8e"
+          "sizeBytes": 4850,
+          "sha256": "617411c980fb10960b8f7136b9ee7e5de4ce5f615f3de76c1c275353c0b4005d"
         }
       ],
-      "contentHash": "sha256:429f94df398a0697042b5bbe4755b1ff1a230aa5f41d99118ad37493ac65d21c"
+      "contentHash": "sha256:200c2610d31273d286b8496139f4683e290eaf820d0678f0c76cccb72c0d2c26"
     },
     {
       "id": "geetorusai:optional:research:last30days",
@@ -1149,17 +1149,17 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 12409,
-          "sha256": "5278d288a0cbfe10fdda4ef3d99cf61e6ed068f4b6c1282406b0e001c9f45253"
+          "sizeBytes": 12386,
+          "sha256": "9b7341430f0729fa27f38b93477f49b69c334ca4a360b2cd5ff8de2b819ba703"
         },
         {
           "path": "examples/notion-mcp-research-gate.md",
           "kind": "markdown",
-          "sizeBytes": 1900,
-          "sha256": "944b13ac67c06c65643eb236e856f1479106749861535648d29334f84cf1b50b"
+          "sizeBytes": 1893,
+          "sha256": "108131c083a013705b4731237c2db06cf010caf7f029e5d7de457cefcf8771bc"
         }
       ],
-      "contentHash": "sha256:84f2a28d7d004393719684f2b435e5ee01ddc58591e0dfeb73d72c7605db7f49"
+      "contentHash": "sha256:354edc6025aa679515d2a85e25523acc2a00669683ddcea38a159c0f0d635873"
     }
   ]
 }

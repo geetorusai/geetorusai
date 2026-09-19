@@ -122,7 +122,7 @@ function SearchResultRowImpl({
         className={cn(ROW_BASE, "py-4", isActive && "bg-muted/40", className)}
         data-result-type="artifact"
       >
-        <Geetorus className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" />
+        <AttachmentIcon className="mt-1 h-4 w-4 shrink-0 text-muted-foreground" />
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-baseline gap-x-2.5 gap-y-1">
             <span className="truncate text-sm font-medium text-foreground">{result.title}</span>

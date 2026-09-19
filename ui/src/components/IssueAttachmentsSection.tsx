@@ -2,6 +2,7 @@ import { useMemo, useState, type DragEvent, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { IssueAttachment } from "@geetorusai/shared";
 import { Download, ExternalLink, FileText, Maximize2, Trash2 } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import { Button } from "@/components/ui/button";
 import { FoldCurtain } from "./FoldCurtain";
 import { MarkdownBody } from "./MarkdownBody";
@@ -265,7 +266,7 @@ export function IssueAttachmentsSection({
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <Geetorus className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+          <AttachmentIcon className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
           <h3 className="text-sm font-medium text-muted-foreground">Attachments</h3>
           <span className="text-xs text-muted-foreground">{attachments.length}</span>
         </div>

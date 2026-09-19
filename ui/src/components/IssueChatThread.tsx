@@ -233,6 +233,7 @@ import {
   ClipboardList,
   Copy,
   Hammer,
+  Link2,
   Loader2,
   MoreHorizontal,
   PauseCircle,
@@ -243,6 +244,7 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import { IssueBlockedNotice } from "./IssueBlockedNotice";
 import { IssueAssignedBacklogNotice } from "./IssueAssignedBacklogNotice";
 import {
@@ -3674,7 +3676,7 @@ function SystemNoticeCommentContent({
               {copiedLink ? (
                 <Check className="h-3.5 w-3.5" />
               ) : (
-                <Geetorus className="h-3.5 w-3.5" />
+                <Link2 className="h-3.5 w-3.5" />
               )}
             </button>
           ) : null}
@@ -5360,7 +5362,7 @@ const IssueChatComposer = forwardRef<
         >
           <div className="flex max-w-md items-center gap-3 rounded-md bg-background/80 px-3 py-2 text-left shadow-sm ring-1 ring-border/60">
             <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-              <Geetorus className="h-4 w-4" />
+              <AttachmentIcon className="h-4 w-4" />
             </span>
             <div className="min-w-0">
               <div className="text-sm font-medium text-foreground">
@@ -5570,7 +5572,7 @@ const IssueChatComposer = forwardRef<
                 disabled={attaching}
                 title="Attach file"
               >
-                <Geetorus className="h-4 w-4" />
+                <AttachmentIcon className="h-4 w-4" />
               </Button>
             </>
           ) : null}

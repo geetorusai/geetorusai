@@ -573,7 +573,7 @@ function ConnectedTaskComposer({
               disabled={uploadDisabled}
               onClick={() => fileInput.current?.click()}
             >
-              <Geetorus />
+              <AttachmentIcon className="h-4 w-4" />
               {uploading ? "Uploading…" : "Attach file"}
             </Button>
             <p className="text-xs text-muted-foreground">

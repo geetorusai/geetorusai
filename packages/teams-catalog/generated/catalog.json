@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "packageName": "@geetorusai/teams-catalog",
   "packageVersion": "0.1.0",
-  "generatedAt": "2026-06-04T18:03:41.262Z",
+  "generatedAt": "2026-09-19T11:59:42.871Z",
   "teams": [
     {
       "id": "geetorusai:bundled:company-defaults:core-exec-team",
@@ -96,26 +96,26 @@
         {
           "path": "TEAM.md",
           "kind": "team",
-          "sizeBytes": 2144,
-          "sha256": "4ab4f57f147e89a56a6753755d7ef142d91741b3c0159f2e53fb333cd2779eaf"
+          "sizeBytes": 2135,
+          "sha256": "fc978a65afeb60ae6148ef7dbd6b2c249f59018756e18fd0d76f6092067c0286"
         },
         {
           "path": "agents/ceo/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 2492,
-          "sha256": "50f580c51807762265f09c6fe7bf32d7701d64caeb30595bfd577b2f5087c21b"
+          "sizeBytes": 2489,
+          "sha256": "7547091c6f67aaa04889ed42e13ea7642bf044ecff25317f194944e0c9da2643"
         },
         {
           "path": "agents/cto/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 1449,
-          "sha256": "596e2e9fe08d7368b3b0cfe72c2635ea80444d92a2c0414157bfb0a17773fcaf"
+          "sizeBytes": 1448,
+          "sha256": "27957117301a6399421c41a297a71d204c4d4677c57328874e0b986c6a47c4b2"
         },
         {
           "path": "agents/qa/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 1307,
-          "sha256": "2a139b88b4b98516048395c569c1bc74fd31cdc2da65db410e9779b8d92c0343"
+          "sizeBytes": 1306,
+          "sha256": "30dc6f048b2bfb8113f388d33337e30bcd57de86d67a1da6193cbda685389f44"
         },
         {
           "path": "projects/first-project/PROJECT.md",
@@ -132,7 +132,7 @@
       ],
       "trustLevel": "markdown_only",
       "compatibility": "compatible",
-      "contentHash": "sha256:0f20e9d56124c1dc90a1e4b128fabd863538bcc935117220f719d9620f7c89f1"
+      "contentHash": "sha256:7d88d7e5bd6191406168d725ea26bd2a53d139db46b824775d1d9861b8aa570e"
     },
     {
       "id": "geetorusai:bundled:product:product-design",
@@ -212,14 +212,14 @@
         {
           "path": "TEAM.md",
           "kind": "team",
-          "sizeBytes": 2074,
-          "sha256": "205be8d3ef6c1f5e73729207913c387eee4cc9379191c3ce6d943fcf9ca2545d"
+          "sizeBytes": 2068,
+          "sha256": "14cdc668dc30db1cd19d67c91dffe69a659026ee11006e2db8c2f343a1b2d4ab"
         },
         {
           "path": "agents/ux-designer/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 2136,
-          "sha256": "f5a4b5696d8249e9f9d808a4373c2a1e6b07faa463e72f83fd9d5bed98d2022f"
+          "sizeBytes": 2135,
+          "sha256": "64886cf1a13b9f48751d8d209914537b9a066eddf69c6dd2c565379129daa33b"
         },
         {
           "path": "projects/product-design/PROJECT.md",
@@ -236,7 +236,7 @@
       ],
       "trustLevel": "markdown_only",
       "compatibility": "compatible",
-      "contentHash": "sha256:15a04b36f31d4c9a391bb499c92e91fedfcc237cfa6c3d41ea3ddb441bc85c5b"
+      "contentHash": "sha256:b9fadce9b42e2d3db034dab8d29885272387e9658b0a47566f37f26dd7a8f5ab"
     },
     {
       "id": "geetorusai:bundled:software-development:product-engineering",
@@ -331,32 +331,32 @@
         {
           "path": "TEAM.md",
           "kind": "team",
-          "sizeBytes": 2583,
-          "sha256": "7204eeef78a48714dd3f82b82e171a4039adc6325e91a6bdf51a442105ee33b0"
+          "sizeBytes": 2576,
+          "sha256": "98b1edb0cf5a6b92b6ca890ccccd03d6af37e987e28fa43fe5c8dd22353030bc"
         },
         {
           "path": ".geetorus.yaml",
           "kind": "extension",
-          "sizeBytes": 81,
-          "sha256": "54babf05ba130ec54a143abf01581d99c0ac2936fd0d929bf0e0edd00e29d861"
+          "sizeBytes": 80,
+          "sha256": "049af5ee8e2e3b254b58ee1d1a8ec32af0b2a2d04931adf833932d2ef40b7a13"
         },
         {
           "path": "agents/cto/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 1499,
-          "sha256": "0a1a73ec9e5008056bca0a26325131ded2fcf4c4680a5014ba1e13400b32c173"
+          "sizeBytes": 1498,
+          "sha256": "bbeafdcf641000672b79162b67a3605d2d2f414742c486b32a7cd305922043b0"
         },
         {
           "path": "agents/qa/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 1223,
-          "sha256": "2d5738f831aa772befa3471c844a0c9e611584be668e3ec82580ca9e92dc13fc"
+          "sizeBytes": 1222,
+          "sha256": "dd6eb19cbe525def8eabf4475b0972152ebc1d8a60cf6fae61f1557bbdefa68d"
         },
         {
           "path": "agents/senior-coder/AGENTS.md",
           "kind": "agent",
-          "sizeBytes": 1413,
-          "sha256": "b61071518755d9e584c099ae2082c7a78448d09586093ee91393082fe10872b5"
+          "sizeBytes": 1412,
+          "sha256": "43bb1f4e39904962bc07228937aa762e8f07e509d7195a3de45f5a33203809b3"
         },
         {
           "path": "projects/product-engineering/PROJECT.md",
@@ -373,7 +373,7 @@
       ],
       "trustLevel": "assets",
       "compatibility": "compatible",
-      "contentHash": "sha256:74ddeaeb11805835a4a67fc4530b048ab7f8aa1dc7d2b80acea139a933d158d3"
+      "contentHash": "sha256:286dc0d543cf39330ca8ba67b589c6e24a29ce8a1337d507b17720a6041e682f"
     },
     {
       "id": "geetorusai:optional:content:content-machine",
@@ -431,8 +431,8 @@
         {
           "path": "TEAM.md",
           "kind": "team",
-          "sizeBytes": 1032,
-          "sha256": "f7c272c8b0c183fc840d49eb4851b7cdd1a30a5aa8d6415d215110f3238f6f13"
+          "sizeBytes": 1031,
+          "sha256": "936c087cc3a9912a4c186b4f37807ae8881659f019a8faebb1d701aff3706f72"
         },
         {
           "path": "agents/content-lead/AGENTS.md",
@@ -461,7 +461,7 @@
       ],
       "trustLevel": "markdown_only",
       "compatibility": "compatible",
-      "contentHash": "sha256:06822cec5f2b6910cb37ba0ebd5e04ed5c7e34f77225564ddddc2470779cdaa6"
+      "contentHash": "sha256:fcecd378c30bba9a8c361fb1609d1b396ad2f1367078f1d172cc84aae0426246"
     }
   ]
 }
