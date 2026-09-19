@@ -1,5 +1,6 @@
 import { memo, type ComponentType, type SVGProps } from "react";
-import { Bot, FileText, Hexagon, MessageSquare, Paperclip, Quote } from "lucide-react";
+import { Bot, FileText, Hexagon, MessageSquare, Quote } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import type { Agent, CompanySearchResult } from "@geetorusai/shared";
 import { Link } from "@/lib/router";
 import { cn } from "@/lib/utils";
@@ -15,7 +16,7 @@ type SnippetStyle = {
 const SNIPPET_STYLES: Record<string, SnippetStyle> = {
   comment: { Icon: MessageSquare, label: "Comment" },
   document: { Icon: FileText, label: "Doc" },
-  artifact: { Icon: Paperclip, label: "Artifact" },
+  artifact: { Icon: AttachmentIcon, label: "Artifact" },
   description: { Icon: Quote, label: "Description" },
 };
 

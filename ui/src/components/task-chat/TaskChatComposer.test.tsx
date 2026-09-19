@@ -927,7 +927,7 @@ describe("TaskChatComposer", () => {
     expect(onWorkModeChange).not.toHaveBeenCalled();
   });
 
-  it("uses the borderless Paper controls and inverse circular send button", () => {
+  it("uses the borderless Geetorus controls and inverse circular send button", () => {
     render(
       <TaskChatComposer
         onAdd={vi.fn()}

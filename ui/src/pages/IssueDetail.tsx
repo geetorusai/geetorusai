@@ -322,7 +322,6 @@ import {
   MessageSquare,
   MoreHorizontal,
   MoreVertical,
-  Paperclip,
   Plus,
   Repeat,
   SlidersHorizontal,

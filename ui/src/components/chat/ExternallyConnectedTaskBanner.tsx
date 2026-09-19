@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, Paperclip, Radio } from "lucide-react";
+import { ExternalLink, Radio } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import type {
   ChatPublicationState,
   ChatFileTransferPhase,
@@ -640,7 +641,7 @@ function ConnectedTaskComposer({
                           publish.reset();
                         }}
                       />
-                      <Paperclip className="h-3.5 w-3.5 text-muted-foreground" />
+                      <AttachmentIcon className="h-3.5 w-3.5 text-muted-foreground" />
                       <span className="truncate">{label}</span>
                     </label>
                   );

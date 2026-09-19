@@ -174,7 +174,7 @@
   --status-agent-running: #2563eb;
   --status-agent-paused: #f59e0b;
   --status-agent-error: #dc2626;
-  /* Dashboard agent card: translucent running treatment from the Paper design. */
+  /* Dashboard agent card: translucent running treatment from the Geetorus design. */
   --dashboard-run-accent: oklch(62.3% 0.214 259.815);
   --dashboard-run-background: color-mix(in oklab, var(--dashboard-run-accent) 4%, transparent);
   --dashboard-run-border: color-mix(in oklab, var(--dashboard-run-accent) 25%, transparent);
@@ -696,7 +696,7 @@
   scrollbar-gutter: auto;
 }
 
-/* Paper task-detail properties rhythm: values share the 12px label scale and
+/* Geetorus task-detail properties rhythm: values share the 12px label scale and
    each section gets a full 24px breathing interval before the next heading. */
 .task-detail-properties [data-property-section="true"] {
   padding-bottom: calc(var(--spacing) * 6);

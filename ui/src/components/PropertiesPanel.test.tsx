@@ -128,7 +128,7 @@ describe("PropertiesPanel", () => {
       });
     });
 
-    it("renders the Paper task-detail rail width with a drag grip and a maximize button", async () => {
+    it("renders the Geetorus task-detail rail width with a drag grip and a maximize button", async () => {
       await renderPanel({ taskDetailLayout: true });
       const aside = container.querySelector("aside");
       expect(aside).not.toBeNull();

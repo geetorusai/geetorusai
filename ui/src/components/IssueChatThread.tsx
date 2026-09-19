@@ -235,7 +235,6 @@ import {
   Hammer,
   Loader2,
   MoreHorizontal,
-  Paperclip,
   PauseCircle,
   Search,
   Square,
