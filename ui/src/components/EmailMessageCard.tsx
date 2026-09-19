@@ -1,6 +1,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Mail, Geetorus } from "lucide-react";
+import { Mail } from "lucide-react";
+import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import type {
   EmailMessage,
   EmailPublicationSummary,
@@ -109,7 +110,7 @@ export function EmailMessageCard({
                 rel="noreferrer"
                 className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs"
               >
-                <Geetorus className="size-3.5" />
+                <AttachmentIcon className="size-3.5" />
                 {attachment?.originalFilename ?? "Open attachment"}
               </a>
             );
