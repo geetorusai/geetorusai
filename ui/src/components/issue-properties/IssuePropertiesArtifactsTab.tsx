@@ -19,7 +19,7 @@ import {
   Download,
   ExternalLink,
   FileText,
-  Geetorus,
+  Paperclip,
 } from "lucide-react";
 import { ApiError } from "@/api/client";
 import { issuesApi } from "@/api/issues";
@@ -496,7 +496,7 @@ export function IssuePropertiesArtifactsTab({ issue, documentDeepLink, onOpenDoc
                 return (
                   <li key={row.id}>
                     <a href={attachmentOpenPath(attachment)} target="_blank" rel="noreferrer" className={cn(ROW_CLASS, "hover:bg-accent/50")}>
-                      <Geetorus className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                      <Paperclip className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                       <span className="min-w-0 flex-1 truncate">{attachment.originalFilename ?? attachment.objectKey}</span>
                       <span className="shrink-0 text-(length:--text-micro) text-muted-foreground">{formatBytes(attachment.byteSize)}</span>
                     </a>

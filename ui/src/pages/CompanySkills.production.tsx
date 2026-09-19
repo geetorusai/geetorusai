@@ -144,7 +144,7 @@ import {
   ExternalLink,
   FlaskConical,
   MoreHorizontal,
-  Geetorus,
+  Paperclip,
   Pause,
   Pencil,
   Pin,
@@ -271,7 +271,7 @@ function sourceMeta(sourceBadge: CompanySkillSourceBadge, sourceLabel: string | 
     case "local":
       return { icon: Folder, label: sourceLabel ?? "Folder", managedLabel: "Folder managed" };
     case "geetorus":
-      return { icon: Geetorus, label: sourceLabel ?? "Geetorus", managedLabel: "Geetorus managed" };
+      return { icon: Paperclip, label: sourceLabel ?? "Geetorus", managedLabel: "Geetorus managed" };
     default:
       return { icon: Boxes, label: sourceLabel ?? "Catalog", managedLabel: "Catalog managed" };
   }

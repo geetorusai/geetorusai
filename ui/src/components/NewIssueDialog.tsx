@@ -59,7 +59,7 @@ import {
   AlertTriangle,
   Tag,
   Calendar,
-  Geetorus,
+  Paperclip,
   FileText,
   Flag,
   PauseCircle,

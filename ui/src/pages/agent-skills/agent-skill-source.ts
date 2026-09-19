@@ -1,4 +1,4 @@
-import { Boxes, Folder, Link2, Geetorus, type LucideIcon } from "lucide-react";
+import { Boxes, Folder, Link2, Paperclip, type LucideIcon } from "lucide-react";
 import { GithubIcon } from "@/components/icons/github-icon";
 import type { CompanySkillListItem } from "@geetorusai/shared";
 
@@ -104,7 +104,7 @@ export function buildAgentSkillSourceMeta(skill: SourceSkill): AgentSkillSourceM
   }
 
   if (skill.sourceBadge === "geetorus") {
-    return { icon: Geetorus, label: skill.sourceLabel?.trim() || "Geetorus managed" };
+    return { icon: Paperclip, label: skill.sourceLabel?.trim() || "Geetorus managed" };
   }
 
   if (skill.sourceBadge === "catalog" || skill.sourceType === "catalog") {

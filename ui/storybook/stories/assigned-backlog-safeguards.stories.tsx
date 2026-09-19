@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { CircleDot, Flag, MoreHorizontal, Geetorus } from "lucide-react";
+import { CircleDot, Flag, MoreHorizontal, Paperclip } from "lucide-react";
 import type { IssueRelationIssueSummary } from "@geetorusai/shared";
 import { IssueAssignedBacklogNotice } from "@/components/IssueAssignedBacklogNotice";
 import { IssueBlockedNotice } from "@/components/IssueBlockedNotice";

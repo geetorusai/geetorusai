@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ExternalLink, Geetorus, Radio } from "lucide-react";
+import { ExternalLink, Paperclip, Radio } from "lucide-react";
 import type {
   ChatPublicationState,
   ChatFileTransferPhase,
@@ -640,7 +640,7 @@ function ConnectedTaskComposer({
                           publish.reset();
                         }}
                       />
-                      <Geetorus className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Paperclip className="h-3.5 w-3.5 text-muted-foreground" />
                       <span className="truncate">{label}</span>
                     </label>
                   );

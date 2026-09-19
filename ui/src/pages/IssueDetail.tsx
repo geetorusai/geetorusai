@@ -322,7 +322,7 @@ import {
   MessageSquare,
   MoreHorizontal,
   MoreVertical,
-  Geetorus,
+  Paperclip,
   Plus,
   Repeat,
   SlidersHorizontal,
