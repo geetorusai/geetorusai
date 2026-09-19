@@ -247,9 +247,9 @@ export async function testEnvironment(
         } else {
           checks.push({
             code: "opencode_models_empty",
-            level: "error",
-            message: "OpenCode returned no models.",
-            hint: "Run `opencode models` and verify provider authentication.",
+            level: "warn",
+            message: "OpenCode CLI returned no authenticated models.",
+            hint: "Run `opencode auth login` in your terminal or configure your API key (OPENCODE_API_KEY / OPENROUTER_API_KEY / OPENAI_API_KEY / ANTHROPIC_API_KEY).",
           });
         }
       } catch (err) {
@@ -265,9 +265,9 @@ export async function testEnvironment(
         } else {
           checks.push({
             code: "opencode_models_discovery_failed",
-            level: "error",
-            message: errMsg || "OpenCode model discovery failed.",
-            hint: "Run `opencode models` manually to verify provider auth and config.",
+            level: "warn",
+            message: errMsg || "OpenCode model discovery warning.",
+            hint: "Run `opencode auth login` or `opencode models` manually to verify provider auth and config.",
           });
         }
       }

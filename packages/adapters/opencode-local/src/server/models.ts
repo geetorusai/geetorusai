@@ -353,11 +353,20 @@ export async function ensureOpenCodeModelConfiguredAndAvailable(input: {
   return models;
 }
 
+export const DEFAULT_OPENCODE_MODELS: AdapterModel[] = [
+  { id: "openrouter/anthropic/claude-3.5-sonnet", label: "OpenRouter - Claude 3.5 Sonnet" },
+  { id: "anthropic/claude-3-5-sonnet-20241022", label: "Anthropic - Claude 3.5 Sonnet" },
+  { id: "openai/gpt-4o", label: "OpenAI - GPT-4o" },
+  { id: "google/gemini-2.0-flash", label: "Google - Gemini 2.0 Flash" },
+  { id: "ollama/qwen2.5-coder", label: "Ollama - Qwen 2.5 Coder" },
+];
+
 export async function listOpenCodeModels(): Promise<AdapterModel[]> {
   try {
-    return await discoverOpenCodeModelsCached();
+    const discovered = await discoverOpenCodeModelsCached();
+    return discovered.length > 0 ? discovered : DEFAULT_OPENCODE_MODELS;
   } catch {
-    return [];
+    return DEFAULT_OPENCODE_MODELS;
   }
 }
 
