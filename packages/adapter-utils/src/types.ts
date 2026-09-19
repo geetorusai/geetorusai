@@ -697,6 +697,9 @@ export interface CreateConfigValues {
   geminiAcpNonInteractivePermissions?: "deny" | "fail";
   geminiAcpStateDir?: string;
   geminiAcpWarmHandleIdleMs?: number;
+  ollamaModel?: string;
+  ollamaHost?: string;
+  ollamaTemperature?: number;
   search: boolean;
   fastMode: boolean;
   dangerouslyBypassSandbox: boolean;

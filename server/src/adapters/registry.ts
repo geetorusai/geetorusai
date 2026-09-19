@@ -880,7 +880,7 @@ const ollamaLocalAdapter: ServerAdapterModule = {
         label: "Model",
         type: "select",
         default: "qwen2.5-coder:latest",
-        options: ollamaModels.map((m) => ({ value: m.id, label: m.label })),
+        options: ollamaModels.map((m: { id: string; label: string }) => ({ value: m.id, label: m.label })),
         hint: "Ollama model tag to run.",
       },
       {

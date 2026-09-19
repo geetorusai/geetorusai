@@ -57,7 +57,7 @@ export function OllamaLocalConfigFields({
               isCreate ? set!({ ollamaModel: val }) : mark("adapterConfig", "model", val);
             }}
           >
-            {models.map((m) => (
+            {models.map((m: { id: string; label: string }) => (
               <option key={m.id} value={m.id}>
                 {m.label} ({m.id})
               </option>
@@ -65,7 +65,7 @@ export function OllamaLocalConfigFields({
             <option value="custom">Custom model tag...</option>
           </select>
 
-          {(!models.some((m) => m.id === currentModel) || currentModel === "custom") && (
+          {(!models.some((m: { id: string; label: string }) => m.id === currentModel) || currentModel === "custom") && (
             <DraftInput
               value={currentModel === "custom" ? "" : currentModel}
               onCommit={(v) =>
