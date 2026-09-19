@@ -132,6 +132,7 @@ import { FooterNav, type FooterPrimaryIcon } from "./onboarding/FooterNav";
 import { OnboardingHeading } from "./onboarding/OnboardingPrimitives";
 import { DEFAULT_AGENT_ROLE } from "../lib/onboarding-agent-role";
 import { capsuleHeroMotion } from "./onboarding/onboarding-motion";
+import { OpenCodeLogoIcon } from "@/components/OpenCodeLogoIcon";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowLeft,

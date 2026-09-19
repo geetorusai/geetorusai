@@ -1,4 +1,6 @@
-export function buildOllamaLocalConfig(values: Record<string, unknown>): Record<string, unknown> {
+import type { CreateConfigValues } from "@geetorusai/adapter-utils";
+
+export function buildOllamaLocalConfig(values: CreateConfigValues): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   if (typeof values.ollamaModel === "string" && values.ollamaModel.trim()) {
     result.model = values.ollamaModel.trim();
