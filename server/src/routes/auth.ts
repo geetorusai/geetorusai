@@ -102,5 +102,11 @@ export function authRoutes(db: Db) {
     }));
   });
 
+  router.post("/sign-out", async (_req, res) => {
+    res.clearCookie("better-auth.session_token", { path: "/" });
+    res.clearCookie("better-auth.session_data", { path: "/" });
+    res.json({ success: true });
+  });
+
   return router;
 }

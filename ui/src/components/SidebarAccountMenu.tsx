@@ -210,7 +210,7 @@ export function SidebarAccountMenu({
                 onClick={() => setOpen(false)}
               />
               <ThemeToggle variant="compact-menu-action" onAfterToggle={() => setOpen(false)} />
-              {deploymentMode === "authenticated" ? (
+              {deploymentMode === "authenticated" || Boolean(session?.session) ? (
                 <button
                   type="button"
                   className={cn(

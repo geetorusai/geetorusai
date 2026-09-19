@@ -2688,7 +2688,7 @@ function OnboardingWizardInner({
                         else if (id !== "codex_local") setModel("");
                         const caps = getCapabilities(id);
                         if (caps.login == null && id !== "claude_local" && id !== "codex_local" && id !== "grok_local") {
-                          setCredentialModeChoice("api");
+                          setCredentialMode("api");
                         }
                         setConnectPhase("collapsing");
                       }}
@@ -2718,7 +2718,7 @@ function OnboardingWizardInner({
                     >
                       <div className="-ml-3 mt-1">
                         {hasSubscriptionSupport && (
-                          <CredentialModeLink mode={credentialMode} onChange={setCredentialModeChoice} />
+                          <CredentialModeLink mode={credentialMode} onChange={setCredentialMode} />
                         )}
                         {savedKeys.options.length > 0 && <p className="px-3 text-sm text-muted-foreground">{savedKeys.options.length} saved API {savedKeys.options.length === 1 ? "key available" : "keys available"}.</p>}
                         {credentialMode === "subscription" && authSignalStatus === "present" && <p className="px-3 text-sm text-muted-foreground">An existing provider connection is available.</p>}

@@ -52,13 +52,22 @@ export function useSignOut({ onSignedOut }: UseSignOutOptions = {}) {
         return "cloud" as const;
       }
 
-      await authApi.signOut();
+      try {
+        await authApi.signOut();
+      } catch (err) {
+        // Continue clearing client session even if network/server errors occur
+        console.warn("Sign-out request warning:", err);
+      }
       return "self-hosted" as const;
     },
     onSuccess: async (target) => {
       if (target === "cloud") return;
 
       onSignedOut?.();
+
+      queryClient.setQueryData(queryKeys.auth.session, null);
+      queryClient.setQueryData(queryKeys.auth.profile, null);
+      queryClient.setQueryData(queryKeys.access.currentBoardAccess, null);
 
       // Drop every account-scoped cache entry, rather than invalidating a
       // couple of them. `invalidateQueries` only marks an entry stale and goes
