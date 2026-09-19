@@ -5,8 +5,7 @@ import {
   DraftInput,
   DraftNumberInput,
 } from "../../components/agent-config-primitives";
-import { ChoosePathButton } from "../../components/PathInstructionsModal";
-import { models } from "@geetorusai/adapter-ollama-local";
+import { models } from "./models";
 
 const inputClass =
   "w-full rounded-md border border-border px-2.5 py-1.5 bg-transparent outline-none text-sm font-mono placeholder:text-muted-foreground/40";

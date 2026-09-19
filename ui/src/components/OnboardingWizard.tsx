@@ -106,7 +106,7 @@ import { DEFAULT_CODEX_LOCAL_BYPASS_APPROVALS_AND_SANDBOX } from "@geetorusai/ad
 import { DEFAULT_CURSOR_LOCAL_MODEL } from "@geetorusai/adapter-cursor-local";
 import { DEFAULT_GEMINI_LOCAL_MODEL } from "@geetorusai/adapter-gemini-local";
 import { DEFAULT_KIMI_LOCAL_MODEL } from "@geetorusai/adapter-kimi-local";
-import { DEFAULT_OLLAMA_LOCAL_MODEL } from "@geetorusai/adapter-ollama-local";
+import { DEFAULT_OLLAMA_LOCAL_MODEL } from "../adapters/ollama-local/models";
 import { DEFAULT_OPENCODE_LOCAL_MODEL, isValidOpenCodeModelId } from "@geetorusai/adapter-opencode-local";
 import {
   canGoBackFromOnboardingStep,

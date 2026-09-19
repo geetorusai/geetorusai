@@ -24,6 +24,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       lexical: path.resolve(__dirname, "./node_modules/lexical/dist/Lexical.mjs"),
+      "@geetorusai/adapter-ollama-local/ui": path.resolve(__dirname, "./src/adapters/ollama-local/index.ts"),
+      "@geetorusai/adapter-ollama-local": path.resolve(__dirname, "../packages/adapters/ollama-local/src/index.ts"),
     },
   },
   server: {
