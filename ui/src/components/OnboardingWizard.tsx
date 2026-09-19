@@ -218,6 +218,8 @@ const MODEL_SOURCE_BRAND_MARKS: Record<string, string> = {
   kimi_local: "/brands/adapters/kimi-color.svg",
   grok_local: "/brands/adapters/grok.svg",
   hermes_local: "/brands/adapters/hermesagent.svg",
+  cursor: "/brands/adapters/cursor.svg",
+  pi_local: "/brands/adapters/pi.svg",
 };
 
 
@@ -242,6 +244,7 @@ function OpenAiBlossom({ className }: { className?: string }) {
 
 const MODEL_SOURCE_INLINE_MARKS: Record<string, ComponentType<{ className?: string }>> = {
   codex_local: OpenAiBlossom,
+  opencode_local: OpenCodeLogoIcon,
 };
 
 /**
@@ -259,6 +262,9 @@ const API_KEY_ENV_KEYS: Record<string, string> = {
   gemini_local: "GEMINI_API_KEY",
   kimi_local: "KIMI_MODEL_API_KEY",
   ollama_local: "OLLAMA_HOST",
+  cursor: "CURSOR_API_KEY",
+  opencode_local: "OPENCODE_API_KEY",
+  pi_local: "PI_API_KEY",
 };
 
 function apiKeyEnvKeyFor(adapterType: string): string {
@@ -1112,9 +1118,12 @@ function OnboardingWizardInner({
     adapterType === "claude_local" ||
     adapterType === "codex_local" ||
     adapterType === "gemini_local" ||
+    adapterType === "grok_local" ||
     adapterType === "kimi_local" ||
+    adapterType === "ollama_local" ||
     adapterType === "opencode_local" ||
     adapterType === "pi_local" ||
+    adapterType === "hermes_local" ||
     adapterType === "cursor";
   // Build adapter grids dynamically from the UI registry + display metadata.
   // External/plugin adapters automatically appear with generic defaults, and
@@ -2653,6 +2662,9 @@ function OnboardingWizardInner({
                         setAdapterType(id);
                         if (id === "opencode_local") setModel(DEFAULT_OPENCODE_LOCAL_MODEL);
                         else if (id === "ollama_local") setModel(DEFAULT_OLLAMA_LOCAL_MODEL);
+                        else if (id === "gemini_local") setModel(DEFAULT_GEMINI_LOCAL_MODEL);
+                        else if (id === "kimi_local") setModel(DEFAULT_KIMI_LOCAL_MODEL);
+                        else if (id === "cursor") setModel(DEFAULT_CURSOR_LOCAL_MODEL);
                         else if (id !== "codex_local") setModel("");
                         setConnectPhase("collapsing");
                       }}

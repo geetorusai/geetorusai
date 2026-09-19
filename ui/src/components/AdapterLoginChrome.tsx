@@ -55,6 +55,8 @@ export const CONNECT_SOURCE_NAMES: Record<string, string> = {
   opencode_local: "OpenCode",
   kimi_local: "Kimi",
   hermes_local: "Hermes",
+  cursor: "Cursor",
+  pi_local: "Pi",
 };
 
 /** The provider name for a source, falling back to the type when unlisted. */
