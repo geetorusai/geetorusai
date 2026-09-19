@@ -60,6 +60,7 @@
     "@geetorusai/adapter-gemini-local": "workspace:*",
     "@geetorusai/adapter-grok-local": "workspace:*",
     "@geetorusai/adapter-kimi-local": "workspace:*",
+    "@geetorusai/adapter-ollama-local": "workspace:*",
     "@geetorusai/adapter-openclaw-gateway": "workspace:*",
     "@geetorusai/adapter-opencode-local": "workspace:*",
     "@geetorusai/adapter-pi-local": "workspace:*",

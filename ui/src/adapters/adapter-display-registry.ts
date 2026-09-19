@@ -112,6 +112,12 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     description: "Hermes harness",
     icon: Bot,
   },
+  ollama_local: {
+    label: "Ollama (Local AI)",
+    description: "Run private local open-source models via Ollama",
+    icon: Cpu,
+    recommended: true,
+  },
   opencode_local: {
     label: "OpenCode",
     description: "OpenCode multi-provider harness",

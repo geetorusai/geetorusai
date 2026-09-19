@@ -106,6 +106,7 @@ import { DEFAULT_CODEX_LOCAL_BYPASS_APPROVALS_AND_SANDBOX } from "@geetorusai/ad
 import { DEFAULT_CURSOR_LOCAL_MODEL } from "@geetorusai/adapter-cursor-local";
 import { DEFAULT_GEMINI_LOCAL_MODEL } from "@geetorusai/adapter-gemini-local";
 import { DEFAULT_KIMI_LOCAL_MODEL } from "@geetorusai/adapter-kimi-local";
+import { DEFAULT_OLLAMA_LOCAL_MODEL } from "@geetorusai/adapter-ollama-local";
 import { DEFAULT_OPENCODE_LOCAL_MODEL, isValidOpenCodeModelId } from "@geetorusai/adapter-opencode-local";
 import {
   canGoBackFromOnboardingStep,
@@ -212,6 +213,11 @@ function adapterConfigHasAnthropicApiKey(config: Record<string, unknown>): boole
  */
 const MODEL_SOURCE_BRAND_MARKS: Record<string, string> = {
   claude_local: "/brands/claude-color.svg",
+  ollama_local: "/brands/ollama-color.svg",
+  gemini_local: "/brands/adapters/gemini-color.svg",
+  kimi_local: "/brands/adapters/kimi-color.svg",
+  grok_local: "/brands/adapters/grok.svg",
+  hermes_local: "/brands/adapters/hermesagent.svg",
 };
 
 
@@ -249,6 +255,10 @@ const MODEL_SOURCE_INLINE_MARKS: Record<string, ComponentType<{ className?: stri
 const API_KEY_ENV_KEYS: Record<string, string> = {
   claude_local: ANTHROPIC_API_KEY_ENV_KEY,
   codex_local: "OPENAI_API_KEY",
+  grok_local: "XAI_API_KEY",
+  gemini_local: "GEMINI_API_KEY",
+  kimi_local: "KIMI_MODEL_API_KEY",
+  ollama_local: "OLLAMA_HOST",
 };
 
 function apiKeyEnvKeyFor(adapterType: string): string {
@@ -2642,6 +2652,7 @@ function OnboardingWizardInner({
                         setSourcePicked(true);
                         setAdapterType(id);
                         if (id === "opencode_local") setModel(DEFAULT_OPENCODE_LOCAL_MODEL);
+                        else if (id === "ollama_local") setModel(DEFAULT_OLLAMA_LOCAL_MODEL);
                         else if (id !== "codex_local") setModel("");
                         setConnectPhase("collapsing");
                       }}

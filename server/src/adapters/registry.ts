@@ -129,6 +129,17 @@ import {
   sessionCodec as piSessionCodec,
   listPiModels,
 } from "@geetorusai/adapter-pi-local/server";
+import {
+  execute as ollamaExecute,
+  listOllamaSkills,
+  syncOllamaSkills,
+  testEnvironment as ollamaTestEnvironment,
+  sessionCodec as ollamaSessionCodec,
+} from "@geetorusai/adapter-ollama-local/server";
+import {
+  agentConfigurationDoc as ollamaAgentConfigurationDoc,
+  models as ollamaModels,
+} from "@geetorusai/adapter-ollama-local";
 import { agentConfigurationDoc as piAgentConfigurationDoc } from "@geetorusai/adapter-pi-local";
 import { BUILTIN_ADAPTER_TYPES } from "./builtin-adapter-types.js";
 import { buildExternalAdapters } from "./plugin-loader.js";
@@ -839,6 +850,50 @@ const piLocalAdapter: ServerAdapterModule = {
   agentConfigurationDoc: piAgentConfigurationDoc,
 };
 
+const ollamaLocalAdapter: ServerAdapterModule = {
+  type: "ollama_local",
+  runtimeToolDelivery: "environment",
+  execute: ollamaExecute,
+  testEnvironment: ollamaTestEnvironment,
+  listSkills: listOllamaSkills,
+  syncSkills: syncOllamaSkills,
+  sessionCodec: ollamaSessionCodec,
+  sessionManagement: getAdapterSessionManagement("ollama_local") ?? undefined,
+  models: ollamaModels,
+  supportsLocalAgentJwt: false,
+  supportsInstructionsBundle: true,
+  instructionsPathKey: "instructionsFilePath",
+  requiresMaterializedRuntimeSkills: false,
+  agentConfigurationDoc: ollamaAgentConfigurationDoc,
+  getConfigSchema: () => ({
+    fields: [
+      {
+        key: "host",
+        label: "Ollama Host Endpoint",
+        type: "text",
+        default: "http://127.0.0.1:11434",
+        placeholder: "http://127.0.0.1:11434",
+        hint: "URL where Ollama is running. Defaults to http://127.0.0.1:11434 or process.env.OLLAMA_HOST.",
+      },
+      {
+        key: "model",
+        label: "Model",
+        type: "select",
+        default: "qwen2.5-coder:latest",
+        options: ollamaModels.map((m) => ({ value: m.id, label: m.label })),
+        hint: "Ollama model tag to run.",
+      },
+      {
+        key: "temperature",
+        label: "Temperature",
+        type: "number",
+        default: 0.2,
+        hint: "Sampling temperature between 0.0 and 1.0.",
+      },
+    ],
+  }),
+};
+
 const adaptersByType = new Map<string, ServerAdapterModule>();
 
 // For builtin types that are overridden by an external adapter, we keep the
@@ -857,6 +912,7 @@ function registerBuiltInAdapters() {
     codexLocalAdapter,
     geetorusRunnerAdapter,
     openCodeLocalAdapter,
+    ollamaLocalAdapter,
     piLocalAdapter,
     cursorCloudAdapter,
     cursorLocalAdapter,
