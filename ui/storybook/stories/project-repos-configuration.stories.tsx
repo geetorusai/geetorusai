@@ -17,7 +17,7 @@ export const OneRepo: Story = { name: "02 · One repo", args: { initialRepoIds: 
 export const NoRepos: Story = { name: "03 · No repos yet" };
 export const NotConnected: Story = { name: "04 · Connect GitHub from configuration", args: { initialState: "disconnected" } };
 export const ConnectAnotherAccount: Story = { name: "05 · Existing connector UI, preserve repo draft", args: { initialRepoIds: ["201"], startConnecting: true } };
-export const LegacyUrlPreserved: Story = { name: "06 · Existing text URL + selected GitHub repos", args: { initialRepoIds: ["201"], legacyUrl: "https://github.com/papercool/legacy-service" } };
+export const LegacyUrlPreserved: Story = { name: "06 · Existing text URL + selected GitHub repos", args: { initialRepoIds: ["201"], legacyUrl: "https://github.com/geetorus/legacy-service" } };
 export const RepoLoadFailed: Story = { name: "07 · Existing repos survive load failure", args: { initialRepoIds: ["201", "202"], initialState: "error" } };
 
 export const ManyRepos: Story = { name: "08 · Full page · forty repos", args: { initialRepoIds: crowdedRepoIds } };

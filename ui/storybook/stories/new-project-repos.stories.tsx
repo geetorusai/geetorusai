@@ -21,7 +21,7 @@ export const AllAvailableRepos: Story = {
   play: async ({ canvasElement }) => {
     const screen = within(canvasElement.ownerDocument.body);
     await userEvent.click(await screen.findByRole("button", { name: "Add GitHub repo" }));
-    await expect(screen.getAllByRole("option").filter((option) => within(option).queryByText("papercool/web", { exact: true }))).toHaveLength(1);
+    await expect(screen.getAllByRole("option").filter((option) => within(option).queryByText("geetorus/web", { exact: true }))).toHaveLength(1);
     await expect(screen.queryByText("sam/private-project")).not.toBeInTheDocument();
   },
 };
