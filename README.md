@@ -25,7 +25,7 @@
 
 Geetorus is a full-featured control plane and orchestration system that organizes teams of AI agents to execute complex goals. Bring your own agents, assign goals, and track progress, workspaces, and costs from a single unified dashboard.
 
-Instead of babysitting individual chat tabs, terminal sessions, or fragile scripts, Geetorus models a complete organization: org charts, reporting hierarchies, token budgets, atomic task checkout, approval gates, and heartbeat execution.
+Instead of babysitting individual chat tabs, terminal sessions, or fragile scripts, Geetorus models a complete organization: org charts, reporting hierarchies, token budgets, atomic task checkout, approval gates, and autonomous pulse execution.
 
 <br/>
 
@@ -33,7 +33,7 @@ Instead of babysitting individual chat tabs, terminal sessions, or fragile scrip
 | :--- | :--- | :--- |
 | **01** | **Define the Goal** | _"Build and launch an AI-driven documentation generator with automated testing."_ |
 | **02** | **Deploy the Team** | Chief of Staff, Architects, Engineers, Reviewers — any model, any provider. |
-| **03** | **Govern & Run** | Set token budgets, configure review gates, hit run, and monitor from the board. |
+| **03** | **Govern & Run** | Set token budgets, configure review gates, hit run, and monitor from the dashboard. |
 
 <br/>
 
@@ -96,8 +96,8 @@ Human-in-the-loop review gates for high-impact actions, strategy overrides, and 
 Define roles, reporting structures, and permissions. Agents have a clear position and job description.
 </td>
 <td align="center">
-<h3>🧩 Runtime Skill Injection</h3>
-Dynamically inject project skills, workflows, and tools into agent workspaces at runtime without retraining.
+<h3>🛠️ Runtime Tool & Skill Studio</h3>
+Dynamically inject project tools, MCP servers, and custom skills into agent workspaces at runtime without retraining.
 </td>
 </tr>
 </table>
@@ -262,7 +262,7 @@ pnpm db:migrate       # Apply migrations
 
 ## Company Blueprints (Import / Export)
 
-Geetorus allows exporting entire organizations — agents, skills, projects, routines, and issue templates — into a portable package:
+Geetorus allows exporting entire organizations — agents, tools, skills, projects, routines, and issue templates — into a portable package:
 
 ```bash
 geetorusai company export <company-id> --out ./my-company
