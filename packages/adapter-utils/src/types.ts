@@ -700,6 +700,8 @@ export interface CreateConfigValues {
   ollamaModel?: string;
   ollamaHost?: string;
   ollamaTemperature?: number;
+  baseUrl?: string;
+  apiKey?: string;
   search: boolean;
   fastMode: boolean;
   dangerouslyBypassSandbox: boolean;
