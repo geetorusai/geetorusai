@@ -1,4 +1,4 @@
-// Dunder Mifflin 2D Office Engine
+// Geetorus 2D Office Engine
 // 60FPS Canvas Animation Loop, Grid Pathfinding, State Machine & Audio FX
 
 import {
@@ -219,7 +219,7 @@ export class OfficeEngine {
   public envelopes: FlyingEnvelope[] = [];
   public onEnvelopeDelivered?: (env: FlyingEnvelope) => void;
 
-  // Active Tasks & Hive Mailbox State (Munder Difflin Task Splitting)
+  // Active Tasks & Hive Mailbox State (Geetorus 2D Task Splitting)
   public activeTasks: TaskSplitSpec[] = [];
   public messageHistory: HiveMessage[] = [];
   public wateredPlantIds: Set<string> = new Set();
@@ -679,7 +679,7 @@ export class OfficeEngine {
       const pam = this.characters.find((c) => c.def.id === 'pam');
       if (pam) {
         pam.state = 'phone';
-        this.sayQuote(pam, 'Dunder Mifflin Scranton, this is Pam. How may I direct your call?');
+        this.sayQuote(pam, 'Geetorus 2D Headquarters, this is Pam. How may I direct your call?');
       }
     }
   }
@@ -768,7 +768,7 @@ export class OfficeEngine {
     this.spawnEnvelope(fromAgentId, toAgentId, act, subject);
   }
 
-  // ─── Task Splitting & Multi-Agent Delegation (Munder Difflin CEO Flow) ───
+  // ─── Task Splitting & Multi-Agent Delegation (Geetorus 2D CEO Flow) ───
   public splitAndDelegateTask(objective: string, fromAgentId = 'michael'): TaskSplitSpec[] {
     const fromChar = this.characters.find((c) => c.def.id === fromAgentId) || this.characters[0];
     const rosterCandidates = this.characters.map((c) => ({
@@ -1282,7 +1282,7 @@ export class OfficeEngine {
       );
     });
 
-    // 2b. North Wall Windows (Munder Difflin daylight aesthetic with wind streaks)
+    // 2b. North Wall Windows (Geetorus 2D daylight aesthetic with wind streaks)
     drawOfficeWindow(ctx, 3, 0, 4, 2, this.ambientPhase);
     drawOfficeWindow(ctx, 16, 0, 4, 2, this.ambientPhase);
     drawOfficeWindow(ctx, 24, 0, 4, 2, this.ambientPhase);

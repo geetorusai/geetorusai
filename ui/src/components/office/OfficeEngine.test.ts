@@ -43,7 +43,7 @@ function setupCanvasMock() {
   HTMLCanvasElement.prototype.getContext = vi.fn(() => mockContext) as unknown as typeof HTMLCanvasElement.prototype.getContext;
 }
 
-describe('OfficeEngine - Munder Difflin Simulation Features', () => {
+describe('OfficeEngine - Geetorus 2D Simulation Features', () => {
   let canvas: HTMLCanvasElement;
   let engine: OfficeEngine;
 

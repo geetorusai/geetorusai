@@ -1,4 +1,4 @@
-// Dunder Mifflin Procedural Pixel Art Generator
+// Geetorus 2D Procedural Pixel Art Generator
 // Custom pixel composition for 18x32 character sprites, 18x28 busts, and office props
 
 import type { OfficeCharacter } from './officeConstants';
@@ -576,7 +576,7 @@ export function drawOfficeDesk(
   ctx.fillStyle = '#334155';
   ctx.fillRect(dx + 9, dy + 11, 6, 2);
 
-  // 4. Dual-State Computer Screen (DeskScreen Munder Difflin Style)
+  // 4. Dual-State Computer Screen (DeskScreen Geetorus 2D Style)
   const isWorking = status === 'working' || status === 'focus' || status === 'phone';
   if (isWorking) {
     // Lit active screen (Vibrant Hacker Green / Neon Cyan terminal CRT)
@@ -663,7 +663,7 @@ export function drawOfficeDesk(
 }
 
 /**
- * North Wall Exterior Windows (Munder Difflin architectural style)
+ * North Wall Exterior Windows (Geetorus 2D architectural style)
  */
 export function drawOfficeWindow(
   ctx: CanvasRenderingContext2D,
@@ -728,7 +728,7 @@ export function drawOfficeWindow(
   ctx.closePath();
   ctx.fill();
 
-  // Munder Difflin animated wind streaks drifting in under the cracked sash
+  // Geetorus 2D animated wind streaks drifting in under the cracked sash
   for (let i = 0; i < 3; i++) {
     const ph = ((ambientPhase * 0.35 + i / 3) % 1);
     const streakX = wx + 8 + i * (ww / 3) - ph * 12;
@@ -739,7 +739,7 @@ export function drawOfficeWindow(
 }
 
 /**
- * Architectural Doorway Portals (Munder Difflin room boundaries)
+ * Architectural Doorway Portals (Geetorus 2D room boundaries)
  */
 export function drawOfficeDoorway(
   ctx: CanvasRenderingContext2D,
@@ -1188,7 +1188,7 @@ export function drawSpeechBubble(
 }
 
 /**
- * Draw flying pixel-art envelope and arrival burst (Munder Difflin desk-to-desk mailing)
+ * Draw flying pixel-art envelope and arrival burst (Geetorus 2D desk-to-desk mailing)
  */
 export function drawFlyingEnvelope(ctx: CanvasRenderingContext2D, env: FlyingEnvelope) {
   if (env.finished) return;
@@ -1372,7 +1372,7 @@ export function drawOfficePlant(
 }
 
 /**
- * Cigarette / Cigar smoking on break (Munder Difflin boss cigar & worker cigarette)
+ * Cigarette / Cigar smoking on break (Geetorus 2D boss cigar & worker cigarette)
  */
 export function drawCigaretteSmoking(
   ctx: CanvasRenderingContext2D,
@@ -1519,7 +1519,7 @@ export function drawCarriedCoffeeMug(
   ctx.fillStyle = '#451a03';
   ctx.fillRect(handX, handY - 1, 2, 1);
 
-  // Blue Dunder Mifflin strip on mug
+  // Blue Geetorus 2D strip on mug
   ctx.fillStyle = '#0284c7';
   ctx.fillRect(handX, handY + 1, 2, 1);
 

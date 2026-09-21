@@ -1,5 +1,5 @@
-// Dunder Mifflin Scranton Branch - Constants & Data Specifications
-// Based on Scranton Floorplan & Character Cast from The Office
+// Geetorus 2D Office Branch - Constants & Data Specifications
+// Based on 2D Virtual Office Floorplan & Character Cast
 
 export type OfficeDepartment =
   | 'management'
@@ -108,7 +108,7 @@ export const ROOM_ZONES: RoomZone[] = [
   {
     id: 'reception',
     name: 'Reception Area',
-    description: 'Dunder Mifflin, this is Pam. Visitor couch and incoming switchboard.',
+    description: 'Geetorus 2D, this is Pam. Visitor couch and incoming switchboard.',
     x: 2,
     y: 13,
     w: 12,
@@ -230,7 +230,7 @@ export const OFFICE_CHARACTERS: OfficeCharacter[] = [
       'I look at the camera like this.',
     ],
     dundieAward: 'Best Dad & Master Prankster Award',
-    deskItems: ['Stapler in Jell-O', 'Ham Radio Manual', 'Dunder Mifflin Mug'],
+    deskItems: ['Stapler in Jell-O', 'Ham Radio Manual', 'Geetorus 2D Mug'],
     skin: 'light',
     hairColor: [92, 60, 34],
     hairStyle: 'styleFloppy',
@@ -247,9 +247,9 @@ export const OFFICE_CHARACTERS: OfficeCharacter[] = [
     deskCoord: { x: 7, y: 16 },
     deskFacing: 'right',
     signatureColor: '#ec4899',
-    blurb: 'Receptionist, watercolor painter, secret keeper of Dunder Mifflin.',
+    blurb: 'Receptionist, watercolor painter, secret keeper of Geetorus 2D.',
     quotes: [
-      'Dunder Mifflin, this is Pam.',
+      'Geetorus 2D, this is Pam.',
       'I feel like I’ve been sitting at this desk forever.',
       'There’s a lot of beauty in ordinary things. Isn’t that kind of the point?',
       'You bought a building just to sell coffee?',
@@ -747,7 +747,7 @@ export const OFFICE_ERRAND_SPOTS: OfficeErrandSpot[] = [
     thoughtQuotes: [
       'Fresh dark roast coffee brewing. Aroma is glorious.',
       'Carrying a steaming mug back to my desk to power through tasks.',
-      'Coffee is the lifeblood of Dunder Mifflin Scranton.',
+      'Coffee is the lifeblood of Geetorus 2D.',
     ],
   },
   {

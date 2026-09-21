@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The Geetorus 2D Virtual Office is currently an isolated procedural simulation representing the Dunder Mifflin Scranton branch with hardcoded characters, random errand routines, and synthetic incidents. This design document specifies the architecture, data mapping, synchronization lifecycle, performance boundaries, and user experience to connect the 2D office to real-time Geetorus control-plane data (agents, heartbeat runs, issues/tasks, approvals, budgets, routines, goals).
+The Geetorus 2D Virtual Office is currently an isolated procedural simulation representing the Geetorus 2D branch with interactive characters, random errand routines, and synthetic incidents. This design document specifies the architecture, data mapping, synchronization lifecycle, performance boundaries, and user experience to connect the 2D office to real-time Geetorus control-plane data (agents, heartbeat runs, issues/tasks, approvals, budgets, routines, goals).
 
 When real server data is present, the office reflects real agent actions, presence, and company events. When live data is absent, empty, or toggled off by the user, the office runs in an explicitly labelled, non-destructive **DEMO** mode.
 
@@ -22,7 +22,7 @@ The integration cleanly separates three layers:
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │ UI Layer (React Components)                                           │
-│  - DunderMifflinOfficePage.tsx (Page host, controls, layout)           │
+│  - Geetorus2DOfficePage.tsx (Page host, controls, layout)              │
 │  - OfficeView.tsx (Canvas container, HUD, inspector drawer)           │
 │  - OfficeModeBadge (LIVE / DEMO / DISCONNECTED indicator)              │
 │  - OfficeLegend (Interactive status mapping guide)                    │
@@ -180,7 +180,7 @@ Each agent state tracks `lastUpdatedAt: number` (epoch timestamp from `event.cre
 
 1. **Status Indicator Badge**:
    - `🟢 LIVE`: Connected to WebSocket, real company agents displayed.
-   - `🟠 DEMO`: Showing simulated Dunder Mifflin Scranton characters; labelled clearly with a one-click toggle.
+   - `🟠 DEMO`: Showing simulated Geetorus 2D characters; labelled clearly with a one-click toggle.
    - `🔴 DISCONNECTED`: Reconnecting with retry timer; falls back to cached snapshot.
 2. **Simulation Control Safety**:
    - The HUD event buttons (All-Hands, Fire Drill, Birthday, Dundies, Call Pam) stay as local visual simulation only.
@@ -200,7 +200,7 @@ Each agent state tracks `lastUpdatedAt: number` (epoch timestamp from `event.cre
 
 ## 7. Theming & Customization
 
-The retro Dunder Mifflin / Scranton theming is completely isolated inside `ui/src/components/office/officeConstants.ts`.
+The retro Geetorus 2D theming is completely isolated inside `ui/src/components/office/officeConstants.ts`.
 - Room names, desk coordinates, character names, and fallback quotes are config entries.
 - The mapping engine and live sync hook operate on generic interfaces (`PresenceState`, `OfficeZone`, `SimState`), allowing the visual theme to be swapped to a generic modern tech office or cyberpunk motif without changing mapping logic or engine contracts.
 

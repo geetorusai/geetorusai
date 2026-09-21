@@ -24,7 +24,7 @@ import { OnboardingWizardVariant } from "./components/OnboardingWizardVariant";
 import { CloudAccessGate } from "./components/CloudAccessGate";
 import { GeetorusLoading } from "./components/AnimatedGeetorusIcon";
 import { Dashboard } from "./pages/Dashboard";
-import { DunderMifflinOfficePage } from "./pages/DunderMifflinOfficePage";
+import { Geetorus2DOfficePage } from "./pages/Geetorus2DOfficePage";
 import { DashboardLive } from "./pages/DashboardLive";
 import { Timeline } from "./pages/Timeline";
 import { Companies } from "./pages/Companies";
@@ -150,7 +150,7 @@ function boardRoutes(streamlinedUiEnabled: boolean) {
       <Route index element={<Navigate to="dashboard" replace />} />
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="dashboard/live" element={<DashboardLive />} />
-      <Route path="office" element={<DunderMifflinOfficePage />} />
+      <Route path="office" element={<Geetorus2DOfficePage />} />
       <Route
         path="timeline"
         element={streamlinedUiEnabled ? <AuditCompatibilityRedirect to="/activity/timeline" /> : <Timeline />}

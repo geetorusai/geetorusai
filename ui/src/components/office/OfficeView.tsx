@@ -1,4 +1,4 @@
-// Dunder Mifflin Scranton 2D Virtual Office View
+// Geetorus 2D Virtual Office View
 // Neo-brutalist interactive HUD with character drawer, camera controls, branch events & real Geetorus live sync
 
 import { useEffect, useRef, useState } from 'react';
@@ -79,7 +79,7 @@ export function OfficeView({
   const [quoteIdx, setQuoteIdx] = useState<number>(0);
   const [showLegend, setShowLegend] = useState(false);
 
-  // Munder Difflin Interactive States
+  // Geetorus 2D Interactive States
   const [showTaskSplitModal, setShowTaskSplitModal] = useState(false);
   const [showMailboxDrawer, setShowMailboxDrawer] = useState(false);
   const [taskObjectiveInput, setTaskObjectiveInput] = useState(TASK_SPLIT_PRESETS[0].objective);
@@ -312,7 +312,7 @@ export function OfficeView({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 bg-amber-400 text-black px-3 py-1.5 border-2 border-black font-black uppercase text-sm tracking-wider shadow-[2px_2px_0px_#000]">
             <Building2 className="w-4 h-4 stroke-[2.5]" />
-            Dunder Mifflin • Scranton
+            Geetorus 2D • Headquarters
           </div>
 
           {/* Mode Switcher Button */}
@@ -442,12 +442,12 @@ export function OfficeView({
         </div>
       </div>
 
-      {/* 1b. Munder Difflin Mechanics & Errands Action Ribbon */}
+      {/* 1b. Geetorus 2D Mechanics & Errands Action Ribbon */}
       <div className="absolute top-15 left-4 z-10 flex items-center gap-1.5 flex-wrap bg-white/95 dark:bg-zinc-900/95 p-1.5 border-2 border-black shadow-[4px_4px_0px_#000] backdrop-blur-sm">
         {/* Task Splitting */}
         <button
           onClick={() => setShowTaskSplitModal(true)}
-          title="Split Master Tasks at Conference Table & Dispatch Mails (Munder Difflin)"
+          title="Split Master Tasks at Conference Table & Dispatch Mails (Geetorus 2D)"
           className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-black uppercase bg-amber-400 hover:bg-yellow-300 text-black border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer transition-all"
         >
           <Split className="w-3.5 h-3.5" />
@@ -514,7 +514,7 @@ export function OfficeView({
         </button>
       </div>
 
-      {/* TASK SPLITTING MODAL (Munder Difflin CEO Flow) */}
+      {/* TASK SPLITTING MODAL (Geetorus 2D CEO Flow) */}
       {showTaskSplitModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
           <div className="w-full max-w-2xl bg-white dark:bg-zinc-900 border-4 border-black shadow-[10px_10px_0px_0px_#000] p-6 space-y-4 max-h-[90vh] overflow-y-auto">

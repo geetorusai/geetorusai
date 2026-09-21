@@ -1,4 +1,4 @@
-// Dunder Mifflin Office Page
+// Geetorus 2D Office Page
 // Scranton Branch 2D virtual office simulation with Geetorus agent runtime integration
 // Neo-Brutalist Drago design architecture, interactive desk pathfinding, sound synthesizer & Dundie awards
 
@@ -34,7 +34,7 @@ import { getCharacterSprites } from '@/components/office/officeArt';
 import { playRetroOfficeSound } from '@/components/office/OfficeEngine';
 import { useCompany } from '@/context/CompanyContext';
 
-export function DunderMifflinOfficePage() {
+export function Geetorus2DOfficePage() {
   const { selectedCompanyId, selectedCompany } = useCompany();
   const [selectedAgent, setSelectedAgent] = useState<OfficeCharacter | null>(null);
   const [focusedCharacterId, setFocusedCharacterId] = useState<string | null>(null);
@@ -167,7 +167,7 @@ export function DunderMifflinOfficePage() {
             Scranton, PA Branch #172
           </div>
           <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight font-heading">
-            Dunder Mifflin Virtual Office
+            Geetorus 2D Virtual Office
           </h1>
           <p className="text-sm font-semibold text-muted-foreground mt-1">
             2D animated branch simulation powered by Geetorus agent runtime & Drago Neo-Brutalist architecture.

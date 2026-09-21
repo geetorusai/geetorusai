@@ -2,8 +2,7 @@
  * officeMailbox.ts
  *
  * Pure, framework-free Hive Mailbox and CEO Task Splitting engine for the
- * Geetorus 2D Virtual Office, implementing the exact multi-agent coordination
- * model from Munder Difflin (Chaitanya Giri):
+ * Geetorus 2D Virtual Office, implementing multi-agent coordination:
  *
  *   1. FIPA-lite Speech Acts (request, inform, propose, query, agree, refuse, done)
  *   2. CEO Plan Decomposition / Task Splitting: breaks high-level goals into

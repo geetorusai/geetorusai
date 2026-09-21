@@ -1,4 +1,4 @@
-/* Munder Difflin × Drago design system fonts */
+/* Geetorus 2D design system fonts */
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @import "tailwindcss";
@@ -22,9 +22,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ─── Munder Difflin × Drago Design Tokens ─────────────────────────────────
-   Base: Munder Difflin warm ink palette (munderdiffl.in)
-   Retro shadow/typography: Drago Tools (dragotool.shop)
+/* ─── Geetorus 2D Design Tokens ──────────────────────────────────────────────
+   Base: Geetorus 2D warm ink palette
+   Retro shadow/typography: Neo-Brutalist structure
    Combined: warm engineering-dark, gold accent, retro brutalist structure.
 ──────────────────────────────────────────────────────────────────────────── */
 @theme inline {
@@ -137,7 +137,7 @@
   --shadow-lg:   8px 8px 0px 0px #000000;
   --shadow-sm-ink: 3px 3px 0px 0px #000000;
 
-  /* ── Munder Difflin extended palette ── */
+  /* ── Geetorus 2D extended palette ── */
   --gt-ink:           #1a1320;
   --gt-paper:         #fffdf7;
   --gt-paper-2:       #fbefd2;
@@ -710,7 +710,7 @@
   background: var(--muted-foreground);
 }
 
-/* ─── Drago Tools × Munder Difflin Retro-Brutalist Surfaces ──────────────── */
+/* ─── Geetorus 2D Retro-Brutalist Surfaces ────────────────────────────────── */
 .primary-sidebar-surface,
 [data-slot="sidebar-shell"] {
   background-color: var(--sidebar) !important;

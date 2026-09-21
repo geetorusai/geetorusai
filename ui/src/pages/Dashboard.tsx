@@ -374,7 +374,7 @@ export function Dashboard() {
         </div>
       )}
 
-      {/* Dunder Mifflin 2D Office Quick-Launch Banner */}
+      {/* Geetorus 2D Office Quick-Launch Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border-4 border-black bg-[#ffca54] text-black shadow-[6px_6px_0px_0px_#000]">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-black text-[#ffca54] border-2 border-black shrink-0">
@@ -382,10 +382,10 @@ export function Dashboard() {
           </div>
           <div>
             <div className="font-black uppercase tracking-tight text-sm font-heading">
-              Dunder Mifflin Scranton Branch — 2D Interactive Office
+              Geetorus 2D Headquarters — Interactive Virtual Office
             </div>
             <p className="text-xs font-semibold text-black/80">
-              16 animated 2D pixel characters, dedicated employee desks, conference meetings & Michael's office.
+              16 animated 2D pixel characters, dedicated employee desks, conference meetings & executive office.
             </p>
           </div>
         </div>

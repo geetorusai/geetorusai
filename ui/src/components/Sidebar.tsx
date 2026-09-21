@@ -170,7 +170,7 @@ export function Sidebar({ children }: { children?: ReactNode }) {
               Cmd/Ctrl+K remains the keyboard path (command palette). */}
           <SidebarNavItem to="/search" label="Search" icon={Search} />
           <SidebarNavItem to="/dashboard" label="Dashboard" icon={LayoutDashboard} liveCount={liveRunCount} />
-          <SidebarNavItem to="/office" label="Dunder Mifflin" icon={Building2} textBadge="2D" />
+          <SidebarNavItem to="/office" label="Geetorus 2D" icon={Building2} textBadge="2D" />
           <SidebarNavItem
             to="/inbox"
             label="Inbox"
