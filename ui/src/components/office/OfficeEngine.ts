@@ -1360,7 +1360,7 @@ export class OfficeEngine {
 
       // Selection glow / ring
       if (isSelected) {
-        ctx.strokeStyle = '#ffca54'; // Drago Gold
+        ctx.strokeStyle = '#ffca54'; // Accent Gold
         ctx.lineWidth = 3;
         ctx.strokeRect(c.x - 2, c.y - 2, 22, 36);
       }

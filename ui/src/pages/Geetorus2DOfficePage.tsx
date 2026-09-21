@@ -1,6 +1,6 @@
 // Geetorus 2D Office Page
 // Scranton Branch 2D virtual office simulation with Geetorus agent runtime integration
-// Neo-Brutalist Drago design architecture, interactive desk pathfinding, sound synthesizer & Dundie awards
+// Neo-Brutalist design architecture, interactive desk pathfinding, sound synthesizer & Dundie awards
 
 import { useState, useRef } from 'react';
 import {
@@ -159,7 +159,7 @@ export function Geetorus2DOfficePage() {
         </div>
       )}
 
-      {/* 1. PAGE HEADER (Neo-Brutalist Drago Tools Style) */}
+      {/* 1. PAGE HEADER (Neo-Brutalist Style) */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-4 border-black bg-white dark:bg-zinc-900 p-5 shadow-[6px_6px_0px_0px_#000000]">
         <div>
           <div className="inline-flex items-center gap-2 bg-[#ffca54] text-black px-3 py-1 border-2 border-black font-black uppercase text-xs tracking-wider mb-2">
@@ -170,7 +170,7 @@ export function Geetorus2DOfficePage() {
             Geetorus 2D Virtual Office
           </h1>
           <p className="text-sm font-semibold text-muted-foreground mt-1">
-            2D animated branch simulation powered by Geetorus agent runtime & Drago Neo-Brutalist architecture.
+            2D animated branch simulation powered by Geetorus agent runtime & Neo-Brutalist architecture.
           </p>
         </div>
 

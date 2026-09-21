@@ -1163,7 +1163,7 @@ export function drawSpeechBubble(
   // Speaker Badge
   let textStartY = by + padding;
   if (speakerName) {
-    ctx.fillStyle = '#ffca54'; // Drago Gold
+    ctx.fillStyle = '#ffca54'; // Accent Gold
     ctx.fillRect(bx + 6, by + 4, ctx.measureText(speakerName.toUpperCase()).width + 8, 12);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 1;
