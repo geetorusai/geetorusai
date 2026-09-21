@@ -11,6 +11,8 @@ import { hermesGatewayUIAdapter } from "./hermes-gateway";
 import { hermesLocalUIAdapter } from "./hermes-local";
 import { ollamaLocalUIAdapter } from "./ollama-local";
 import { openCodeLocalUIAdapter } from "./opencode-local";
+
+import { openAICompatibleLocalUIAdapter } from "./openai-compatible-local";
 import { piLocalUIAdapter } from "./pi-local";
 import { openClawGatewayUIAdapter } from "./openclaw-gateway";
 import { processUIAdapter } from "./process";
@@ -66,6 +68,7 @@ function registerBuiltInUIAdapters() {
     hermesLocalUIAdapter,
     ollamaLocalUIAdapter,
     openCodeLocalUIAdapter,
+    openAICompatibleLocalUIAdapter,
     piLocalUIAdapter,
     cursorLocalUIAdapter,
     openClawGatewayUIAdapter,

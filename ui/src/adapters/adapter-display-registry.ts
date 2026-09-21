@@ -128,6 +128,12 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     icon: OpenCodeLogoIcon,
     recommended: true,
   },
+  openai_compatible_local: {
+    label: "OpenAI Compatible",
+    description: "OpenAI Compatible API harness",
+    icon: Cpu,
+    recommended: true,
+  },
   pi_local: {
     label: "Pi",
     description: "Pi harness",

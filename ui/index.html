@@ -6,6 +6,12 @@
     <meta name="theme-color" content="#18181b" />
     <meta name="apple-mobile-web-app-title" content="Geetorus" />
     <title>Geetorus</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <!-- GEETORUS_RUNTIME_BRANDING_START -->
     <!-- GEETORUS_RUNTIME_BRANDING_END -->
     <!-- GEETORUS_FAVICON_START -->
@@ -19,21 +25,16 @@
     <script>
       (() => {
         const key = "geetorus.theme";
-        const darkThemeColor = "#18181b";
-        const lightThemeColor = "#ffffff";
+        const darkThemeColor = "#120d18";
         try {
           const stored = window.localStorage.getItem(key);
-          const prefersDark =
-            typeof window.matchMedia === "function" &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches;
-          const fallback = prefersDark ? "dark" : "light";
-          const theme = stored === "light" || stored === "dark" ? stored : fallback;
-          const isDark = theme === "dark";
+          // Default to dark mode (Dark-First Hacker / Engineering Command Center)
+          const isDark = stored !== "light";
           document.documentElement.classList.toggle("dark", isDark);
           document.documentElement.style.colorScheme = isDark ? "dark" : "light";
           const themeColorMeta = document.querySelector('meta[name="theme-color"]');
           if (themeColorMeta) {
-            themeColorMeta.setAttribute("content", isDark ? darkThemeColor : lightThemeColor);
+            themeColorMeta.setAttribute("content", isDark ? darkThemeColor : "#ffffff");
           }
         } catch {
           document.documentElement.classList.add("dark");

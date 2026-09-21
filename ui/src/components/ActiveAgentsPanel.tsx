@@ -176,27 +176,27 @@ export const AgentRunCard = memo(function AgentRunCard({
 
   return (
     <div className={cn(
-      "dashboard-agent-card flex min-w-0 flex-col overflow-hidden rounded-xl border",
+      "dashboard-agent-card flex min-w-0 flex-col overflow-hidden rounded-none border-2 border-black bg-card shadow-[4px_4px_0px_0px_#000000] transition-all",
       showTranscript && "h-(--sz-320px)",
       run.status === "running"
-        ? "border-(--dashboard-run-border) bg-(--dashboard-run-background) shadow-(--shadow-extract-1)"
-        : "border-border bg-background/70",
+        ? "border-black bg-accent/10"
+        : "border-black bg-card",
       className,
     )} data-run-status={run.status}>
-      <div className={cn("flex shrink-0 flex-col gap-3 p-3", showTranscript && "border-b border-border/60")}>
+      <div className={cn("flex shrink-0 flex-col gap-3 p-3", showTranscript && "border-b-2 border-black")}>
         <Link
           to={runUrl}
           title={`${run.agentName} — ${statusLabel} · ${timestamp}`}
           aria-label={`${run.agentName} — ${statusLabel}. View run`}
-          className="flex min-w-0 items-center gap-2 rounded-md text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex min-w-0 items-center gap-2 rounded-none text-foreground hover:underline focus-visible:outline-none"
         >
-          <Identity name={run.agentName} className="gap-2 font-medium" />
+          <Identity name={run.agentName} className="gap-2 font-heading font-bold" />
         </Link>
 
         {run.issueId ? (
           <Link
             to={`/issues/${issue?.identifier ?? run.issueId}`}
-            className="min-w-0 rounded-lg border border-border/60 bg-background/60 px-2.5 py-2 text-sm text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="min-w-0 rounded-none border-2 border-black bg-background px-2.5 py-2 text-sm text-foreground transition-all hover:bg-accent/20 hover:shadow-[2px_2px_0px_0px_#000000] focus-visible:outline-none"
             title={issue ? `${issue.title} · ${issue.identifier}` : taskTitle}
           >
             <span className="flex min-w-0 items-baseline gap-2">

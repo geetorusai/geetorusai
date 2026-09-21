@@ -11,6 +11,7 @@ import { printHermesStreamEvent } from "@geetorusai/hermes-geetorus-adapter/cli"
 import { printOpenCodeStreamEvent } from "@geetorusai/adapter-opencode-local/cli";
 import { printPiStreamEvent } from "@geetorusai/adapter-pi-local/cli";
 import { printOpenClawGatewayStreamEvent } from "@geetorusai/adapter-openclaw-gateway/cli";
+import { printOpenAICompatibleStreamEvent } from "@geetorusai/adapter-openai-compatible-local/cli";
 import { processCLIAdapter } from "./process/index.js";
 import { httpCLIAdapter } from "./http/index.js";
 
@@ -27,6 +28,11 @@ const codexLocalCLIAdapter: CLIAdapterModule = {
 const openCodeLocalCLIAdapter: CLIAdapterModule = {
   type: "opencode_local",
   formatStdoutEvent: printOpenCodeStreamEvent,
+};
+
+const openAiCompatibleLocalCLIAdapter: CLIAdapterModule = {
+  type: "openai_compatible_local",
+  formatStdoutEvent: printOpenAICompatibleStreamEvent,
 };
 
 const piLocalCLIAdapter: CLIAdapterModule = {
@@ -79,6 +85,7 @@ const adaptersByType = new Map<string, CLIAdapterModule>(
     claudeLocalCLIAdapter,
     codexLocalCLIAdapter,
     openCodeLocalCLIAdapter,
+    openAiCompatibleLocalCLIAdapter,
     piLocalCLIAdapter,
     cursorLocalCLIAdapter,
     cursorCloudCLIAdapter,

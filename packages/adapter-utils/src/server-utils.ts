@@ -4215,14 +4215,30 @@ export function writeGeetorusSkillSyncPreference(
 export async function ensureGeetorusSkillSymlink(
   source: string,
   target: string,
-  linkSkill: (source: string, target: string) => Promise<void> = (
-    linkSource,
-    linkTarget,
-  ) => fs.symlink(linkSource, linkTarget),
+  linkSkill?: (source: string, target: string) => Promise<void>,
 ): Promise<"created" | "repaired" | "skipped"> {
+  const performLink =
+    linkSkill ??
+    (async (linkSource: string, linkTarget: string) => {
+      if (process.platform === "win32") {
+        try {
+          await fs.symlink(linkSource, linkTarget, "junction");
+          return;
+        } catch (err) {
+          const code = (err as NodeJS.ErrnoException)?.code;
+          if (code !== "EPERM" && code !== "EACCES" && code !== "EXDEV") {
+            throw err;
+          }
+          await fs.cp(linkSource, linkTarget, { recursive: true });
+          return;
+        }
+      }
+      await fs.symlink(linkSource, linkTarget);
+    });
+
   const existing = await fs.lstat(target).catch(() => null);
   if (!existing) {
-    await linkSkill(source, target);
+    await performLink(source, target);
     return "created";
   }
 
@@ -4246,8 +4262,8 @@ export async function ensureGeetorusSkillSymlink(
     return "skipped";
   }
 
-  await fs.unlink(target);
-  await linkSkill(source, target);
+  await fs.unlink(target).catch(() => fs.rm(target, { recursive: true, force: true }));
+  await performLink(source, target);
   return "repaired";
 }
 
@@ -4749,15 +4765,20 @@ export async function runChildProcess(
           const text = String(chunk);
           stdout = appendWithCap(stdout, text);
           maybeArmTerminalResultCleanup();
-          logChain = logChain
-            .then(() => opts.onLog("stdout", text))
-            .catch((err) =>
-              onLogError(err, runId, "failed to append stdout log chunk"),
-            )
-            .finally(() => {
-              maybeArmTerminalResultCleanup();
-              resumeReadable(readable);
-            });
+          if (opts.onLog) {
+            logChain = logChain
+              .then(() => opts.onLog!("stdout", text))
+              .catch((err) =>
+                onLogError(err, runId, "failed to append stdout log chunk"),
+              )
+              .finally(() => {
+                maybeArmTerminalResultCleanup();
+                resumeReadable(readable);
+              });
+          } else {
+            maybeArmTerminalResultCleanup();
+            resumeReadable(readable);
+          }
         });
 
         child.stderr?.on("data", (chunk: unknown) => {
@@ -4767,15 +4788,20 @@ export async function runChildProcess(
           const text = String(chunk);
           stderr = appendWithCap(stderr, text);
           maybeArmTerminalResultCleanup();
-          logChain = logChain
-            .then(() => opts.onLog("stderr", text))
-            .catch((err) =>
-              onLogError(err, runId, "failed to append stderr log chunk"),
-            )
-            .finally(() => {
-              maybeArmTerminalResultCleanup();
-              resumeReadable(readable);
-            });
+          if (opts.onLog) {
+            logChain = logChain
+              .then(() => opts.onLog!("stderr", text))
+              .catch((err) =>
+                onLogError(err, runId, "failed to append stderr log chunk"),
+              )
+              .finally(() => {
+                maybeArmTerminalResultCleanup();
+                resumeReadable(readable);
+              });
+          } else {
+            maybeArmTerminalResultCleanup();
+            resumeReadable(readable);
+          }
         });
 
         const stdin = child.stdin;

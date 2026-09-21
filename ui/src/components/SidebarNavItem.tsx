@@ -126,10 +126,10 @@ export function SidebarNavItem({
           // the sidebar edges, rounded-lg matches the card anchor, px-2 gives
           // the icon breathing room inside the pill. Rows with hover menus
           // (agents/projects) reserve extra right padding via className.
-          "flex items-center gap-2.5 mx-2 rounded-lg px-2 py-1.5 pointer-coarse:py-1 text-(length:--text-compact) font-medium transition-colors",
+          "flex items-center gap-2.5 mx-2 rounded-none px-2.5 py-2 pointer-coarse:py-1.5 text-xs font-heading font-bold uppercase tracking-wider transition-all",
           (active ?? isActive)
-            ? "bg-sidebar-accent text-sidebar-accent-foreground"
-            : "text-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+            ? "bg-primary text-primary-foreground font-bold border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
+            : "text-foreground/80 hover:bg-accent/15 hover:text-foreground border-2 border-transparent hover:border-black hover:shadow-[2px_2px_0px_0px_#000000]",
           className,
         )
       }

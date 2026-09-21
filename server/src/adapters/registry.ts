@@ -111,6 +111,19 @@ import {
   agentConfigurationDoc as openCodeAgentConfigurationDoc,
   models as openCodeModels,
 } from "@geetorusai/adapter-opencode-local";
+
+import {
+  execute as openAICompatibleExecute,
+  listOpenAICompatibleSkills,
+  syncOpenAICompatibleSkills,
+  testEnvironment as openAICompatibleTestEnvironment,
+  sessionCodec as openAICompatibleSessionCodec,
+  listOpenAICompatibleModels,
+} from "@geetorusai/adapter-openai-compatible-local/server";
+import {
+  agentConfigurationDoc as openAICompatibleAgentConfigurationDoc,
+  models as openAICompatibleModels,
+} from "@geetorusai/adapter-openai-compatible-local";
 import {
   execute as openclawGatewayExecute,
   testEnvironment as openclawGatewayTestEnvironment,
@@ -830,6 +843,25 @@ const openCodeLocalAdapter: ServerAdapterModule = {
   agentConfigurationDoc: openCodeAgentConfigurationDoc,
 };
 
+const openAICompatibleLocalAdapter: ServerAdapterModule = {
+  type: "openai_compatible_local",
+  runtimeToolDelivery: "environment",
+  execute: openAICompatibleExecute,
+  testEnvironment: openAICompatibleTestEnvironment,
+  listSkills: listOpenAICompatibleSkills,
+  syncSkills: syncOpenAICompatibleSkills,
+  sessionCodec: openAICompatibleSessionCodec,
+  models: openAICompatibleModels,
+  sessionManagement: getAdapterSessionManagement("openai_compatible_local") ?? undefined,
+  listModels: listOpenAICompatibleModels,
+  supportsLocalAgentJwt: true,
+  supportsInstructionsBundle: true,
+  instructionsPathKey: "instructionsFilePath",
+  requiresMaterializedRuntimeSkills: true,
+  getRuntimeCommandSpec: (config) => buildNpmRuntimeCommandSpec(config, "opencode", "opencode-ai"),
+  agentConfigurationDoc: openAICompatibleAgentConfigurationDoc,
+};
+
 const piLocalAdapter: ServerAdapterModule = {
   type: "pi_local",
   runtimeToolDelivery: "environment",
@@ -912,6 +944,7 @@ function registerBuiltInAdapters() {
     codexLocalAdapter,
     geetorusRunnerAdapter,
     openCodeLocalAdapter,
+    openAICompatibleLocalAdapter,
     ollamaLocalAdapter,
     piLocalAdapter,
     cursorCloudAdapter,

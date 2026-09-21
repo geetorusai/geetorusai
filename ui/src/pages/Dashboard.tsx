@@ -28,7 +28,7 @@ import { Identity } from "../components/Identity";
 import { timeAgo } from "../lib/timeAgo";
 import { cn, formatCents } from "../lib/utils";
 import { SHOW_TASK_PRIORITY_UI } from "../lib/ui-flags";
-import { Bot, CircleDot, DollarSign, ShieldCheck, LayoutDashboard, PauseCircle } from "lucide-react";
+import { Bot, CircleDot, DollarSign, ShieldCheck, LayoutDashboard, PauseCircle, Building2 } from "lucide-react";
 import { ActiveAgentsPanel } from "../components/ActiveAgentsPanel";
 import { ChartCard, RunActivityChart, PriorityChart, IssueStatusChart, SuccessRateChart } from "../components/ActivityCharts";
 import { PageSkeleton } from "../components/PageSkeleton";
@@ -373,6 +373,29 @@ export function Dashboard() {
           </button>
         </div>
       )}
+
+      {/* Dunder Mifflin 2D Office Quick-Launch Banner */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border-4 border-black bg-[#ffca54] text-black shadow-[6px_6px_0px_0px_#000]">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-black text-[#ffca54] border-2 border-black shrink-0">
+            <Building2 className="w-5 h-5 stroke-[2.5]" />
+          </div>
+          <div>
+            <div className="font-black uppercase tracking-tight text-sm font-heading">
+              Dunder Mifflin Scranton Branch — 2D Interactive Office
+            </div>
+            <p className="text-xs font-semibold text-black/80">
+              16 animated 2D pixel characters, dedicated employee desks, conference meetings & Michael's office.
+            </p>
+          </div>
+        </div>
+        <Link
+          to="/office"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-black hover:bg-zinc-800 text-white font-black text-xs uppercase tracking-wider border-2 border-black shadow-[2px_2px_0px_#000] shrink-0 active:translate-x-0.5 active:translate-y-0.5"
+        >
+          Enter 2D Office →
+        </Link>
+      </div>
 
       <ActiveAgentsPanel companyId={selectedCompanyId!} />
 

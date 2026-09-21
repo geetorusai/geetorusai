@@ -7,20 +7,16 @@ function Card({
   interactive = false,
   ...props
 }: React.ComponentProps<"div"> & {
-  /**
-   * The whole card is a click target: quiet hover affordance (border darkens,
-   * slight lift), pointer cursor, keyboard focus ring. Static containers omit
-   * it — one Card, two modes.
-   */
   interactive?: boolean
 }) {
   return (
     <div
       data-slot="card"
+      data-interactive={interactive}
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-lg border py-6",
+        "bg-card text-card-foreground flex flex-col gap-6 rounded-none border-2 border-black shadow-[4px_4px_0px_0px_#000000] py-6 transition-all",
         interactive &&
-          "cursor-pointer transition-colors hover:border-foreground/20 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          "cursor-pointer hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_#000000] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className
       )}
       {...props}
@@ -33,7 +29,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-(--gtr-1) items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-(--gtc-17) [.border-b]:pb-6",
+        "@container/card-header grid auto-rows-min grid-rows-(--gtr-1) items-start gap-2 px-6 has-data-[slot=card-action]:grid-cols-(--gtc-17) [.border-b]:border-b-2 [.border-b]:border-black [.border-b]:pb-6",
         className
       )}
       {...props}
@@ -45,7 +41,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-none font-heading font-black tracking-tight", className)}
       {...props}
     />
   )

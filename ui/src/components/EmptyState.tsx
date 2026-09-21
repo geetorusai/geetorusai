@@ -26,17 +26,17 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="bg-muted/50 p-4 mb-4">
-        <Icon className="h-10 w-10 text-muted-foreground/50" />
+      <div className="border-2 border-black bg-accent p-4 mb-4 shadow-[4px_4px_0px_0px_#000000] text-accent-foreground">
+        <Icon className="h-10 w-10" />
       </div>
       {title ? (
         <>
-          <p className="text-base font-semibold text-foreground mb-1.5">{title}</p>
+          <p className="text-lg font-heading font-black uppercase tracking-tight text-foreground mb-1.5">{title}</p>
           <p className="text-sm text-muted-foreground mb-4 max-w-md">{message}</p>
         </>
       ) : (
         <>
-          <p className="text-sm font-medium text-foreground mb-1">{message}</p>
+          <p className="text-base font-heading font-bold text-foreground mb-1">{message}</p>
           {description && <p className="max-w-md text-sm text-muted-foreground mb-4">{description}</p>}
         </>
       )}

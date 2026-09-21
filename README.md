@@ -1,48 +1,39 @@
 <p align="center">
-  <img src="doc/assets/banner.jpg" alt="Geetorus is the app people use to manage AI agents for work." width="720" />
+  <img src="doc/assets/banner.jpg" alt="Geetorus - Deploy an AI workforce in minutes" width="720" />
 </p>
 
 <p align="center">
   <a href="#quickstart"><strong>Quickstart</strong></a> &middot;
-  <a href="https://docs.geetorus.ing"><strong>Docs</strong></a> &middot;
-  <a href="https://github.com/geetorusai/geetorus"><strong>GitHub</strong></a> &middot;
-  <a href="https://discord.gg/m4HZY7xNG3"><strong>Discord</strong></a> &middot;
-  <a href="https://x.com/geetorusing"><strong>Twitter</strong></a> &middot;
-  <a href="https://geetorus.ing"><strong>Website</strong></a>
+  <a href="#core-features"><strong>Features</strong></a> &middot;
+  <a href="#architecture"><strong>Architecture</strong></a> &middot;
+  <a href="#development"><strong>Development</strong></a> &middot;
+  <a href="#license"><strong>License</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/geetorusai/geetorus/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
-  <a href="https://github.com/geetorusai/geetorus/stargazers"><img src="https://img.shields.io/github/stars/geetorusai/geetorus?style=flat" alt="Stars" /></a>
-  <a href="https://www.star-history.com/geetorusai/geetorus"><img src="https://api.star-history.com/badge?repo=geetorusai/geetorus" alt="Star History Rank" /></a>
-  <a href="https://discord.gg/m4HZY7xNG3"><img src="https://img.shields.io/badge/discord-join-7289da" alt="Discord" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
+  <img src="https://img.shields.io/badge/node-%3E%3D24.11-brightgreen" alt="Node.js version" />
+  <img src="https://img.shields.io/badge/TypeScript-5.x-blue" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/pnpm-9.x-orange" alt="pnpm" />
 </p>
 
 <br/>
 
-<div align="center">
-  <video src="https://github.com/user-attachments/assets/773bdfb2-6d1e-4e30-8c5f-3487d5b70c8f" width="600" controls></video>
-</div>
+# Geetorus
+
+**Open-source orchestration platform for teams of AI agents.**
+
+Geetorus is a full-featured control plane and orchestration system that organizes teams of AI agents to execute complex goals. Bring your own agents, assign goals, and track progress, workspaces, and costs from a single unified dashboard.
+
+Instead of babysitting individual chat tabs, terminal sessions, or fragile scripts, Geetorus models a complete organization: org charts, reporting hierarchies, token budgets, atomic task checkout, approval gates, and heartbeat execution.
 
 <br/>
 
-# Geetorus is the app people use to manage AI agents for work.
-
-Open-source orchestration for teams of AI agents.
-
-**If OpenClaw is an _employee_, Geetorus is the _company_.**
-
-Geetorus is a Node.js server and React UI that orchestrates a team of AI agents to run a business. Bring your own agents, assign goals, and track work and costs from one dashboard.
-
-It looks like a task manager. Under the hood: org charts, budgets, governance, goal alignment, and agent coordination.
-
-**Manage business goals, not pull requests.**
-
-|        | Step            | Example                                                            |
-| ------ | --------------- | ------------------------------------------------------------------ |
-| **01** | Define the goal | _"Build the #1 AI note-taking app to $1M MRR."_                    |
-| **02** | Hire the team   | CEO, CTO, engineers, designers, marketers — any bot, any provider. |
-| **03** | Approve and run | Review strategy. Set budgets. Hit go. Monitor from the dashboard.  |
+| Step | Action | Example |
+| :--- | :--- | :--- |
+| **01** | **Define the Goal** | _"Build and launch an AI-driven documentation generator with automated testing."_ |
+| **02** | **Deploy the Team** | Chief of Staff, Architects, Engineers, Reviewers — any model, any provider. |
+| **03** | **Govern & Run** | Set token budgets, configure review gates, hit run, and monitor from the board. |
 
 <br/>
 
@@ -50,137 +41,86 @@ It looks like a task manager. Under the hood: org charts, budgets, governance, g
 <table>
   <tr>
     <td align="center"><strong>Works<br/>with</strong></td>
-    <td align="center"><img src="doc/assets/logos/openclaw.svg" width="32" alt="OpenClaw" /><br/><sub>OpenClaw</sub></td>
+    <td align="center"><img src="doc/assets/logos/openclaw.svg" width="32" alt="OpenCode" /><br/><sub>OpenCode</sub></td>
     <td align="center"><img src="doc/assets/logos/claude.svg" width="32" alt="Claude" /><br/><sub>Claude Code</sub></td>
     <td align="center"><img src="doc/assets/logos/codex.svg" width="32" alt="Codex" /><br/><sub>Codex</sub></td>
     <td align="center"><img src="doc/assets/logos/cursor.svg" width="32" alt="Cursor" /><br/><sub>Cursor</sub></td>
     <td align="center"><img src="doc/assets/logos/bash.svg" width="32" alt="Bash" /><br/><sub>Bash</sub></td>
-    <td align="center"><img src="doc/assets/logos/http.svg" width="32" alt="HTTP" /><br/><sub>HTTP</sub></td>
+    <td align="center"><img src="doc/assets/logos/http.svg" width="32" alt="HTTP" /><br/><sub>HTTP / Webhooks</sub></td>
   </tr>
 </table>
 
-<em>If it can receive a heartbeat, it's hired.</em>
-
+<em>If it can receive a heartbeat, it can be orchestrated.</em>
 </div>
 
 <br/>
 
-## Geetorus is right for you if
-
-- ✅ You want to build **autonomous AI organizations**
-- ✅ You **coordinate many different agents** (OpenClaw, Codex, Claude, Cursor) toward a common goal
-- ✅ You have **20 simultaneous Claude Code terminals** open and lose track of what everyone is doing
-- ✅ You want agents running **autonomously 24/7**, but still want to audit work and chime in when needed
-- ✅ You want to **monitor costs** and enforce budgets
-- ✅ You want a process for managing agents that **feels like using a task manager**
-- ✅ You want to manage your autonomous businesses **from your phone**
-
-<br/>
-
-## The four pillars
-
-Four things have to work for an organization of AI agents to actually produce: the tasks, the org, the training, and the infrastructure. Geetorus is built around exactly those four pillars.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/geetorusai/geetorus/1ec33ffd8b597f7e36aac3e2fbb4665b8c42dc3c/doc/assets/four-pillars-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/geetorusai/geetorus/1ec33ffd8b597f7e36aac3e2fbb4665b8c42dc3c/doc/assets/four-pillars-light.png">
-  <img src="https://raw.githubusercontent.com/geetorusai/geetorus/1ec33ffd8b597f7e36aac3e2fbb4665b8c42dc3c/doc/assets/four-pillars-light.png" alt="The four pillars of Geetorus">
-</picture>
-
-| Pillar | Built for | What it covers |
-| --- | --- | --- |
-| **Agentic Task Manager** — Declare intent. Agents work. You verify the output. | Everyone, daily | Tasks, approvals & review gates · proactive agent coworkers · auditable routines & workflows · verify from diffs, screenshots & tests |
-| **Org Chart for Agents** — Roles, permissions & boundaries for humans and agents. | Managers | Mixed human + agent org chart · responsibilities, delegation, specialization · governance: who can do what · scoped secrets & company boundaries |
-| **Agent Employee Training** — Design, train & evaluate your AI employees. | Enablers | Skill Studio & shared org-wide skills · evals & saved test runs · active learning loops & quality metrics · performance reviews for agents |
-| **Agentic OS** — The infrastructure that makes the work run. | IT & platform | Cross-provider runtime: any model, any agent · sandboxing, integrations & MCP servers · SSO, GRC, RBAC & cost controls · data privacy, internal trace collection, compounding data value |
-
-<br/>
-
-## Features
+## Core Features
 
 <table>
 <tr>
 <td align="center" width="33%">
 <h3>🔌 Bring Your Own Agent</h3>
-Any agent, any runtime, one org chart. If it can receive a heartbeat, it's hired.
+Connect local free models via OpenCode or Ollama, cloud models (Claude, Codex, Gemini), CLI agents, or custom HTTP bots.
 </td>
 <td align="center" width="33%">
 <h3>🎯 Goal Alignment</h3>
-Every task traces back to the organization mission. Agents know <em>what</em> to do and <em>why</em>.
+Every task traces back through project and organization goals. Agents always know <em>what</em> to do and <em>why</em>.
 </td>
 <td align="center" width="33%">
-<h3>💓 Heartbeats</h3>
-Agents wake on a schedule, check work, and act. Delegation flows up and down the org chart.
+<h3>💓 Heartbeat Execution</h3>
+Agents wake on schedules (cron routines) or reactively on task assignment. Sessions persist across reboots.
 </td>
 </tr>
 <tr>
 <td align="center">
-<h3>💰 Cost Control</h3>
-Monthly budgets per agent. When they hit the limit, they stop. No runaway costs.
+<h3>💰 Budget & Cost Controls</h3>
+Monthly token and dollar limits per agent and project. When limits are reached, agents stop cleanly with no runaway spend.
 </td>
 <td align="center">
 <h3>🏢 Multi-Organization</h3>
-One deployment, many organizations. Complete data isolation. One control plane for your portfolio.
+Run multiple companies or projects within a single deployment with complete workspace and data isolation.
 </td>
 <td align="center">
-<h3>🎫 Ticket System</h3>
-Every conversation traced. Every decision explained. Full tool-call tracing and immutable audit log.
+<h3>🎫 Ticket & Task System</h3>
+Atomic task checkouts, dependency graphs, sub-issues, and audit trails. No duplicate work or lost context.
 </td>
 </tr>
 <tr>
 <td align="center">
-<h3>🛡️ Governance</h3>
-Approve hires, override strategy, pause or terminate any agent — at any time.
+<h3>🛡️ Governance & Approval Gates</h3>
+Human-in-the-loop review gates for high-impact actions, strategy overrides, and pause/resume controls.
 </td>
 <td align="center">
-<h3>📊 Org Chart</h3>
-Hierarchies, roles, reporting lines. Your agents have a boss, a title, and a job description.
+<h3>📊 Org Chart & Hierarchy</h3>
+Define roles, reporting structures, and permissions. Agents have a clear position and job description.
 </td>
 <td align="center">
-<h3>📱 Mobile Ready</h3>
-Monitor and manage your autonomous businesses from anywhere.
+<h3>🧩 Runtime Skill Injection</h3>
+Dynamically inject project skills, workflows, and tools into agent workspaces at runtime without retraining.
 </td>
 </tr>
 </table>
 
 <br/>
 
-## Problems Geetorus solves
+## Why Geetorus?
 
-| Without Geetorus                                                                                                                     | With Geetorus                                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| ❌ You have 20 Claude Code tabs open and can't track which one does what. On reboot you lose everything.                              | ✅ Tasks are ticket-based, conversations are threaded, sessions persist across reboots.                                                |
-| ❌ You manually gather context from several places to remind your bot what you're actually doing.                                     | ✅ Context flows from the task up through the project and company goals — your agent always knows what to do and why.                  |
-| ❌ Folders of agent configs are disorganized and you're re-inventing task management, communication, and coordination between agents. | ✅ Geetorus gives you org charts, ticketing, delegation, and governance out of the box — so you run a company, not a pile of scripts. |
-| ❌ Runaway loops waste hundreds of dollars of tokens and max your quota before you even know what happened.                           | ✅ Cost tracking surfaces token budgets and throttles agents when they're out. Management prioritizes with budgets.                    |
-| ❌ You have recurring jobs (customer support, social, reports) and have to remember to manually kick them off.                        | ✅ Heartbeats handle regular work on a schedule. Management supervises.                                                                |
-| ❌ You have an idea, you have to find your repo, fire up Claude Code, keep a tab open, and babysit it.                                | ✅ Add a task in Geetorus. Your coding agent works on it until it's done. Management reviews their work.                              |
-
-<br/>
-
-## Why Geetorus is special
-
-Geetorus handles the hard orchestration details correctly.
-
-|                                   |                                                                                                               |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Atomic execution.**             | Task checkout and budget enforcement are atomic, so no double-work and no runaway spend.                      |
-| **Persistent agent state.**       | Agents resume the same task context across heartbeats instead of restarting from scratch.                     |
-| **Runtime skill injection.**      | Agents can learn Geetorus workflows and project context at runtime, without retraining.                      |
-| **Governance with rollback.**     | Approval gates are enforced, config changes are revisioned, and bad changes can be rolled back safely.        |
-| **Goal-aware execution.**         | Tasks carry full goal ancestry so agents consistently see the "why," not just a title.                        |
-| **Portable company templates.**   | Export/import orgs, agents, and skills with secret scrubbing and collision handling.                          |
-| **True multi-organization isolation.** | Every entity is company-scoped, so one deployment can run many companies with separate data and audit trails. |
+| Challenge | With Geetorus |
+| :--- | :--- |
+| **Lost context across restarts** | Tasks are ticket-based, sessions are persistent, and progress is saved across reboots. |
+| **Runaway token spend** | Granular budget policies enforce limits with automatic warning thresholds and hard stops. |
+| **Uncoordinated agent chaos** | Org charts, delegation hierarchies, and atomic task locks keep agents working together smoothly. |
+| **Babysitting terminal tabs** | Background heartbeats and scheduled routines execute autonomously while you monitor from the board. |
+| **Manual context delivery** | Task hierarchy, project goals, and company objectives flow directly into prompt context. |
 
 <br/>
 
-## What's Under the Hood
-
-Geetorus is a full control plane, not a wrapper. Before you build any of this yourself, know that it already exists:
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                       GEETORUS SERVER                       │
+│                       GEETORUS SERVER                        │
 │                                                              │
 │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │
 │  │Identity & │  │  Work &   │  │ Heartbeat │  │Governance │  │
@@ -189,356 +129,131 @@ Geetorus is a full control plane, not a wrapper. Before you build any of this yo
 │                                                              │
 │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │
 │  │ Org Chart │  │Workspaces │  │  Plugins  │  │  Budget   │  │
-│  │ & Agents  │  │ & Runtime │  │           │  │ & Costs   │  │
+│  │ & Agents  │  │ & Runtime │  │  System   │  │ & Costs   │  │
 │  └───────────┘  └───────────┘  └───────────┘  └───────────┘  │
 │                                                              │
 │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │
-│  │ Routines  │  │ Secrets & │  │ Activity  │  │  Company  │  │
-│  │& Schedules│  │  Storage  │  │ & Events  │  │Portability│  │
+│  │ Routines  │  │ Secrets & │  │ Activity  │  │ Blueprint │  │
+│  │& Schedules│  │  Storage  │  │ & Audit   │  │  Export   │  │
 │  └───────────┘  └───────────┘  └───────────┘  └───────────┘  │
 └──────────────────────────────────────────────────────────────┘
          ▲              ▲              ▲              ▲
    ┌─────┴─────┐  ┌─────┴─────┐  ┌─────┴─────┐  ┌─────┴─────┐
-   │  Claude   │  │   Codex   │  │   CLI     │  │ HTTP/web  │
-   │   Code    │  │           │  │  agents   │  │   bots    │
+   │ OpenCode  │  │  Claude   │  │   Codex   │  │ HTTP/CLI  │
+   │  (Free)   │  │   Code    │  │   Runner  │  │  Agents   │
    └───────────┘  └───────────┘  └───────────┘  └───────────┘
 ```
-
-### The Systems
-
-<table>
-<tr>
-<td width="50%">
-
-**Identity & Access** — Two deployment modes (trusted local or authenticated), board users, agent API keys, short-lived run JWTs, company memberships, invite flows, and OpenClaw onboarding. Every mutating request is traced to an actor.
-
-</td>
-<td width="50%">
-
-**Org Chart & Agents** — Agents have roles, titles, reporting lines, permissions, and budgets. Adapter examples match the diagram: Claude Code, Codex, CLI agents such as Cursor/Gemini/bash, HTTP/webhook bots such as OpenClaw, and external adapter plugins. If it can receive a heartbeat, it's hired.
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Work & Task System** — Issues carry company/project/goal/parent links, atomic checkout with execution locks, first-class blocker dependencies, comments, documents, attachments, work products, labels, and inbox state. No double-work, no lost context.
-
-</td>
-<td>
-
-**Heartbeat Execution** — DB-backed wakeup queue with coalescing, budget checks, workspace resolution, secret injection, skill loading, and adapter invocation. Runs produce structured logs, cost events, session state, and audit trails. Recovery handles orphaned runs automatically.
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Workspaces & Runtime** — Project workspaces, isolated execution workspaces (git worktrees, operator branches), and runtime services (dev servers, preview URLs). Agents work in the right directory with the right context every time.
-
-</td>
-<td>
-
-**Governance & Approvals** — Board approval workflows, execution policies with review/approval stages, decision tracking, budget hard-stops, agent pause/resume/terminate, and full audit logging. Nothing ships without your sign-off.
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Budget & Cost Control** — Token and cost tracking by company, agent, project, goal, issue, provider, and model. Scoped budget policies with warning thresholds and hard stops. Overspend pauses agents and cancels queued work automatically.
-
-</td>
-<td>
-
-**Routines & Schedules** — Recurring tasks with cron, webhook, and API triggers. Concurrency and catch-up policies. Each routine execution creates a tracked issue and wakes the assigned agent — no manual kick-offs needed.
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Plugins** — Instance-wide plugin system with out-of-process workers, capability-gated host services, job scheduling, tool exposure, and UI contributions. Extend Geetorus without forking it.
-
-</td>
-<td>
-
-**Secrets & Storage** — Instance and company secrets, encrypted local storage, provider-backed object storage, attachments, and work products. Sensitive values stay out of prompts unless a scoped run explicitly needs them.
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Activity & Events** — Mutating actions, heartbeat state changes, cost events, approvals, comments, and work products are recorded as durable activity so operators can audit what happened and why.
-
-</td>
-<td>
-
-**Company Portability** — Export and import entire organizations — agents, skills, projects, routines, and issues — with secret scrubbing and collision handling. One deployment, many companies, complete data isolation.
-
-</td>
-</tr>
-</table>
-
-<br/>
-
-## What Geetorus is not
-
-|                              |                                                                                                                      |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| **Not a chatbot.**           | Agents have jobs, not chat windows.                                                                                  |
-| **Not an agent framework.**  | We don't tell you how to build agents. We tell you how to run a company made of them.                                |
-| **Not a workflow builder.**  | No drag-and-drop pipelines. Geetorus models companies — with org charts, goals, budgets, and governance.            |
-| **Not a prompt manager.**    | Agents bring their own prompts, models, and runtimes. Geetorus manages the organization they work in.               |
-| **Not a single-agent tool.** | This is for teams. If you have one agent, you probably don't need Geetorus. If you have twenty — you definitely do. |
-| **Not a code review tool.**  | Geetorus orchestrates work, not pull requests. Bring your own review process.                                       |
 
 <br/>
 
 ## Quickstart
 
-Open source. Self-hosted. No Geetorus account required.
+### Prerequisites
+- **Node.js**: `24.11.0` or newer
+- **pnpm**: `9.15.0` or newer
+
+### 1. Interactive Onboarding
+Run onboarding to set up your organization, hire your first agent (e.g. using free local OpenCode models or cloud API keys), and initialize the database:
 
 ```bash
-curl -fsSLO https://geetorus.ing/install.sh
-curl -fsSLO https://geetorus.ing/install.sh.sha256
-if command -v sha256sum >/dev/null 2>&1; then
-  sha256sum -c install.sh.sha256
-else
-  shasum -a 256 -c install.sh.sha256
-fi
-bash install.sh
+pnpm geetorusai onboard --yes
 ```
 
-The installer ensures Node.js 24.11 or newer is available, installs a managed
-Geetorus CLI under `~/.geetorus/cli`, and starts interactive onboarding. It
-can also install Geetorus as a background service on supported Linux and
-macOS systems. The checksum detects transfer or publishing mistakes, but it is
-served from the same origin as the script; use a release-tag or commit-pinned
-GitHub copy when you need an independently hosted source.
-
-For a non-interactive managed install:
+Or using `npx`:
 
 ```bash
-curl -fsSL https://geetorus.ing/install.sh | bash -s -- --no-prompt --no-onboard
-geetorusai onboard --yes
+npx geetorusai onboard --yes
 ```
 
-The piped form requires supported Node.js, npm, and npx to already be present.
-If Node.js bootstrap is required, download and review `install.sh` before
-running it so no privileged dependency-install command is accepted through a
-pipe.
+### 2. Running from Source
 
-To try Geetorus without installing anything permanently:
-
-```bash
-npx --registry https://registry.npmjs.org geetorusai onboard --yes
-```
-
-For an isolated manual test instance that is already initialized with a CEO
-agent, use `test-drive`. It stays in the foreground, never installs a service
-or creates a first task, and opens the browser only after setup succeeds:
-
-```bash
-ANTHROPIC_API_KEY=... npx geetorusai test-drive
-OPENAI_API_KEY=... npx geetorusai test-drive --harness codex
-OPENROUTER_API_KEY=... npx geetorusai test-drive \
-  --harness opencode \
-  --model openrouter/anthropic/claude-sonnet-4.5
-```
-
-Each run without `--data-dir` gets a unique, retained temporary directory; its
-absolute path is printed at startup. Pass `--data-dir` to reuse one, or
-`--no-browser` to leave the initialized instance unopened. When invoked from a
-linked Git worktree, `test-drive` also enables task execution in that worktree.
-See [`doc/CLI.md`](doc/CLI.md#isolated-manual-test-drives) for credential and
-reuse behavior.
-
-> **Troubleshooting: private npm registry `.npmrc`**
->
-> If this fails with an `E404` for `geetorusai` (or similar) and you use a private npm registry (for example GitHub Packages) via a global `~/.npmrc`, `npx` may be resolving `geetorusai` against that private registry instead of the public npm registry.
->
-> Diagnostic:
->
-> ```bash
-> npm config get registry
-> ```
->
-> Workaround (cross-platform; force the public npm registry for this command):
->
-> ```bash
-> npx --registry https://registry.npmjs.org geetorusai onboard --yes
-> ```
-
-That quickstart path now defaults to trusted local loopback mode for the fastest first run. To start in authenticated/private mode instead, choose a bind preset explicitly:
-
-```bash
-geetorusai onboard --yes --bind lan
-# or:
-geetorusai onboard --yes --bind tailnet
-```
-
-If you already have Geetorus configured, rerunning `onboard` keeps the existing config in place. Use `geetorusai configure` to edit settings.
-
-See [`doc/INSTALLING.md`](doc/INSTALLING.md) for pinned versions, canary and
-git-ref installs, updates, rollback, service management, and uninstalling.
-
-Or manually:
+Clone and install dependencies:
 
 ```bash
 git clone https://github.com/geetorusai/geetorus.git
 cd geetorus
 pnpm install
+```
+
+Start the full development environment (API server + Web UI):
+
+```bash
 pnpm dev
 ```
 
-This starts the API server at `http://localhost:3100`. An embedded PostgreSQL database is created automatically — no setup required.
-
-> **Requirements:** Node.js 24.11+, pnpm 9.15+
+- **Web Dashboard**: `http://localhost:5173` (or port assigned by Vite)
+- **API Server**: `http://localhost:3100`
+- Embedded database migrations run automatically on boot.
 
 <br/>
 
-## FAQ
+## CLI Commands
 
-**What does a typical setup look like?**
-Locally, a single Node.js process manages an embedded Postgres and local file storage. For production, point it at your own Postgres and deploy however you like. Configure projects, agents, and goals — the agents take care of the rest.
+The `@geetorusai/cli` package provides full administrative capabilities:
 
-If you're a solo entrepreneur you can use Tailscale to access Geetorus on the go. Then later you can deploy to e.g. Vercel when you need it.
+```bash
+# Start interactive onboarding
+geetorusai onboard
 
-**Can I run multiple companies?**
-Yes. A single deployment can run an unlimited number of companies with complete data isolation.
+# Run onboarding non-interactively with defaults
+geetorusai onboard --yes
 
-**How is Geetorus different from agents like OpenClaw or Claude Code?**
-Geetorus _uses_ those agents. It orchestrates them into a company — with org charts, budgets, goals, governance, and accountability.
+# Start the server daemon
+geetorusai start
 
-**Why should I use Geetorus instead of just pointing my OpenClaw to Asana or Trello?**
-Agent orchestration has subtleties in how you coordinate who has work checked out, how to maintain sessions, monitoring costs, establishing governance - Geetorus does this for you.
+# Update server and agent configuration
+geetorusai configure
 
-(Bring-your-own-ticket-system is on the Roadmap)
+# Export and import organization blueprints
+geetorusai company export <company-id> --out ./backup
+geetorusai company import ./backup
 
-**Do agents run continuously?**
-By default, agents run on scheduled heartbeats and event-based triggers (task assignment, @-mentions). You can also hook in continuous agents like OpenClaw. You bring your agent and Geetorus coordinates.
+# Launch an isolated foreground test instance
+geetorusai test-drive
+```
 
 <br/>
 
 ## Development
 
 ```bash
-pnpm dev              # Full dev (API + UI, watch mode)
-pnpm dev:once         # Full dev without file watching
+pnpm dev              # Full dev (API server + UI, watch mode)
 pnpm dev:server       # Server only
-pnpm dev:mobile       # Serve prebuilt UI on :3101 for phones/tablets (proxies /api → :3100)
-pnpm dev:both         # Run `pnpm dev` and `pnpm dev:mobile` together
-pnpm build            # Build all
-pnpm typecheck        # Type checking
-pnpm test             # Cheap default test run (Vitest only)
-pnpm test:watch       # Vitest watch mode
-pnpm test:e2e         # Playwright browser suite
-pnpm db:generate      # Generate DB migration
+pnpm build            # Build all packages
+pnpm typecheck        # Run TypeScript type check across monorepo
+pnpm test             # Run unit tests (Vitest)
+pnpm test:watch       # Vitest in watch mode
+pnpm db:generate      # Generate database migrations
 pnpm db:migrate       # Apply migrations
 ```
 
-`pnpm test` does not run Playwright. Browser suites stay separate and are typically run only when working on those flows or in CI.
-
-See [doc/DEVELOPING.md](doc/DEVELOPING.md) for the full development guide.
-
 <br/>
 
-## Roadmap
+## Company Blueprints (Import / Export)
 
-- ✅ Plugin system (e.g. add a knowledge base, custom tracing, queues, etc)
-- ✅ Get OpenClaw / claw-style agent employees
-- ✅ companies.sh - import and export entire organizations
-- ✅ Easy AGENTS.md configurations
-- ✅ Skills Manager, Skill Studio & Skills Store
-- ✅ Scheduled Routines
-- ✅ Better Budgeting
-- ✅ Agent Reviews and Approvals
-- ✅ Multiple Human Users
-- ✅ Cloud / Sandbox agents (e2b, Cloudflare, Daytona, Modal, Novita, self-hosted Kubernetes)
-- ✅ Artifacts & Work Products
-- ✅ Deep Planning (planning mode, revisioned plans, plan approvals)
-- ✅ Enforced Outcomes (watchdogs, recovery actions, review gates)
-- ✅ MCP Tool Gateway & Apps (governed tool access)
-- ✅ Secrets Manager with per-agent access
-- ✅ Activity log & action attribution
-- ✅ Self-healing runs & automatic recovery
-- ✅ Agent evals & feedback
-- ⚪ Memory / Knowledge
-- ⚪ MAXIMIZER MODE
-- ⚪ Work Queues
-- ⚪ Self-Organization
-- ⚪ Automatic Organizational Learning
-- ⚪ CEO Chat
-- 🟡 Cloud deployments (multi-tenant isolation & company Import/Export shipped)
-- ⚪ Desktop App
-- ⚪ Bring-your-own-ticket-system (Asana / Linear / Jira as on-ramps)
-- ⚪ Connected Apps (one-click integrations, e.g. Vercel)
+Geetorus allows exporting entire organizations — agents, skills, projects, routines, and issue templates — into a portable package:
 
-This is the short roadmap preview. See the full roadmap in [ROADMAP.md](ROADMAP.md).
+```bash
+geetorusai company export <company-id> --out ./my-company
+geetorusai company import ./my-company --dry-run
+geetorusai company import ./my-company
+```
+
+Secrets are sanitized on export and re-prompted upon import.
 
 <br/>
-
-## Community & Plugins
-
-Find Plugins and more at [awesome-geetorus](https://github.com/gsxdsm/awesome-geetorus)
-
-## Observability
-
-Geetorus ships with opt-in OpenTelemetry auto-instrumentation for the server (traces only). It activates when `OTEL_EXPORTER_OTLP_ENDPOINT` is set and supports `grpc`, `http/protobuf`, and `http/json` via the standard `OTEL_EXPORTER_OTLP_PROTOCOL` env var. `@opentelemetry/api` is a normal server dependency; the SDK, auto-instrumentation, and exporter packages are optional peer dependencies — install them only if you want tracing. See [doc/observability.md](doc/observability.md) for install commands and the full env-var reference.
-
-Geetorus also ships with opt-in Sentry error monitoring for the server and the browser. Set `SENTRY_DSN_FRONTEND` to activate it for the browser and `SENTRY_DSN_BACKEND` to activate it for the server — each variable is optional, and the legacy `SENTRY_DSN` variable still works as a fallback for either component. The supported server SDK version is `@sentry/node@10.71.0`; it is an optional peer dependency for the server, so install it only if you want error monitoring. The browser SDK, `@sentry/browser`, is pinned to the same exact version. See [doc/observability.md](doc/observability.md#sentry-error-monitoring) for the install command, the privacy settings, and the full default capture set.
 
 ## Telemetry
 
-Geetorus collects anonymous usage telemetry to help us understand how the product is used and improve it. No personal information, issue content, prompts, file paths, or secrets are ever collected. Private repository references are hashed with a per-install salt before being sent.
+Geetorus collects anonymous usage telemetry to improve agent orchestration stability and developer experience. No prompts, task content, code files, or secrets are ever collected.
 
-Contributors changing emitted telemetry events should follow the [Telemetry Data Contract](packages/shared/src/telemetry/README.md).
-For proposed first-party events that are not in the generated contract yet, follow [Telemetry Workflow](doc/TELEMETRY_WORKFLOW.md).
-
-Telemetry is **enabled by default** and can be disabled with any of the following:
-
-| Method               | How                                                     |
-| -------------------- | ------------------------------------------------------- |
-| Environment variable | `GEETORUS_TELEMETRY_DISABLED=1`                        |
-| Standard convention  | `DO_NOT_TRACK=1`                                        |
-| CI environments      | Automatically disabled when `CI=true`                   |
-| Config file          | Set `telemetry.enabled: false` in your Geetorus config |
-
-## Contributing
-
-We welcome contributions. See the [contributing guide](CONTRIBUTING.md) for details.
-
-<br/>
-
-## Community
-
-- [Discord](https://discord.gg/m4HZY7xNG3) — Join the community
-- [Twitter / X](https://x.com/geetorusing) — Follow updates and announcements
-- [GitHub Issues](https://github.com/geetorusai/geetorus/issues) — bugs and feature requests
-- [GitHub Discussions](https://github.com/geetorusai/geetorus/discussions) — ideas and RFC
+Telemetry is enabled by default and can be disabled via:
+- Environment variable: `GEETORUS_TELEMETRY_DISABLED=1`
+- Standard convention: `DO_NOT_TRACK=1`
+- Configuration file: `telemetry.enabled: false`
 
 <br/>
 
 ## License
 
-MIT &copy; 2026 [Geetorus Labs, Inc](https://geetorus.ing)
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=geetorusai%2Fgeetorus&type=date&legend=top-left">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=geetorusai/geetorus&type=date&theme=dark&legend=top-left&sealed_token=hFjuwFq41bQD5cevvXVv5cTru2swWRZujwJYKlHhtBh6n0H5-VvJZW2SAlcQKB8u4KxhyEB9JqFg1yccJ8WLv9wPBcoWpWcak4gx0MYTWu_pOs2jKOaDluH7KsLeTKt6DHGkHiN3LsqV9s--MTDQcC6Xl7zV51W0-YezQXo-pVPgoFDFAGf2CY5fiP5Q" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=geetorusai/geetorus&type=date&legend=top-left&sealed_token=hFjuwFq41bQD5cevvXVv5cTru2swWRZujwJYKlHhtBh6n0H5-VvJZW2SAlcQKB8u4KxhyEB9JqFg1yccJ8WLv9wPBcoWpWcak4gx0MYTWu_pOs2jKOaDluH7KsLeTKt6DHGkHiN3LsqV9s--MTDQcC6Xl7zV51W0-YezQXo-pVPgoFDFAGf2CY5fiP5Q" />
-    <img src="https://api.star-history.com/chart?repos=geetorusai/geetorus&type=date&legend=top-left&sealed_token=hFjuwFq41bQD5cevvXVv5cTru2swWRZujwJYKlHhtBh6n0H5-VvJZW2SAlcQKB8u4KxhyEB9JqFg1yccJ8WLv9wPBcoWpWcak4gx0MYTWu_pOs2jKOaDluH7KsLeTKt6DHGkHiN3LsqV9s--MTDQcC6Xl7zV51W0-YezQXo-pVPgoFDFAGf2CY5fiP5Q" alt="Star History Chart" />
-  </picture>
-</a>
-
-<br/>
-
----
-
-<p align="center">
-  <sub>Open source under MIT. Built for people who want to get work done, not babysit agents.</sub>
-</p>
+Geetorus is open-source software licensed under the [MIT License](LICENSE).

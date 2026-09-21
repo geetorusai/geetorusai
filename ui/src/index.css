@@ -1,3 +1,6 @@
+/* Munder Difflin × Drago design system fonts */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -19,9 +22,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─── Munder Difflin × Drago Design Tokens ─────────────────────────────────
+   Base: Munder Difflin warm ink palette (munderdiffl.in)
+   Retro shadow/typography: Drago Tools (dragotool.shop)
+   Combined: warm engineering-dark, gold accent, retro brutalist structure.
+──────────────────────────────────────────────────────────────────────────── */
 @theme inline {
-  --font-sans: "InterVariable", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* Fonts: Plus Jakarta Sans (Drago) + Space Grotesk (Drago) + JetBrains Mono */
+  --font-sans: "Plus Jakarta Sans", "Space Grotesk", "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "MD Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --font-heading: "Space Grotesk", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -54,73 +64,100 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  /* Multiplicative radius ladder (modern shadcn/Tailwind v4 mapping):
-     sm/md/lg/xl/2xl/3xl/4xl = 0.6/0.8/1.0/1.4/1.8/2.2/2.6 x the single
-     --radius knob (base anchor 0.5rem = 8px; rounded-lg IS the anchor).
-     Replaces the additive +/-px ladder (DECISION-SHEET B4 → Run 3 review):
-     retune the whole app's corner language by editing --radius alone. */
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --font-heading: var(--font-sans);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  /* Drago Tools pure neo-brutalist zero-radius system */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
 }
 
 :root {
-  color-scheme: light;
-  --radius: 0.5rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --scrollbar-thumb: oklch(0.7 0 0);
-  --scrollbar-thumb-hover: oklch(0.6 0 0);
+  color-scheme: light dark;
+
+  /* ── Radius system: 0px pure neo-brutalist (Drago Tools) ── */
+  --radius: 0px;
+  --radius-task-composer: 0px;
+  --side-panel-tab-radius: 0px;
+  --side-panel-control-radius: 0px;
+
+  /* ── Drago Tools Neo-Brutalist Palette (dragotool.shop) ── */
+  --background: #ffffff;            /* crisp paper white */
+  --foreground: #000000;            /* sharp solid black */
+  --side-panel-bg: #ffffff;
+  --side-panel-fg: #000000;
+  --streamlined-task-detail-bg: #ffffff;
+  --card: #ffffff;                  /* brutalist white card */
+  --card-foreground: #000000;
+  --popover: #ffffff;               /* brutalist popover */
+  --popover-foreground: #000000;
+  --primary: #000000;               /* solid black primary */
+  --primary-foreground: #ffffff;     /* white on black */
+  --bubble-agent: #f4f4f5;
+  --secondary: #f4f4f5;             /* neutral panel surface */
+  --secondary-foreground: #000000;
+  --muted: #f4f4f5;                 /* muted container */
+  --muted-foreground: #52525b;      /* readable metadata text */
+  --accent: #ffca54;                /* Drago signature gold */
+  --accent-foreground: #000000;
+  --destructive: #ef4444;           /* error red */
+  --destructive-foreground: #ffffff;
+  --border: #000000;                /* solid 2px black border */
+  --input: #ffffff;
+  --ring: #000000;                  /* black focus ring */
+  --scrollbar-thumb: #000000;
+  --scrollbar-thumb-hover: #3f3f46;
   --scrollbar-size: 8px;
-  --scrollbar-radius: 999px;
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.88 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-  --chip-match-title-bg: oklch(0.97 0.02 265);
-  --chip-match-title-fg: oklch(0.4 0.13 265);
-  --chip-match-title-border: oklch(0.85 0.05 265);
-  --chip-match-comment-bg: oklch(0.97 0.02 145);
-  --chip-match-comment-fg: oklch(0.4 0.10 145);
-  --chip-match-comment-border: oklch(0.85 0.05 145);
-  --chip-match-document-bg: oklch(0.97 0.02 295);
-  --chip-match-document-fg: oklch(0.4 0.10 295);
-  --chip-match-document-border: oklch(0.85 0.05 295);
-  --chip-match-identifier-bg: var(--muted);
-  --chip-match-identifier-fg: var(--muted-foreground);
-  --chip-match-identifier-border: var(--border);
-  --geetorus-doc-annotation-highlight-source: oklch(0.78 0.16 89);
+  --scrollbar-radius: 0px;
+  --chart-1: #000000;
+  --chart-2: #ffca54;
+  --chart-3: #2563eb;
+  --chart-4: #16a34a;
+  --chart-5: #52525b;
+  --sidebar: #ffffff;               /* white sidebar */
+  --sidebar-foreground: #000000;
+  --sidebar-primary: #000000;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #000000;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #000000;
+  --sidebar-ring: #000000;
+
+  /* ── Retro shadow system (Drago Tools dragotool.shop) ── */
+  --retro-accent: #000000;
+  --retro-border-color: #000000;
+  --retro-border-width: 2px;
+  --retro-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+  --retro-shadow-sm: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  --retro-shadow-xs: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+  --shadow-sm:   3px 3px 0px 0px #000000;
+  --shadow-md:   5px 5px 0px 0px #000000;
+  --shadow-lg:   8px 8px 0px 0px #000000;
+  --shadow-sm-ink: 3px 3px 0px 0px #000000;
+
+  /* ── Munder Difflin extended palette ── */
+  --gt-ink:           #1a1320;
+  --gt-paper:         #fffdf7;
+  --gt-paper-2:       #fbefd2;
+  --gt-paper-3:       #fff8e7;
+  --gt-terminal:      #1a1320;
+  --gt-terminal-ink:  #f3ead3;
+  --gt-accent:        #ffca54;
+  --gt-accent-hover:  #ffd97e;
+  --gt-accent-ink:    #17150e;
+  --gt-accent-soft:   rgba(255, 202, 84, 0.15);
+  --gt-muted:         #5a5347;
+  --gt-faint:         #8a8274;
+  --gt-line:          #e6d9bc;
+  --gt-line-strong:   #d6c59e;
+  --gt-sky:           #4f9faf;
+  --gt-sky-light:     #dceff7;
+  --gt-maroon:        #b23a4e;
+  --gt-green:         #2e7d4f;
+  --gt-retro-border-width: 2px;
+
   --geetorus-doc-annotation-highlight-open: color-mix(in srgb, var(--geetorus-doc-annotation-highlight-source) 58%, var(--background));
   --geetorus-doc-annotation-highlight-focused: color-mix(in srgb, var(--geetorus-doc-annotation-highlight-source) 60%, var(--background));
   --geetorus-doc-annotation-highlight-stale: color-mix(in srgb, var(--geetorus-doc-annotation-highlight-source) 48%, var(--background));
@@ -362,62 +399,87 @@
   --tc-composer-bottom: var(--sz-calc-8);
   /* Together with the dock's pb-2, match the page's p-4 side gutters. */
   --tc-composer-hidden-nav-offset: calc(var(--sz-safe-bottom) + var(--spacing) * 2);
-}
 
-.dark {
-  --background: oklch(0.205 0 0);
-  --foreground: oklch(0.985 0 0);
-  --side-panel-bg: var(--background);
-  --side-panel-fg: oklch(0.985 0 0);
-  --streamlined-task-detail-bg: var(--background);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --bubble-agent: oklch(0.185 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.637 0.237 25.331); /* Gallery feedback round 1: user preferred master's original dark destructive red over the preset's softer 0.704 0.191 22.216. */
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --scrollbar-thumb: oklch(0.4 0 0);
-  --scrollbar-thumb-hover: oklch(0.5 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.32 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-  --chip-match-title-bg: oklch(0.27 0.04 265 / 0.5);
-  --chip-match-title-fg: oklch(0.78 0.10 265);
-  --chip-match-title-border: oklch(0.4 0.06 265);
-  --chip-match-comment-bg: oklch(0.27 0.04 145 / 0.5);
-  --chip-match-comment-fg: oklch(0.78 0.08 145);
-  --chip-match-comment-border: oklch(0.4 0.05 145);
-  --chip-match-document-bg: oklch(0.27 0.04 295 / 0.5);
-  --chip-match-document-fg: oklch(0.78 0.08 295);
-  --chip-match-document-border: oklch(0.4 0.05 295);
+  /* ── chip match tokens (light mode, warm palette) ── */
+  --chip-match-title-bg: color-mix(in srgb, #4f9faf 12%, #fff8e7);
+  --chip-match-title-fg: #1a4d5c;
+  --chip-match-title-border: color-mix(in srgb, #4f9faf 30%, #d6c59e);
+  --chip-match-comment-bg: color-mix(in srgb, #2e7d4f 10%, #fff8e7);
+  --chip-match-comment-fg: #1a4d2e;
+  --chip-match-comment-border: color-mix(in srgb, #2e7d4f 25%, #d6c59e);
+  --chip-match-document-bg: color-mix(in srgb, #ffca54 12%, #fff8e7);
+  --chip-match-document-fg: #7a5a00;
+  --chip-match-document-border: color-mix(in srgb, #ffca54 30%, #d6c59e);
   --chip-match-identifier-bg: var(--muted);
   --chip-match-identifier-fg: var(--muted-foreground);
   --chip-match-identifier-border: var(--border);
-  /* Dark-mode status-icon hues. The lighter progress blue gives bare glyphs
-     contrast comparable to the neighboring gray, purple, and green icons.
-     Blocked retains its base red; in_queue follows the progress icon blue. */
+  --geetorus-doc-annotation-highlight-source: #ffca54;
+  --geetorus-doc-annotation-highlight-open: color-mix(in srgb, #ffca54 58%, #fffdf7);
+  --geetorus-doc-annotation-highlight-focused: color-mix(in srgb, #ffca54 60%, #fffdf7);
+  --geetorus-doc-annotation-highlight-stale: color-mix(in srgb, #ffca54 48%, #fffdf7);
+  --geetorus-doc-annotation-highlight-resolved: color-mix(in srgb, #ffca54 28%, #fffdf7);
+  --geetorus-doc-annotation-highlight-x-outset: 0.25rem;
+  --geetorus-doc-annotation-highlight-y-outset: 0.125rem;
+  --geetorus-doc-annotation-highlight-radius: 0.1875rem;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* ── DARK MODE: Drago Cyber-Brutalist Command Center ── */
+  --background: #09090b;            /* deep obsidian */
+  --foreground: #f4f4f5;            /* clean white/light text */
+  --side-panel-bg: #09090b;
+  --side-panel-fg: #f4f4f5;
+  --streamlined-task-detail-bg: #09090b;
+  --card: #121215;                  /* dark brutalist card */
+  --card-foreground: #f4f4f5;
+  --popover: #18181b;               /* dark brutalist popover */
+  --popover-foreground: #f4f4f5;
+  --primary: #ffca54;               /* gold primary in dark */
+  --primary-foreground: #000000;
+  --bubble-agent: #18181b;
+  --secondary: #27272a;             /* dark secondary surface */
+  --secondary-foreground: #f4f4f5;
+  --muted: #1f1f23;                 /* dark muted container */
+  --muted-foreground: #a1a1aa;      /* secondary text */
+  --accent: #ffca54;                /* gold accent */
+  --accent-foreground: #000000;
+  --destructive: #ef4444;           /* error red */
+  --destructive-foreground: #ffffff;
+  --border: #3f3f46;                /* crisp border in dark */
+  --input: #18181b;
+  --ring: #ffca54;                  /* gold focus ring */
+  --scrollbar-thumb: #3f3f46;
+  --scrollbar-thumb-hover: #52525b;
+  --chart-1: #ffca54;
+  --chart-2: #38bdf8;
+  --chart-3: #4ade80;
+  --chart-4: #f43f5e;
+  --chart-5: #a1a1aa;
+  --sidebar: #09090b;               /* dark sidebar */
+  --sidebar-foreground: #f4f4f5;
+  --sidebar-primary: #ffca54;
+  --sidebar-primary-foreground: #000000;
+  --sidebar-accent: #ffca54;
+  --sidebar-accent-foreground: #000000;
+  --sidebar-border: #27272a;
+  --sidebar-ring: #ffca54;
+
+  /* ── chip match tokens (dark mode, warm palette) ── */
+  --chip-match-title-bg: color-mix(in srgb, #4f9faf 18%, #231c2b);
+  --chip-match-title-fg: #dceff7;
+  --chip-match-title-border: rgba(79, 159, 175, 0.35);
+  --chip-match-comment-bg: color-mix(in srgb, #2e7d4f 18%, #231c2b);
+  --chip-match-comment-fg: #b4dec3;
+  --chip-match-comment-border: rgba(46, 125, 79, 0.35);
+  --chip-match-document-bg: color-mix(in srgb, #ffca54 12%, #231c2b);
+  --chip-match-document-fg: #ffca54;
+  --chip-match-document-border: rgba(255, 202, 84, 0.28);
+  --chip-match-identifier-bg: var(--muted);
+  --chip-match-identifier-fg: var(--muted-foreground);
+  --chip-match-identifier-border: var(--border);
+
   --status-task-icon-backlog: #9a958a;
   --status-task-icon-todo: #fbbf24;
   --status-task-icon-in_progress: var(--color-blue-400); /* matches nav dots and live labels */
@@ -517,6 +579,10 @@
     font-family: var(--font-sans);
     height: 100%;
     overflow: hidden;
+    background-image:
+      linear-gradient(rgba(214, 197, 158, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(214, 197, 158, 0.02) 1px, transparent 1px);
+    background-size: 32px 32px;
   }
   h1,
   h2,
@@ -626,22 +692,88 @@
   color-scheme: dark;
 }
 
-.dark *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.dark *::-webkit-scrollbar-track {
-  background: oklch(0.205 0 0);
+::-webkit-scrollbar-track {
+  background: var(--background);
 }
 
-.dark *::-webkit-scrollbar-thumb {
-  background: oklch(0.4 0 0);
-  border-radius: 4px;
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
 }
 
-.dark *::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.5 0 0);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* ─── Drago Tools × Munder Difflin Retro-Brutalist Surfaces ──────────────── */
+.primary-sidebar-surface,
+[data-slot="sidebar-shell"] {
+  background-color: var(--sidebar) !important;
+  border-right: 2px solid var(--sidebar-border) !important;
+}
+
+[data-slot="card"] {
+  border-width: 1.5px !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm) !important;
+  background-color: var(--card) !important;
+}
+
+[data-slot="card"][data-interactive="true"]:hover,
+.card-interactive:hover {
+  border-color: var(--accent) !important;
+  box-shadow: var(--shadow-md) !important;
+  transform: translateY(-1px);
+  transition: all 150ms ease;
+}
+
+/* High-contrast Technical Buttons */
+[data-slot="button"][data-variant="default"],
+[data-slot="button"][data-variant="cta"] {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  font-weight: 600 !important;
+  border: 1.5px solid #000000 !important;
+  box-shadow: 2px 2px 0px #000000 !important;
+  transition: all 120ms ease;
+}
+
+[data-slot="button"][data-variant="default"]:hover,
+[data-slot="button"][data-variant="cta"]:hover {
+  box-shadow: 3px 3px 0px #000000 !important;
+  transform: translate(-1px, -1px);
+}
+
+[data-slot="button"][data-variant="default"]:active,
+[data-slot="button"][data-variant="cta"]:active {
+  box-shadow: 0px 0px 0px #000000 !important;
+  transform: translate(1px, 1px);
+}
+
+[data-slot="button"][data-variant="outline"] {
+  background-color: var(--secondary) !important;
+  color: var(--foreground) !important;
+  border: 1.5px solid var(--border) !important;
+  box-shadow: 2px 2px 0px #000000 !important;
+  transition: all 120ms ease;
+}
+
+[data-slot="button"][data-variant="outline"]:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Technical Badges */
+[data-slot="badge"] {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-width: 1px;
 }
 
 /* Auto-hide scrollbar: thin, stable gutter with the thumb visible only on hover */
@@ -3047,4 +3179,86 @@ span.geetorus-mention-chip[data-mention-kind="external-object"] {
 }
 @media (prefers-reduced-motion: reduce) {
   .announcement-well { animation: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Drago Tools (dragotool.shop) Neo-Brutalist Design Utilities & Overrides
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.drago-card {
+  border: 2px solid var(--border);
+  background-color: var(--card);
+  color: var(--card-foreground);
+  box-shadow: 4px 4px 0px 0px #000000;
+  border-radius: 0px !important;
+}
+
+.dark .drago-card {
+  box-shadow: 4px 4px 0px 0px #000000;
+  border-color: var(--border);
+}
+
+.drago-btn {
+  border: 2px solid #000000;
+  box-shadow: 3px 3px 0px 0px #000000;
+  border-radius: 0px !important;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.drago-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px #000000;
+}
+
+.drago-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000000;
+}
+
+.drago-badge {
+  border: 2px solid #000000;
+  box-shadow: 2px 2px 0px 0px #000000;
+  border-radius: 0px !important;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.drago-shadow {
+  box-shadow: 4px 4px 0px 0px #000000 !important;
+}
+
+.drago-shadow-sm {
+  box-shadow: 2px 2px 0px 0px #000000 !important;
+}
+
+.drago-shadow-lg {
+  box-shadow: 8px 8px 0px 0px #000000 !important;
+}
+
+/* Ensure global brutalist borders and zero radius */
+[data-slot="card"] {
+  border-radius: 0px !important;
+  border-width: 2px !important;
+}
+
+[data-slot="button"] {
+  border-radius: 0px !important;
+}
+
+[data-slot="badge"] {
+  border-radius: 0px !important;
+}
+
+[data-slot="dialog-content"] {
+  border-radius: 0px !important;
+}
+
+[data-slot="input"],
+[data-slot="textarea"] {
+  border-radius: 0px !important;
 }

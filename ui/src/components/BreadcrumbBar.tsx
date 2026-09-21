@@ -82,7 +82,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
 
   if (isMobile && mobileToolbar) {
     return (
-      <div className="h-(--sz-60px) shrink-0 flex items-center border-b border-border px-2">
+      <div className="h-(--sz-60px) shrink-0 flex items-center border-b-2 border-black bg-background px-2">
         {mobileToolbar}
       </div>
     );
@@ -90,7 +90,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
 
   if (breadcrumbs.length === 0) {
     return (
-      <div className="h-(--sz-60px) shrink-0 flex items-center justify-end border-b border-border px-4 md:px-6">
+      <div className="h-(--sz-60px) shrink-0 flex items-center justify-end border-b-2 border-black bg-background px-4 md:px-6">
         {globalToolbarSlots}
       </div>
     );
@@ -100,7 +100,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
     <Button
       variant="ghost"
       size="icon-sm"
-      className="mr-2 shrink-0"
+      className="mr-2 shrink-0 border-2 border-black shadow-[2px_2px_0px_0px_#000000]"
       onClick={toggleSidebar}
       aria-label="Open sidebar"
     >
@@ -111,13 +111,13 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
   const currentCrumb = breadcrumbs[breadcrumbs.length - 1];
   if (isMobile && breadcrumbs[0]?.label === "Tasks" && currentCrumb.identifier) {
     return (
-      <div className="h-(--sz-60px) shrink-0 flex items-center border-b border-border px-4">
+      <div className="h-(--sz-60px) shrink-0 flex items-center border-b-2 border-black bg-background px-4">
         {menuButton}
-        <h1 className="flex min-w-0 flex-1 items-baseline gap-1.5 text-sm">
+        <h1 className="flex min-w-0 flex-1 items-baseline gap-1.5 font-heading text-sm font-bold">
           {currentCrumb.leading ? (
             <span className="flex shrink-0 items-center self-center">{currentCrumb.leading}</span>
           ) : null}
-          <span className="min-w-0 truncate" title={currentCrumb.label}>{currentCrumb.label}</span>
+          <span className="min-w-0 truncate font-heading font-black tracking-tight" title={currentCrumb.label}>{currentCrumb.label}</span>
           <CrumbIdentifier identifier={currentCrumb.identifier} />
         </h1>
         {globalToolbarSlots}
@@ -127,7 +127,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
 
   const breadcrumbTrail = (
     <div className="min-w-0 overflow-hidden flex-1">
-      <Breadcrumb className="min-w-0 overflow-hidden">
+      <Breadcrumb className="min-w-0 overflow-hidden font-heading font-bold text-sm">
         <BreadcrumbList className="flex-nowrap">
           {breadcrumbs.map((crumb, i) => {
             const isLast = i === breadcrumbs.length - 1;
@@ -142,11 +142,11 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
                           <span className="flex shrink-0 items-center self-center">{crumb.leading}</span>
                         )}
                         {!taskDetailLayout ? <CrumbIdentifier identifier={crumb.identifier} /> : null}
-                        <span className="min-w-0 truncate">{crumb.label}</span>
+                        <span className="min-w-0 truncate font-heading font-black tracking-tight">{crumb.label}</span>
                         {taskDetailLayout && isLast ? <CrumbIdentifier identifier={crumb.identifier} /> : null}
                       </BreadcrumbPage>
                     ) : (
-                      <BreadcrumbPage className="truncate">{crumb.label}</BreadcrumbPage>
+                      <BreadcrumbPage className="truncate font-heading font-black tracking-tight">{crumb.label}</BreadcrumbPage>
                     )
                   ) : (
                     <BreadcrumbLink asChild>
@@ -155,14 +155,14 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
                           to={crumb.href}
                           className={cn(
                             "flex min-w-0 items-baseline gap-1.5",
-                            i === 0 && "font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground",
+                            i === 0 && "font-heading font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground",
                           )}
                         >
                           {crumb.leading && (
                             <span className="flex shrink-0 items-center self-center">{crumb.leading}</span>
                           )}
                           {!taskDetailLayout ? <CrumbIdentifier identifier={crumb.identifier} /> : null}
-                          <span className="min-w-0 truncate">{crumb.label}</span>
+                          <span className="min-w-0 truncate font-heading font-bold">{crumb.label}</span>
                           {taskDetailLayout && isLast ? <CrumbIdentifier identifier={crumb.identifier} /> : null}
                         </Link>
                       ) : (
@@ -170,7 +170,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
                           to={crumb.href}
                           className={cn(
                             "min-w-0 truncate",
-                            i === 0 && "font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground",
+                            i === 0 && "font-heading font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground",
                           )}
                         >
                           {crumb.label}
@@ -192,11 +192,11 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
   // Other single-crumb pages keep their existing page-title presentation.
   if (breadcrumbs.length === 1 && !taskDetailLayout) {
     return (
-      <div className="h-(--sz-60px) shrink-0 flex items-center border-b border-border px-4 md:px-6">
+      <div className="h-(--sz-60px) shrink-0 flex items-center border-b-2 border-black bg-background px-4 md:px-6">
         {menuButton}
         <div className="min-w-0 overflow-hidden flex-1">
           {breadcrumbs[0].leading || breadcrumbs[0].identifier ? (
-            <h1 className="flex items-baseline gap-1.5 text-sm font-semibold uppercase tracking-wider">
+            <h1 className="flex items-baseline gap-1.5 text-base font-heading font-black tracking-tight uppercase">
               {breadcrumbs[0].leading && (
                 <span className="flex shrink-0 items-center self-center">{breadcrumbs[0].leading}</span>
               )}
@@ -204,7 +204,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
               <span className="truncate">{breadcrumbs[0].label}</span>
             </h1>
           ) : (
-            <h1 className="text-sm font-semibold uppercase tracking-wider truncate">
+            <h1 className="text-base font-heading font-black tracking-tight uppercase truncate">
               {breadcrumbs[0].label}
             </h1>
           )}
@@ -218,7 +218,7 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
   return (
     <div
       className={cn(
-        "relative h-(--sz-60px) shrink-0 flex items-center border-b border-border",
+        "relative h-(--sz-60px) shrink-0 flex items-center border-b-2 border-black bg-background",
         "px-4 md:px-6",
       )}
     >
@@ -227,9 +227,9 @@ export function BreadcrumbBar({ taskDetailLayout = false }: { taskDetailLayout?:
       {globalToolbarSlots}
       {taskDetailLayout ? (
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon-sm"
-          className="ml-5 size-9 shrink-0 text-muted-foreground"
+          className="ml-5 size-9 shrink-0"
           onClick={toggleTaskPanel}
           aria-label={taskPanelOpen ? "Hide properties" : "Show properties"}
           title={taskPanelOpen ? "Hide properties" : "Show properties"}

@@ -26,6 +26,7 @@ import {
   startAdapterExecutionTargetGeetorusBridge,
 } from "@geetorusai/adapter-utils/execution-target";
 import {
+  asBoolean,
   asString,
   asNumber,
   asStringArray,
@@ -216,7 +217,15 @@ async function buildOpenCodeSkillsDir(config: Record<string, unknown>): Promise<
   for (const entry of availableEntries) {
     if (!desiredNames.has(entry.key)) continue;
     if (isGeetorusSkillSourceMissing(entry)) continue;
-    await fs.symlink(entry.source, path.join(target, entry.runtimeName));
+    if (process.platform === "win32") {
+      try {
+        await fs.symlink(entry.source, path.join(target, entry.runtimeName), "junction");
+      } catch {
+        await fs.cp(entry.source, path.join(target, entry.runtimeName), { recursive: true });
+      }
+    } else {
+      await fs.symlink(entry.source, path.join(target, entry.runtimeName));
+    }
   }
   return target;
 }
@@ -615,6 +624,9 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     const buildArgs = (resumeSessionId: string | null) => {
       const args = ["run", "--format", "json"];
       if (printLogs) args.push("--print-logs");
+      if (asBoolean(config.dangerouslySkipPermissions, true)) {
+        args.push("--auto");
+      }
       if (resumeSessionId) args.push("--session", resumeSessionId);
       if (model) args.push("--model", model);
       if (variant) args.push("--variant", variant);

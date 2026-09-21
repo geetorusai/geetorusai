@@ -195,16 +195,16 @@ export function SidebarShell({
   );
 
   return (
-    <div className={cn("relative h-full shrink-0", className)} style={reservedStyle}>
+    <div className={cn("relative h-full shrink-0 border-r-2 border-black bg-sidebar", className)} style={reservedStyle}>
       <div
         className={cn(
-          "absolute inset-y-0 left-0 flex flex-col overflow-hidden",
+          "absolute inset-y-0 left-0 flex flex-col overflow-hidden border-r-2 border-black bg-sidebar",
           // Open/close is instant (PAP-10676): no width transition so the rail and
           // expanded states snap without any sliding motion.
           // Overlay styling only while the panel is wider than its reserved
           // spacer (i.e. peeking) so it floats above content without reflow.
           isOverlay
-            ? "z-30 border-r border-border bg-background shadow-lg"
+            ? "z-30 bg-sidebar shadow-[6px_0px_0px_0px_#000000]"
             : "z-0",
         )}
         style={panelStyle}

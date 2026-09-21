@@ -12,7 +12,13 @@ export async function execute(
   const host = asString(config.host, process.env.OLLAMA_HOST || process.env.OLLAMA_API_BASE || DEFAULT_OLLAMA_HOST).replace(/\/+$/, "");
   const model = asString(config.model, DEFAULT_OLLAMA_LOCAL_MODEL);
   const temperature = asNumber(config.temperature, 0.2);
-  const prompt = renderGeetorusWakePrompt(ctx.context) || asString(ctx.context.prompt, "");
+  const wakePrompt = ctx.context.geetorusWake
+    ? renderGeetorusWakePrompt(ctx.context.geetorusWake, {
+        conversationMode: ctx.context.conversationMode === true,
+      })
+    : "";
+  const directPrompt = asString(ctx.context.prompt, "");
+  const prompt = wakePrompt || directPrompt || "Respond with hello.";
   const timeoutSec = asNumber(config.timeoutSec, 300);
 
   const controller = new AbortController();
@@ -87,11 +93,55 @@ export async function execute(
 
     clearTimeout(timeout);
 
+    // Auto-post output comment to issue thread and update disposition if running on an issue
+    const issueId = asString(ctx.context.issueId, asString(ctx.context.taskId, ""));
+    const geetorusApiUrl = process.env.GEETORUS_API_URL || "http://127.0.0.1:3100";
+    if (issueId && fullOutput.trim()) {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (ctx.authToken) headers["Authorization"] = `Bearer ${ctx.authToken}`;
+      
+      try {
+        await fetch(`${geetorusApiUrl}/api/issues/${issueId}/comments`, {
+          method: "POST",
+          headers,
+          body: JSON.stringify({ body: fullOutput.trim() }),
+        });
+
+        const recoveryActionId = asString(ctx.context.recoveryActionId, "");
+        if (recoveryActionId) {
+          await fetch(`${geetorusApiUrl}/api/issues/${issueId}/recovery-actions/resolve`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              actionId: recoveryActionId,
+              outcome: "restored",
+              sourceIssueStatus: "done",
+              resolutionNote: "Resolved automatically by Ollama run completion",
+            }),
+          });
+        }
+
+        // Set issue disposition to done so Geetorus recovery watchdog doesn't get stuck in missing disposition loops
+        await fetch(`${geetorusApiUrl}/api/issues/${issueId}`, {
+          method: "PATCH",
+          headers,
+          body: JSON.stringify({
+            status: "done",
+          }),
+        });
+      } catch {
+        // Non-fatal
+      }
+    }
+
     return {
       exitCode: 0,
       signal: null,
       timedOut: false,
       summary: fullOutput.slice(0, 500),
+      resultJson: {
+        stdout: fullOutput,
+      },
       model,
       provider: "ollama",
     };

@@ -42,7 +42,7 @@ export const SANDBOX_INSTALL_COMMAND =
   'fi; ' +
   'fi';
 
-export const DEFAULT_OPENCODE_LOCAL_MODEL = "openai/gpt-5.2-codex";
+export const DEFAULT_OPENCODE_LOCAL_MODEL = "opencode/nemotron-3.5-lightning-free";
 
 export function isValidOpenCodeModelId(value: unknown): value is string {
   if (typeof value !== "string") return false;
@@ -52,13 +52,14 @@ export function isValidOpenCodeModelId(value: unknown): value is string {
 }
 
 export const models: Array<{ id: string; label: string }> = [
-  { id: DEFAULT_OPENCODE_LOCAL_MODEL, label: DEFAULT_OPENCODE_LOCAL_MODEL },
-  { id: "openai/gpt-5.5", label: "openai/gpt-5.5" },
-  { id: "openai/gpt-5.4", label: "openai/gpt-5.4" },
-  { id: "openai/gpt-5.4-mini", label: "openai/gpt-5.4-mini" },
-  { id: "openai/gpt-5.2", label: "openai/gpt-5.2" },
-  { id: "openai/gpt-5.1-codex-max", label: "openai/gpt-5.1-codex-max" },
-  { id: "openai/gpt-5.1-codex-mini", label: "openai/gpt-5.1-codex-mini" },
+  { id: DEFAULT_OPENCODE_LOCAL_MODEL, label: "opencode/nemotron-3.5-lightning-free (Free)" },
+  { id: "opencode/mimo-v2.5-free", label: "opencode/mimo-v2.5-free (Free)" },
+  { id: "opencode/nemotron-3-ultra-free", label: "opencode/nemotron-3-ultra-free (Free)" },
+  { id: "opencode/ling-3.0-flash-fin-free", label: "opencode/ling-3.0-flash-fin-free (Free)" },
+  { id: "opencode/jev-1.13-free", label: "opencode/jev-1.13-free (Free)" },
+  { id: "opencode/gpt-5.2-codex", label: "opencode/gpt-5.2-codex" },
+  { id: "opencode/gpt-5.4-mini", label: "opencode/gpt-5.4-mini" },
+  { id: "opencode/gemini-3.5-flash", label: "opencode/gemini-3.5-flash" },
 ];
 
 export const agentConfigurationDoc = `# opencode_local agent configuration
