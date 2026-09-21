@@ -927,6 +927,8 @@ export const HEARTBEAT_RUN_STATUSES = [
   "timed_out",
 ] as const;
 export type HeartbeatRunStatus = (typeof HEARTBEAT_RUN_STATUSES)[number];
+export const PULSE_RUN_STATUSES = HEARTBEAT_RUN_STATUSES;
+export type PulseRunStatus = HeartbeatRunStatus;
 
 export const RUN_LIVENESS_STATES = [
   "completed",

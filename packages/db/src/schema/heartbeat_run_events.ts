@@ -48,3 +48,6 @@ export const heartbeatRunEvents = pgTable(
     companyCreatedIdx: index("heartbeat_run_events_company_created_idx").on(table.companyId, table.createdAt),
   }),
 );
+
+export const pulseRunEvents = heartbeatRunEvents;
+

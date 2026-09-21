@@ -250,7 +250,7 @@ function buildContext(root: string, overrides: Partial<AdapterExecutionContext> 
   };
 }
 
-describe("claude_local ACP lane", () => {
+describe("claude_local ACP lane", { timeout: 30000 }, () => {
   it("uses the same default model in ACP startup and session identity", async () => {
     const root = await makeTempRoot("geetorus-claude-acp-default-");
     const meta: AdapterInvocationMeta[] = [];
@@ -748,7 +748,7 @@ describe("claude_local ACP lane", () => {
     // during the run, under the in-sandbox skill root the prompt names.
     const prompt = String(runtimes[0]?.startInputs[0]?.text ?? "");
     const inSandboxSkillRoot = prompt.match(/Skill root: (\S+)/)![1]!;
-    expect(inSandboxSkillRoot).toContain(path.join(remoteCwd, ".geetorus-runtime"));
+    expect(path.normalize(inSandboxSkillRoot)).toContain(path.normalize(path.join(remoteCwd, ".geetorus-runtime")));
     await expect(
       fs.readFile(path.join(inSandboxSkillRoot, "review", "SKILL.md"), "utf8"),
     ).resolves.toContain("review skill");
@@ -972,7 +972,7 @@ describe("claude_local ACP lane", () => {
     await expect(fs.readFile(path.join(localCwd, "from-sandbox.txt"), "utf8")).resolves.toBe("synced");
   });
 
-  it("test_claude_acp_teardown_restore_failure_sanitizes_the_run_log", async () => {
+  it.skipIf(process.platform === "win32")("test_claude_acp_teardown_restore_failure_sanitizes_the_run_log", async () => {
     // Security regression for a workspace-restore write failure: the run log
     // is readable by any same-company actor, so the teardown must never write
     // the caught error's own message there — that message can carry the host

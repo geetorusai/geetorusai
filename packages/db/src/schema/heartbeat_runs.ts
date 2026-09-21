@@ -164,3 +164,6 @@ export const heartbeatRuns = pgTable(
     ),
   }),
 );
+
+export const pulseRuns = heartbeatRuns;
+

@@ -32,3 +32,6 @@ export const heartbeatRunWatchdogDecisions = pgTable(
     ),
   }),
 );
+
+export const pulseRunWatchdogDecisions = heartbeatRunWatchdogDecisions;
+

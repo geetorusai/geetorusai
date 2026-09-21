@@ -6536,7 +6536,9 @@ export function agentRoutes(
     }
   });
 
-  router.get("/companies/:companyId/heartbeat-runs", async (req, res) => {
+  router.get(
+    ["/companies/:companyId/heartbeat-runs", "/companies/:companyId/pulse-runs"],
+    async (req, res) => {
     const companyId = req.params.companyId as string;
     assertCompanyAccess(req, companyId);
     if (!(await assertRunTelemetryReadAllowed(req, res, companyId))) return;
@@ -6668,7 +6670,7 @@ export function agentRoutes(
     })))));
   });
 
-  router.get("/heartbeat-runs/:runId", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId", "/pulse-runs/:runId"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;
@@ -6685,7 +6687,7 @@ export function agentRoutes(
     ));
   });
 
-  router.post("/heartbeat-runs/:runId/cancel", async (req, res) => {
+  router.post(["/heartbeat-runs/:runId/cancel", "/pulse-runs/:runId/cancel"], async (req, res) => {
     assertBoard(req);
     const runId = req.params.runId as string;
     const existing = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
@@ -6716,7 +6718,10 @@ export function agentRoutes(
   });
 
   router.post(
-    "/heartbeat-runs/:runId/runtime-requests/:requestId/resolve",
+    [
+      "/heartbeat-runs/:runId/runtime-requests/:requestId/resolve",
+      "/pulse-runs/:runId/runtime-requests/:requestId/resolve",
+    ],
     async (req, res) => {
       assertBoard(req);
       const runId = req.params.runId as string;
@@ -6923,7 +6928,7 @@ export function agentRoutes(
     },
   );
 
-  router.post("/heartbeat-runs/:runId/watchdog-decisions", async (req, res) => {
+  router.post(["/heartbeat-runs/:runId/watchdog-decisions", "/pulse-runs/:runId/watchdog-decisions"], async (req, res) => {
     const runId = req.params.runId as string;
     const existing = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!existing) return;
@@ -6955,7 +6960,7 @@ export function agentRoutes(
     res.json(row);
   });
 
-  router.get("/heartbeat-runs/:runId/provider-trace", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/provider-trace", "/pulse-runs/:runId/provider-trace"], async (req, res) => {
     assertInstanceAdmin(req);
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(
@@ -6983,7 +6988,10 @@ export function agentRoutes(
   });
 
   router.post(
-    "/heartbeat-runs/:runId/provider-trace/reproject-workspace-diffs",
+    [
+      "/heartbeat-runs/:runId/provider-trace/reproject-workspace-diffs",
+      "/pulse-runs/:runId/provider-trace/reproject-workspace-diffs",
+    ],
     async (req, res) => {
       assertBoard(req);
       const runId = req.params.runId as string;
@@ -7042,7 +7050,10 @@ export function agentRoutes(
   );
 
   router.post(
-    "/heartbeat-runs/:runId/provider-trace/frames/:frameId/reveal",
+    [
+      "/heartbeat-runs/:runId/provider-trace/frames/:frameId/reveal",
+      "/pulse-runs/:runId/provider-trace/frames/:frameId/reveal",
+    ],
     async (req, res) => {
       assertInstanceAdmin(req);
       const runId = req.params.runId as string;
@@ -7082,7 +7093,10 @@ export function agentRoutes(
   );
 
   router.get(
-    "/heartbeat-runs/:runId/provider-trace/download",
+    [
+      "/heartbeat-runs/:runId/provider-trace/download",
+      "/pulse-runs/:runId/provider-trace/download",
+    ],
     async (req, res) => {
       assertInstanceAdmin(req);
       const runId = req.params.runId as string;
@@ -7118,7 +7132,7 @@ export function agentRoutes(
     },
   );
 
-  router.delete("/heartbeat-runs/:runId/provider-trace", async (req, res) => {
+  router.delete(["/heartbeat-runs/:runId/provider-trace", "/pulse-runs/:runId/provider-trace"], async (req, res) => {
     assertInstanceAdmin(req);
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(
@@ -7142,7 +7156,7 @@ export function agentRoutes(
     res.json({ ok: true });
   });
 
-  router.get("/heartbeat-runs/:runId/events", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/events", "/pulse-runs/:runId/events"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;
@@ -7161,7 +7175,7 @@ export function agentRoutes(
     res.json(await runRedactions.redactForRun(run.companyId, run.id, redactedEvents));
   });
 
-  router.get("/heartbeat-runs/:runId/log", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/log", "/pulse-runs/:runId/log"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRunLogAccess(runId), "Heartbeat run not found");
     if (!run) return;
@@ -7178,7 +7192,7 @@ export function agentRoutes(
     res.json(await runRedactions.redactForRun(run.companyId, run.id, result));
   });
 
-  router.get("/heartbeat-runs/:runId/workspace-operations", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/workspace-operations", "/pulse-runs/:runId/workspace-operations"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;

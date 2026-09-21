@@ -3434,6 +3434,10 @@ async function resolveCommandPath(
 ): Promise<string | null> {
   const hasPathSeparator = command.includes("/") || command.includes("\\");
   if (hasPathSeparator) {
+    if (process.platform === "win32" && (command === "/bin/sh" || command === "/bin/bash")) {
+      const gitBash = command === "/bin/sh" ? "C:\\Program Files\\Git\\bin\\sh.exe" : "C:\\Program Files\\Git\\bin\\bash.exe";
+      if (await pathExists(gitBash)) return gitBash;
+    }
     const absolute = path.isAbsolute(command)
       ? command
       : path.resolve(cwd, command);
@@ -3443,6 +3447,15 @@ async function resolveCommandPath(
   const pathValue = env.PATH ?? env.Path ?? "";
   const delimiter = process.platform === "win32" ? ";" : ":";
   const dirs = pathValue.split(delimiter).filter(Boolean);
+  if (process.platform === "win32" && (command === "sh" || command === "bash")) {
+    const fallbackDirs = [
+      "C:\\Program Files\\Git\\bin",
+      "C:\\Program Files\\Git\\usr\\bin",
+    ];
+    for (const fb of fallbackDirs) {
+      if (!dirs.includes(fb)) dirs.push(fb);
+    }
+  }
   const exts = process.platform === "win32" ? windowsPathExts(env) : [""];
   const hasExtension =
     process.platform === "win32" && path.extname(command).length > 0;
@@ -4635,8 +4648,13 @@ export async function runChildProcess(
         for (const [key, value] of Object.entries(childEnv)) {
           if (value === undefined) delete childEnv[key];
         }
+        const rawCwd = target.cwd ?? opts.cwd;
+        const spawnCwd =
+          process.platform === "win32" && (rawCwd === "/" || rawCwd === "\\")
+            ? (process.env.SystemDrive ? `${process.env.SystemDrive}\\` : "C:\\")
+            : rawCwd;
         const child = spawn(target.command, target.args, {
-          cwd: target.cwd ?? opts.cwd,
+          cwd: spawnCwd,
           env: childEnv,
           detached: process.platform !== "win32",
           shell: false,

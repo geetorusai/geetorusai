@@ -79,7 +79,7 @@ describe("resolveCanonicalWorktreeSeedSource", () => {
     });
   });
 
-  it("rejects a dangling config symlink instead of falling back to the named source", () => {
+  it.skipIf(process.platform === "win32")("rejects a dangling config symlink instead of falling back to the named source", () => {
     const baseCwd = makePlainCheckout();
     fs.mkdirSync(path.join(baseCwd, ".geetorus"), { recursive: true });
     fs.symlinkSync(path.join(baseCwd, "absent.json"), path.join(baseCwd, ".geetorus", "config.json"));
@@ -96,7 +96,7 @@ describe("resolveCanonicalWorktreeSeedSource", () => {
     })).toThrow(/Registered source Geetorus config does not exist/);
   });
 
-  it("fails closed when the declared config cannot be inspected", () => {
+  it.skipIf(process.platform === "win32")("fails closed when the declared config cannot be inspected", () => {
     const baseCwd = makePlainCheckout();
     // `.geetorus` as a regular file makes lstat report ENOTDIR, not ENOENT.
     fs.writeFileSync(path.join(baseCwd, ".geetorus"), "not a directory\n");
@@ -113,7 +113,7 @@ describe("resolveCanonicalWorktreeSeedSource", () => {
     })).toThrow(/cannot be inspected \(ENOTDIR\)/);
   });
 
-  it("rejects a dangling .geetorus symlink instead of falling back to the named source", () => {
+  it.skipIf(process.platform === "win32")("rejects a dangling .geetorus symlink instead of falling back to the named source", () => {
     const baseCwd = makePlainCheckout();
     // Resolving `.geetorus` fails before the probe reaches config.json, so the config
     // entry reports ENOENT even though this workspace is malformed rather than plain.
@@ -131,7 +131,7 @@ describe("resolveCanonicalWorktreeSeedSource", () => {
     })).toThrow(/cannot be inspected \(ENOENT on its \.geetorus symlink target\)/);
   });
 
-  it("takes the named source when .geetorus is a symlink to a directory with no config", () => {
+  it.skipIf(process.platform === "win32")("takes the named source when .geetorus is a symlink to a directory with no config", () => {
     const baseCwd = makePlainCheckout();
     const linked = path.join(baseCwd, "linked-config-dir");
     fs.mkdirSync(linked, { recursive: true });

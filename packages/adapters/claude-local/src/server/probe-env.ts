@@ -100,7 +100,7 @@ async function resolveTrustedExecutable(
   const dirs = pathValue.split(delimiter).filter(Boolean);
   const exts =
     process.platform === "win32"
-      ? (trustedEnv.PATHEXT ?? ".EXE;.CMD;.BAT;.COM").split(";").filter(Boolean)
+      ? ["", ...(trustedEnv.PATHEXT ?? ".EXE;.CMD;.BAT;.COM").split(";").filter(Boolean)]
       : [""];
   const mode = process.platform === "win32" ? fsConstants.F_OK : fsConstants.X_OK;
   for (const dir of dirs) {
