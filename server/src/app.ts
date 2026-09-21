@@ -624,6 +624,15 @@ export async function createApp(
   // Mount API routes
   const api = Router();
   api.use(boardMutationGuard());
+  api.get("/", (_req, res) => {
+    res.json({
+      status: "ok",
+      name: "Geetorus API",
+      version: opts.hostVersion ?? serverVersion,
+      health: "/api/health",
+      openapi: "/api/openapi.json",
+    });
+  });
   api.use(
     "/health",
     healthRoutes(db, {

@@ -24,6 +24,12 @@ function summarizeRecentLogs(recentLogs: string[]): string | null {
 
 function detectEmbeddedPostgresHint(recentLogs: string[]): string | null {
   const haystack = recentLogs.join("\n").toLowerCase();
+  if (haystack.includes("pre-existing shared memory block is still in use")) {
+    return (
+      "A lingering PostgreSQL worker process is still running in the background. " +
+      "Terminate any orphan postgres processes (e.g. `Stop-Process -Name postgres -Force` on Windows or `killall postgres` on Unix) and retry."
+    );
+  }
   if (!haystack.includes("could not create shared memory segment")) {
     return null;
   }

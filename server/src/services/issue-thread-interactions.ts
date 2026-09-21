@@ -103,6 +103,7 @@ import {
   readAcceptedPlanConfirmationTarget,
   runWorkspaceIsFinalized,
 } from "./issues.js";
+import { getNativeReviewAssignment } from "./native-runtime/native-review-participant.js";
 import { questionResponseDeliveryValues } from "./question-response-delivery.js";
 import {
   cancelPendingIssueInteractionChatPublications,
@@ -464,6 +465,7 @@ type IssueResolutionContext = {
   reviewPolicy: IssueReviewPolicy | null;
   createdByAgentId: string | null;
   createdByUserId: string | null;
+  executionRunId?: string | null;
 };
 
 async function assertRequestConfirmationResolutionAllowedUnderLock(
@@ -484,6 +486,15 @@ async function assertRequestConfirmationResolutionAllowedUnderLock(
     (await isIssueReviewVerdictInteraction(tx, { issue, interaction }));
 
   assertInteractionResolutionAllowed(interaction, actor);
+  if (actor.agentId && isNativeCompletionReview(interaction)) {
+    const target = (interaction.payload as { target?: { revisionId?: string } }).target;
+    if (!actor.runId || !await getNativeReviewAssignment(tx, {
+      companyId: issue.companyId, issueId: issue.id, agentId: actor.agentId,
+      contextSnapshot: { nativeReviewInteractionId: interaction.id, nativeReviewDecisionId: target?.revisionId },
+      actingRunId: actor.runId,
+      issueExecutionRunId: issue.executionRunId,
+    })) throw conflict("This completion review is no longer current or assigned to this agent.");
+  }
   if (!isReviewVerdict) return;
 
   const verdictActor = actor.agentId
@@ -2109,6 +2120,7 @@ export function issueThreadInteractionService(
           reviewPolicy: issues.reviewPolicy,
           createdByAgentId: issues.createdByAgentId,
           createdByUserId: issues.createdByUserId,
+          executionRunId: issues.executionRunId,
         })
         .from(issues)
         .where(eq(issues.id, args.issue.id))
@@ -2381,6 +2393,7 @@ export function issueThreadInteractionService(
           reviewPolicy: issues.reviewPolicy,
           createdByAgentId: issues.createdByAgentId,
           createdByUserId: issues.createdByUserId,
+          executionRunId: issues.executionRunId,
         })
         .from(issues)
         .where(eq(issues.id, args.issue.id))

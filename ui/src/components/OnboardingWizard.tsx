@@ -710,12 +710,13 @@ function OnboardingWizardInner({
     adapterType === "codex_local" ||
     adapterType === "grok_local"
   );
+  const anySourceHasSubscriptionSupport = true;
   const credentialMode: CredentialMode = hasSubscriptionSupport
     ? (credentialModeChoice ?? (
         (savedKeys.subscriptions.length > 0 || (adapterType === "claude_local" && savedKeys.storedLogin.data))
           ? "subscription" : savedKeys.options.length ? "api" : "subscription"
       ))
-    : "api";
+    : (credentialModeChoice === "subscription" ? "subscription" : "api");
   const [createdCompanyPrefix, setCreatedCompanyPrefix] = useState<
     string | null
   >((saved?.createdCompanyPrefix as string) ?? null);
@@ -2717,8 +2718,16 @@ function OnboardingWizardInner({
                       transition={{ opacity: SOURCE_LINK_EXIT, height: MAKE_ROOM }}
                     >
                       <div className="-ml-3 mt-1">
-                        {hasSubscriptionSupport && (
-                          <CredentialModeLink mode={credentialMode} onChange={setCredentialMode} />
+                        {anySourceHasSubscriptionSupport && (
+                          <CredentialModeLink
+                            mode={credentialMode}
+                            onChange={(next) => {
+                              setCredentialMode(next);
+                              if (next === "subscription" && !hasSubscriptionSupport) {
+                                setAdapterType("claude_local");
+                              }
+                            }}
+                          />
                         )}
                         {savedKeys.options.length > 0 && <p className="px-3 text-sm text-muted-foreground">{savedKeys.options.length} saved API {savedKeys.options.length === 1 ? "key available" : "keys available"}.</p>}
                         {credentialMode === "subscription" && authSignalStatus === "present" && <p className="px-3 text-sm text-muted-foreground">An existing provider connection is available.</p>}
@@ -2805,6 +2814,22 @@ function OnboardingWizardInner({
                           }}
                           onSubmit={() => handleConnectStepPrimary()}
                         />}
+                        {hasSubscriptionSupport && (
+                          <div className="mt-2 text-left">
+                            <button
+                              type="button"
+                              onClick={() => setCredentialMode("subscription")}
+                              className="text-xs text-primary underline underline-offset-4 hover:opacity-80 transition-opacity cursor-pointer"
+                            >
+                              Sign in with {CONNECT_SOURCE_NAMES[adapterType] ?? "CLI"} subscription instead
+                            </button>
+                          </div>
+                        )}
+                        {(adapterType === "cursor" || adapterType === "opencode_local") && (
+                          <p className="mt-2 text-xs text-muted-foreground text-left">
+                            If you have {adapterType === "cursor" ? "Cursor" : "OpenCode"} installed and signed in on this computer, you can leave the API key blank.
+                          </p>
+                        )}
                       </OnboardingLoginCard>
                     ) : connectStepNeedsLogin &&
                       createdCompanyId &&
@@ -2821,85 +2846,96 @@ function OnboardingWizardInner({
 
                          No "Use saved login" control: the hire step already
                          applies a stored login on its own. */
-                      <AdapterLoginPanel
-                        key={`${adapterType}:${resolvedLoginEnvironmentId}`}
-                        companyId={createdCompanyId}
-                        adapterType={adapterType}
-                        environmentId={resolvedLoginEnvironmentId}
-                        chrome="onboarding"
-                        aiConnection={managedProvider ? { provider: managedProvider, method: "subscription", name: `My ${CONNECT_SOURCE_NAMES[adapterType] ?? managedProvider} subscription`, ownership: "personal", agentIds: [], allAgents: true } : undefined}
-                        autoStart
-                        onPromptReady={(url) => {
-                          setConnectAuthUrl(url);
-                          // The prompt arriving is what ends the waiting beat.
-                          if (url) setConnectPhase((p) => (p === "loading" ? "ready" : p));
-                        }}
-                        onCodeSubmitted={() => {
-                          // The button reacts to the paste, not to the server.
-                          // Waiting for the login to be stored left about a
-                          // second of a button still reading "Waiting for code"
-                          // after the code had already gone in.
-                          phaseBeforeSubmitRef.current = connectPhase;
-                          connectingSinceRef.current = Date.now();
-                          setConnectCredentialStored(false);
-                          setConnectPhase("connecting");
-                        }}
-                        onSubmitFailed={() => {
-                          // Only while the button still says "Connecting". The
-                          // panel stays mounted through Back's exit, so a failure
-                          // that landed after Back restored the button and
-                          // reopened the card the customer was leaving — without
-                          // the address Back had cleared, so its sign-in could
-                          // not even be pressed.
-                          if (connectPhase !== "connecting") return;
-                          // Refused, failed or timed out — the card says which.
-                          // The button goes back to what it was offering rather
-                          // than spinning on a login that is not coming.
-                          connectingSinceRef.current = null;
-                          setConnectCredentialStored(false);
-                          setConnectPhase(
-                            phaseBeforeSubmitRef.current === "ready" ? "ready" : "waiting",
-                          );
-                        }}
-                        onConnected={() => {
-                          if (managedProvider) managedSubscriptionRef.current = { companyId: createdCompanyId, binding: { provider: managedProvider, method: "subscription", mode: "responsible_user" } };
-                          setConnectAuthUrl(null);
-                          // Not into a card the customer has left. The panel is
-                          // still mounted through Back's exit, and a login that
-                          // finished there pulled the step back into "Connecting"
-                          // and on into a hire they had just backed away from.
-                          // The login is stored either way; what this refuses is
-                          // only the step moving forward after they chose to go.
-                          if (
-                            connectPhase !== "loading" &&
-                            connectPhase !== "ready" &&
-                            connectPhase !== "waiting" &&
-                            connectPhase !== "connecting"
-                          ) {
-                            return;
-                          }
-                          // The hold before the step advances is the phase's own
-                          // beat, above, so that backing out during it cancels
-                          // the hire. It counts from the paste when there was
-                          // one, and from here for a login that finished without
-                          // one — a resumed session, or a code handed out rather
-                          // than pasted back.
-                          if (connectingSinceRef.current === null) {
+                      <div className="flex flex-col gap-2">
+                        <AdapterLoginPanel
+                          key={`${adapterType}:${resolvedLoginEnvironmentId}`}
+                          companyId={createdCompanyId}
+                          adapterType={adapterType}
+                          environmentId={resolvedLoginEnvironmentId}
+                          chrome="onboarding"
+                          aiConnection={managedProvider ? { provider: managedProvider, method: "subscription", name: `My ${CONNECT_SOURCE_NAMES[adapterType] ?? managedProvider} subscription`, ownership: "personal", agentIds: [], allAgents: true } : undefined}
+                          autoStart
+                          onPromptReady={(url) => {
+                            setConnectAuthUrl(url);
+                            // The prompt arriving is what ends the waiting beat.
+                            if (url) setConnectPhase((p) => (p === "loading" ? "ready" : p));
+                          }}
+                          onCodeSubmitted={() => {
+                            // The button reacts to the paste, not to the server.
+                            // Waiting for the login to be stored left about a
+                            // second of a button still reading "Waiting for code"
+                            // after the code had already gone in.
+                            phaseBeforeSubmitRef.current = connectPhase;
                             connectingSinceRef.current = Date.now();
-                          }
-                          setConnectCredentialStored(true);
-                          setConnectPhase("connecting");
-                        }}
-                        onStored={() => {
-                          queryClient.invalidateQueries({
-                            queryKey: queryKeys.agents.authSignal(
-                              createdCompanyId,
-                              adapterType,
-                              resolvedLoginEnvironmentId,
-                            ),
-                          });
-                        }}
-                      />
+                            setConnectCredentialStored(false);
+                            setConnectPhase("connecting");
+                          }}
+                          onSubmitFailed={() => {
+                            // Only while the button still says "Connecting". The
+                            // panel stays mounted through Back's exit, so a failure
+                            // that landed after Back restored the button and
+                            // reopened the card the customer was leaving — without
+                            // the address Back had cleared, so its sign-in could
+                            // not even be pressed.
+                            if (connectPhase !== "connecting") return;
+                            // Refused, failed or timed out — the card says which.
+                            // The button goes back to what it was offering rather
+                            // than spinning on a login that is not coming.
+                            connectingSinceRef.current = null;
+                            setConnectCredentialStored(false);
+                            setConnectPhase(
+                              phaseBeforeSubmitRef.current === "ready" ? "ready" : "waiting",
+                            );
+                          }}
+                          onConnected={() => {
+                            if (managedProvider) managedSubscriptionRef.current = { companyId: createdCompanyId, binding: { provider: managedProvider, method: "subscription", mode: "responsible_user" } };
+                            setConnectAuthUrl(null);
+                            // Not into a card the customer has left. The panel is
+                            // still mounted through Back's exit, and a login that
+                            // finished there pulled the step back into "Connecting"
+                            // and on into a hire they had just backed away from.
+                            // The login is stored either way; what this refuses is
+                            // only the step moving forward after they chose to go.
+                            if (
+                              connectPhase !== "loading" &&
+                              connectPhase !== "ready" &&
+                              connectPhase !== "waiting" &&
+                              connectPhase !== "connecting"
+                            ) {
+                              return;
+                            }
+                            // The hold before the step advances is the phase's own
+                            // beat, above, so that backing out during it cancels
+                            // the hire. It counts from the paste when there was
+                            // one, and from here for a login that finished without
+                            // one — a resumed session, or a code handed out rather
+                            // than pasted back.
+                            if (connectingSinceRef.current === null) {
+                              connectingSinceRef.current = Date.now();
+                            }
+                            setConnectCredentialStored(true);
+                            setConnectPhase("connecting");
+                          }}
+                          onStored={() => {
+                            queryClient.invalidateQueries({
+                              queryKey: queryKeys.agents.authSignal(
+                                createdCompanyId,
+                                adapterType,
+                                resolvedLoginEnvironmentId,
+                              ),
+                            });
+                          }}
+                        />
+                        <div className="px-3 text-left">
+                          <button
+                            type="button"
+                            onClick={() => setCredentialMode("api")}
+                            className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground transition-colors cursor-pointer"
+                          >
+                            Prefer using an API key instead? Use API key
+                          </button>
+                        </div>
+                      </div>
                     ) : hasSavedSubscription || localLogin.status === "ready" ? null : connectStepHasNoSandbox ? (
                       canUseLocalLogin && managedProvider ? (
                         <LocalProviderLoginInstructions adapterType={adapterType} login={{ ...localLogin, retry: () => { autoConnectStartedRef.current = false; setError(null); localLogin.retry(); } }} />
