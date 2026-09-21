@@ -198,7 +198,7 @@ export function Sidebar() {
             />
           ) : null}
           <SidebarNavItem to="/artifacts" label="Artifacts" icon={Package} />
-          <SidebarNavItem to="/skills" label="Skills" icon={Boxes} />
+          <SidebarNavItem to="/skills" label="Tools" icon={Boxes} />
           {showWorkspacesLink ? (
             <SidebarNavItem to="/workspaces" label="Workspaces" icon={GitBranch} />
           ) : null}

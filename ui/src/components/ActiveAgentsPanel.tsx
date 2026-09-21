@@ -215,7 +215,7 @@ export const AgentRunCard = memo(function AgentRunCard({
         ) : (
           <Link to={runUrl} className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/60 px-2.5 py-2 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <Clock3 className="size-4 shrink-0" aria-hidden />
-            <span className="truncate">{run.invocationSource === "timer" ? "Scheduled heartbeat" : "No linked task"}</span>
+            <span className="truncate">{run.invocationSource === "timer" ? "Scheduled pulse" : "No linked task"}</span>
           </Link>
         )}
         <time

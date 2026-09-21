@@ -50,7 +50,7 @@ Instead of babysitting individual chat tabs, terminal sessions, or fragile scrip
   </tr>
 </table>
 
-<em>If it can receive a heartbeat, it can be orchestrated.</em>
+<em>If it can receive a pulse, it can be orchestrated.</em>
 </div>
 
 <br/>
@@ -68,7 +68,7 @@ Connect local free models via OpenCode or Ollama, cloud models (Claude, Codex, G
 Every task traces back through project and organization goals. Agents always know <em>what</em> to do and <em>why</em>.
 </td>
 <td align="center" width="33%">
-<h3>💓 Heartbeat Execution</h3>
+<h3>💓 Pulse Execution</h3>
 Agents wake on schedules (cron routines) or reactively on task assignment. Sessions persist across reboots.
 </td>
 </tr>
@@ -111,7 +111,7 @@ Dynamically inject project skills, workflows, and tools into agent workspaces at
 | **Lost context across restarts** | Tasks are ticket-based, sessions are persistent, and progress is saved across reboots. |
 | **Runaway token spend** | Granular budget policies enforce limits with automatic warning thresholds and hard stops. |
 | **Uncoordinated agent chaos** | Org charts, delegation hierarchies, and atomic task locks keep agents working together smoothly. |
-| **Babysitting terminal tabs** | Background heartbeats and scheduled routines execute autonomously while you monitor from the board. |
+| **Babysitting terminal tabs** | Background pulses and scheduled routines execute autonomously while you monitor from the dashboard. |
 | **Manual context delivery** | Task hierarchy, project goals, and company objectives flow directly into prompt context. |
 
 <br/>
@@ -123,7 +123,7 @@ Dynamically inject project skills, workflows, and tools into agent workspaces at
 │                       GEETORUS SERVER                        │
 │                                                              │
 │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │
-│  │Identity & │  │  Work &   │  │ Heartbeat │  │Governance │  │
+│  │Identity & │  │  Work &   │  │   Pulse   │  │Governance │  │
 │  │  Access   │  │   Tasks   │  │ Execution │  │& Approvals│  │
 │  └───────────┘  └───────────┘  └───────────┘  └───────────┘  │
 │                                                              │
@@ -181,9 +181,40 @@ Start the full development environment (API server + Web UI):
 pnpm dev
 ```
 
-- **Web Dashboard**: `http://localhost:5173` (or port assigned by Vite)
-- **API Server**: `http://localhost:3100`
+- **Web Dashboard**: `http://localhost:3100`
+- **API Server**: `http://localhost:3100/api`
 - Embedded database migrations run automatically on boot.
+
+### 3. One-Click Docker (Quickstart)
+
+Run a self-contained Geetorus instance with a single command. No Node.js or pnpm required.
+
+```bash
+git clone https://github.com/geetorusai/geetorus.git
+cd geetorus/docker
+
+# Generate a secret key (required)
+export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
+
+# (Optional) Add your LLM API keys
+export ANTHROPIC_API_KEY="sk-ant-..."
+export OPENAI_API_KEY="sk-..."
+
+# Start Geetorus
+docker compose -f docker-compose.quickstart.yml up --build
+```
+
+Open **http://localhost:3100** — Geetorus is running with an embedded database.
+
+For a production setup with an external Postgres database:
+
+```bash
+cd docker
+export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
+docker compose up --build
+```
+
+Data is stored in `../data/docker-geetorus/` by default (configurable via `GEETORUS_DATA_DIR`).
 
 <br/>
 

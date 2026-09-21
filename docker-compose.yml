@@ -1,0 +1,13 @@
+﻿# One-click Geetorus quickstart — embedded database, no external Postgres needed.
+# See docker/docker-compose.yml for the full Postgres-backed production setup.
+#
+# Usage:
+#   export BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
+#   export ANTHROPIC_API_KEY="sk-ant-..."   # optional
+#   export OPENAI_API_KEY="sk-..."          # optional
+#   docker compose up --build
+#
+# Then open: http://localhost:3100
+#
+include:
+  - path: docker/docker-compose.quickstart.yml

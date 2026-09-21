@@ -989,9 +989,9 @@ export function OfficeView({
                   </div>
                 </div>
 
-                {/* Last Heartbeat Time */}
+                {/* Last Pulse Time */}
                 <div className="text-xs font-mono text-muted-foreground flex items-center justify-between">
-                  <span>Last Heartbeat:</span>
+                  <span>Last Pulse:</span>
                   <span className="font-bold text-slate-800 dark:text-slate-200">
                     {assignedAgent.lastHeartbeatAt
                       ? new Date(assignedAgent.lastHeartbeatAt).toLocaleTimeString()

@@ -246,7 +246,7 @@ export function Sidebar({ children }: { children?: ReactNode }) {
             collapsible={{ open: organizationOpen, onOpenChange: setOrganizationOpen }}
           >
             <SidebarNavItem to="/agents" label="Agents" icon={Users} />
-            <SidebarNavItem to="/skills" label="Skills" icon={Boxes} />
+            <SidebarNavItem to="/skills" label="Tools" icon={Boxes} />
             <SidebarNavItem to="/apps" label="Connectors" icon={Unplug} />
             <SidebarNavItem to="/activity" label="Audit" icon={History} />
           </SidebarSection>

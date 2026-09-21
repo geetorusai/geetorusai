@@ -61,7 +61,7 @@ export function TaskSkillPanel({ companyId, skillId }: { companyId: string; skil
             onClick={() => navigate(`/skills/studio/${encodeURIComponent(skill.id)}`)}
           >
             <ExternalLink className="mr-1.5 size-3.5" aria-hidden />
-            Open in Skill Studio
+            Open in Tool Studio
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
