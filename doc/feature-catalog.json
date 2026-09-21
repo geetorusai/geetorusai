@@ -1,0 +1,110 @@
+{
+  "catalogVersion": "2026.921.0",
+  "features": {
+    "autoRestartDevServerWhenIdle": {
+      "tier": "preference"
+    },
+    "enableAgentChat": {
+      "tier": "managed"
+    },
+    "enableApps": {
+      "tier": "managed"
+    },
+    "enableBetaSkills": {
+      "tier": "preference"
+    },
+    "enableBuiltInAgents": {
+      "tier": "managed"
+    },
+    "enableCases": {
+      "tier": "managed"
+    },
+    "enableChatConnectors": {
+      "tier": "managed"
+    },
+    "enableClassicTaskInterface": {
+      "tier": "preference"
+    },
+    "enableConferenceRoomChat": {
+      "tier": "managed"
+    },
+    "enableDecisions": {
+      "tier": "preference"
+    },
+    "enableEnvironments": {
+      "tier": "managed"
+    },
+    "enableExperimentalFileViewer": {
+      "tier": "preference"
+    },
+    "enableExternalObjects": {
+      "tier": "managed"
+    },
+    "enableFirstTaskPlanProposal": {
+      "tier": "preference"
+    },
+    "enableGeetorusDeveloperMode": {
+      "tier": "preference"
+    },
+    "enableGoalsSidebarLink": {
+      "tier": "preference"
+    },
+    "enableIsolatedWorkspaces": {
+      "tier": "managed"
+    },
+    "enableIsolatedWorkspacesByDefault": {
+      "tier": "managed"
+    },
+    "enableIssuePlanDecompositions": {
+      "tier": "managed"
+    },
+    "enableManagedSandboxOnly": {
+      "tier": "managed"
+    },
+    "enableNativeRunner": {
+      "tier": "managed"
+    },
+    "enableOwnerInstanceAdmin": {
+      "tier": "managed"
+    },
+    "enablePipelines": {
+      "tier": "managed"
+    },
+    "enableRunnerPreviewIngress": {
+      "tier": "managed"
+    },
+    "enableSandboxDuplexBridge": {
+      "tier": "managed"
+    },
+    "enableServerInfoDebugView": {
+      "tier": "preference"
+    },
+    "enableSimplifiedEnglishInteractions": {
+      "tier": "preference"
+    },
+    "enableSmokeLab": {
+      "tier": "managed"
+    },
+    "enableStatusCards": {
+      "tier": "managed"
+    },
+    "enableStreamlinedLeftNavigation": {
+      "tier": "preference"
+    },
+    "enableStreamlinedUi": {
+      "tier": "preference"
+    },
+    "enableSummaries": {
+      "tier": "managed"
+    },
+    "enableWorkspaceBranchReconcileForward": {
+      "tier": "managed"
+    },
+    "enableWorkspaceDirtyQuarantineRepair": {
+      "tier": "managed"
+    },
+    "enableWorktreeRunExecution": {
+      "tier": "managed"
+    }
+  }
+}
