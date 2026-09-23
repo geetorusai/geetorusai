@@ -299,6 +299,25 @@ export function detectGeminiQuotaExhausted(input: {
   return { exhausted };
 }
 
+const GEMINI_CLIENT_DEPRECATED_RE =
+  /(?:no longer supported for Gemini Code Assist|migrate to the Antigravity suite|daily-cloudcode-pa\.googleapis\.com)/i;
+
+export function detectGeminiClientDeprecated(input: {
+  parsed?: Record<string, unknown> | null;
+  stdout: string;
+  stderr: string;
+}): { isDeprecated: boolean; deprecationMessage: string | null } {
+  const haystack = `${input.stdout}\n${input.stderr}`;
+  const isDeprecated = GEMINI_CLIENT_DEPRECATED_RE.test(haystack);
+  return {
+    isDeprecated,
+    deprecationMessage: isDeprecated
+      ? "Gemini Code Assist for individuals has been deprecated by Google. Please migrate to Antigravity CLI (agy), Claude Code (claude_local), or OpenAI Codex (codex_local)."
+      : null,
+  };
+}
+
+
 export function isGeminiTurnLimitResult(
   parsed: Record<string, unknown> | null | undefined,
   exitCode?: number | null,

@@ -1025,7 +1025,29 @@ function OnboardingWizardInner({
   }, effectiveOnboardingOpen && step === 4 && canUseLocalLogin && credentialMode !== "api" && hasSubscriptionSupport &&
     Boolean(managedProvider) && (managedProvider === "openai" || managedProvider === "anthropic" || managedProvider === "xai") && !savedSubscription && !savedKeys.storedLogin.data && !managedBindingForStep(),
   { allowHostClaude: localLoginHealth.data?.deploymentMode === "local_trusted" });
+  const { data: discoveredHostTools } = useQuery({
+    queryKey: ["system", "ai-tools", "discover"],
+    queryFn: async () => {
+      const res = await fetch("/api/system/ai-tools/discover");
+      return res.json();
+    },
+    enabled: effectiveOnboardingOpen && step === 4,
+  });
+
+  const discoveredHostMap = useMemo(() => {
+    const map = new Map<string, { isAvailable: boolean; authStatus: string }>();
+    if (discoveredHostTools?.inventory?.aiTools) {
+      for (const tool of discoveredHostTools.inventory.aiTools) {
+        if (tool.adapterType) {
+          map.set(tool.adapterType, { isAvailable: tool.isAvailable, authStatus: tool.authStatus });
+        }
+      }
+    }
+    return map;
+  }, [discoveredHostTools]);
+
   // A result from a previous selection must not hire or advance this wizard.
+
   // Environment query updates are not user navigation: the test resolves its
   // own environment, and those updates must not interrupt the pending attempt.
   useEffect(() => {
@@ -2662,11 +2684,19 @@ function OnboardingWizardInner({
                         question, and answering it is what opens the card. */}
                     <ModelSourceTiles
                       label="Model source"
-                      sources={recommendedAdapters.map((opt) => ({
-                        id: opt.type,
-                        label: CONNECT_SOURCE_NAMES[opt.type] ?? opt.label,
-                        icon: <ModelSourceMark type={opt.type} Fallback={opt.icon} />,
-                      }))}
+                      sources={recommendedAdapters.map((opt) => {
+                        const hostInfo = discoveredHostMap.get(opt.type);
+                        const isDetected = Boolean(hostInfo?.isAvailable || hostInfo?.authStatus === "authenticated");
+                        const detectedLabel = hostInfo?.authStatus === "authenticated" ? "Authenticated" : hostInfo?.isAvailable ? "Installed on PC" : undefined;
+                        return {
+                          id: opt.type,
+                          label: CONNECT_SOURCE_NAMES[opt.type] ?? opt.label,
+                          icon: <ModelSourceMark type={opt.type} Fallback={opt.icon} />,
+                          isDetected,
+                          detectedLabel,
+                        };
+                      })}
+
                       mode={credentialMode}
                       selectedId={
                         sourcePicked &&

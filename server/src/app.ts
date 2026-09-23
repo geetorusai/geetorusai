@@ -41,6 +41,8 @@ import { cloudRuntimeIdentityMiddleware } from "./middleware/cloud-runtime-ident
 import { cloudControlMiddleware } from "./middleware/cloud-control.js";
 import { cloudRoutes } from "./routes/cloud.js";
 import { companyRoutes } from "./routes/companies.js";
+import { aiToolsDiscoveryRouter } from "./routes/ai-tools-discovery.js";
+
 import { companySkillRoutes } from "./routes/company-skills.js";
 import { companySkillPolicyRoutes } from "./routes/company-skill-policy.js";
 import { inboxAgentPolicyRoutes } from "./routes/inbox-agent-policy.js";
@@ -646,6 +648,8 @@ export async function createApp(
   api.use(openApiRoutes());
   api.use("/cloud", cloudRoutes());
   api.use("/companies", companyRoutes(db, opts.storageService));
+  api.use("/system/ai-tools", aiToolsDiscoveryRouter);
+
   api.use(llmRoutes(db));
   api.use(folderRoutes(db));
   api.use(companySkillRoutes(db));

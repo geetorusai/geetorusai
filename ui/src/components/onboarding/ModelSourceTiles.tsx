@@ -28,7 +28,10 @@ export type ModelSource = {
   /** The brand mark, rendered into a 30px square. */
   icon: ReactNode;
   tag?: string;
+  isDetected?: boolean;
+  detectedLabel?: string;
 };
+
 
 const CREDENTIAL_TAG_LABEL: Record<CredentialMode, string> = {
   subscription: "Subscription",
@@ -122,19 +125,19 @@ function ModelSourceTile({
         // "this one is live" rather than "this one is chosen".
         selected
           ? "border-foreground/40 bg-accent"
+          : source.isDetected
+          ? "border-emerald-500/50 bg-emerald-500/10 hover:bg-emerald-500/20"
           : "border-border bg-card hover:bg-accent/40",
       )}
     >
+      {source.isDetected && (
+        <span className="mb-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
+          ✓ {source.detectedLabel ?? "Installed on PC"}
+        </span>
+      )}
       <span className="flex size-(--sz-30px) shrink-0 items-center justify-center">
         {source.icon}
       </span>
-      {/*
-        One step up the named ladder each — the source name from text-xs (12px)
-        to --text-compact (13px), the tag under it from --text-nano (10px) to
-        --text-micro (11px), keeping the two a step apart. Both use the
-        font-size-only token form, so the line box comes from the tile's own
-        rhythm rather than the Tailwind scale's paired line-height.
-      */}
       <span className="text-(length:--text-compact) font-medium text-foreground">
         {source.label}
       </span>
@@ -142,6 +145,7 @@ function ModelSourceTile({
     </button>
   );
 }
+
 
 export function ModelSourceTiles({
   sources,

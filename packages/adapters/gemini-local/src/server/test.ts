@@ -21,7 +21,8 @@ import {
   resolveAdapterExecutionTargetCwd,
 } from "@geetorusai/adapter-utils/execution-target";
 import { DEFAULT_GEMINI_LOCAL_MODEL, SANDBOX_INSTALL_COMMAND } from "../index.js";
-import { detectGeminiAuthRequired, detectGeminiQuotaExhausted, parseGeminiJsonl } from "./parse.js";
+import { detectGeminiAuthRequired, detectGeminiClientDeprecated, detectGeminiQuotaExhausted, parseGeminiJsonl } from "./parse.js";
+
 import { firstNonEmptyLine } from "./utils.js";
 import {
   resolveGeminiExecutionEngineForRun,
@@ -237,7 +238,22 @@ export async function testEnvironment(
         stderr: probe.stderr,
       });
 
-      if (quotaMeta.exhausted) {
+      const deprecation = detectGeminiClientDeprecated({
+        parsed: parsed.resultEvent,
+        stdout: probe.stdout,
+        stderr: probe.stderr,
+      });
+
+      if (deprecation.isDeprecated) {
+        checks.push({
+          code: "gemini_client_deprecated",
+          level: "error",
+          message: "Gemini Code Assist CLI (0.60.0) is no longer supported by Google for individual accounts. Please migrate to the Antigravity suite (https://antigravity.google) or switch your agent adapter to Claude Code (claude_local), OpenAI Codex (codex_local), or Antigravity CLI (agy).",
+          ...(detail ? { detail } : {}),
+          hint: "Migrate to Antigravity at https://antigravity.google or switch agent to Claude Code / Codex.",
+        });
+      } else if (quotaMeta.exhausted) {
+
         checks.push({
           code: "gemini_hello_probe_quota_exhausted",
           level: "warn",

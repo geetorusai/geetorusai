@@ -3,6 +3,8 @@ import { Command } from "commander";
 import { warnIfUnsupportedNodeVersion } from "@geetorusai/shared/node-version";
 import { onboard } from "./commands/onboard.js";
 import { doctor } from "./commands/doctor.js";
+import { discoverCommand } from "./commands/discover.js";
+
 import { envCommand } from "./commands/env.js";
 import { channelsCommand } from "./commands/channels.js";
 import { configure } from "./commands/configure.js";
@@ -136,6 +138,14 @@ program
   .option("--no-install-service", "Do not install or suggest the background service")
   .option("--run", "Start Geetorus immediately after saving config", false)
   .action(onboard);
+
+program
+  .command("discover")
+  .description("Automatically detect available AI IDEs and AI CLIs on the local host")
+  .option("--json", "Output discovery results as JSON")
+  .option("-y, --yes", "Non-interactive discovery scan")
+  .action(discoverCommand);
+
 
 program
   .command("doctor")
