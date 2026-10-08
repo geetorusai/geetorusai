@@ -6,7 +6,7 @@ import {
   ensurePathInEnv,
   runChildProcess,
 } from "@geetorusai/adapter-utils/server-utils";
-import { isValidOpenCodeModelId } from "../index.js";
+import { isValidOpenCodeModelId, models as declaredModels } from "../index.js";
 
 const MODELS_CACHE_TTL_MS = 60_000;
 const MODELS_DISCOVERY_TIMEOUT_MS = 20_000;
@@ -341,25 +341,19 @@ export async function ensureOpenCodeModelConfiguredAndAvailable(input: {
       );
     }
 
-    const sample = models
-      .slice(0, 12)
-      .map((entry) => entry.id)
-      .join(", ");
-    throw new Error(
-      `Configured OpenCode model is unavailable: ${model}. Available models: ${sample}${models.length > 12 ? ", ..." : ""}`,
+    console.warn(
+      `[opencode-local] Configured OpenCode model was not found in catalog: ${model}; proceeding with configured model.`,
     );
+    return [{ id: model, label: model }];
   }
 
   return models;
 }
 
-export const DEFAULT_OPENCODE_MODELS: AdapterModel[] = [
-  { id: "openrouter/anthropic/claude-3.5-sonnet", label: "OpenRouter - Claude 3.5 Sonnet" },
-  { id: "anthropic/claude-3-5-sonnet-20241022", label: "Anthropic - Claude 3.5 Sonnet" },
-  { id: "openai/gpt-4o", label: "OpenAI - GPT-4o" },
-  { id: "google/gemini-2.0-flash", label: "Google - Gemini 2.0 Flash" },
-  { id: "ollama/qwen2.5-coder", label: "Ollama - Qwen 2.5 Coder" },
-];
+export const DEFAULT_OPENCODE_MODELS: AdapterModel[] = declaredModels.map((m) => ({
+  id: m.id,
+  label: m.label,
+}));
 
 export async function listOpenCodeModels(): Promise<AdapterModel[]> {
   try {

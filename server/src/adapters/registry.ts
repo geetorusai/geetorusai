@@ -96,6 +96,19 @@ import {
   models as kimiModels,
 } from "@geetorusai/adapter-kimi-local";
 import {
+  execute as lmStudioExecute,
+  listLmStudioSkills,
+  syncLmStudioSkills,
+  testEnvironment as lmStudioTestEnvironment,
+  sessionCodec as lmStudioSessionCodec,
+  listLmStudioModels,
+  detectLmStudioModel,
+} from "@geetorusai/adapter-lm-studio-local/server";
+import {
+  agentConfigurationDoc as lmStudioAgentConfigurationDoc,
+  models as lmStudioModels,
+} from "@geetorusai/adapter-lm-studio-local";
+import {
   createHermesGatewayServerAdapter,
   createHermesLocalServerAdapter,
 } from "@geetorusai/hermes-geetorus-adapter";
@@ -111,6 +124,19 @@ import {
   agentConfigurationDoc as openCodeAgentConfigurationDoc,
   models as openCodeModels,
 } from "@geetorusai/adapter-opencode-local";
+
+import {
+  execute as openAICompatibleExecute,
+  listOpenAICompatibleSkills,
+  syncOpenAICompatibleSkills,
+  testEnvironment as openAICompatibleTestEnvironment,
+  sessionCodec as openAICompatibleSessionCodec,
+  listOpenAICompatibleModels,
+} from "@geetorusai/adapter-openai-compatible-local/server";
+import {
+  agentConfigurationDoc as openAICompatibleAgentConfigurationDoc,
+  models as openAICompatibleModels,
+} from "@geetorusai/adapter-openai-compatible-local";
 import {
   execute as openclawGatewayExecute,
   testEnvironment as openclawGatewayTestEnvironment,
@@ -830,6 +856,66 @@ const openCodeLocalAdapter: ServerAdapterModule = {
   agentConfigurationDoc: openCodeAgentConfigurationDoc,
 };
 
+const openAICompatibleLocalAdapter: ServerAdapterModule = {
+  type: "openai_compatible_local",
+  runtimeToolDelivery: "environment",
+  execute: openAICompatibleExecute,
+  testEnvironment: openAICompatibleTestEnvironment,
+  listSkills: listOpenAICompatibleSkills,
+  syncSkills: syncOpenAICompatibleSkills,
+  sessionCodec: openAICompatibleSessionCodec,
+  models: openAICompatibleModels,
+  sessionManagement: getAdapterSessionManagement("openai_compatible_local") ?? undefined,
+  listModels: listOpenAICompatibleModels,
+  supportsLocalAgentJwt: true,
+  supportsInstructionsBundle: true,
+  instructionsPathKey: "instructionsFilePath",
+  requiresMaterializedRuntimeSkills: true,
+  getRuntimeCommandSpec: (config) => buildNpmRuntimeCommandSpec(config, "opencode", "opencode-ai"),
+  agentConfigurationDoc: openAICompatibleAgentConfigurationDoc,
+};
+
+const lmStudioLocalAdapter: ServerAdapterModule = {
+  type: "lm_studio_local",
+  runtimeToolDelivery: "environment",
+  execute: lmStudioExecute,
+  testEnvironment: lmStudioTestEnvironment,
+  listSkills: listLmStudioSkills,
+  syncSkills: syncLmStudioSkills,
+  sessionCodec: lmStudioSessionCodec,
+  models: lmStudioModels,
+  listModels: listLmStudioModels,
+  detectModel: detectLmStudioModel,
+  sessionManagement: getAdapterSessionManagement("lm_studio_local") ?? undefined,
+  supportsLocalAgentJwt: true,
+  supportsInstructionsBundle: true,
+  instructionsPathKey: "instructionsFilePath",
+  requiresMaterializedRuntimeSkills: true,
+  getRuntimeCommandSpec: (config) => buildNpmRuntimeCommandSpec(config, "opencode", "opencode-ai"),
+  agentConfigurationDoc: lmStudioAgentConfigurationDoc,
+  getConfigSchema: () => ({
+    fields: [
+      {
+        key: "baseUrl",
+        label: "LM Studio server URL",
+        type: "text",
+        default: "http://127.0.0.1:1234/v1",
+        placeholder: "http://127.0.0.1:1234/v1",
+        hint: "OpenAI-compatible endpoint exposed by LM Studio.",
+        required: true,
+      },
+      {
+        key: "model",
+        label: "Model",
+        type: "combobox",
+        options: lmStudioModels.map((model) => ({ value: model.id, label: model.label })),
+        hint: "Exact model identifier returned by LM Studio's GET /v1/models endpoint.",
+        required: true,
+      },
+    ],
+  }),
+};
+
 const piLocalAdapter: ServerAdapterModule = {
   type: "pi_local",
   runtimeToolDelivery: "environment",
@@ -912,6 +998,8 @@ function registerBuiltInAdapters() {
     codexLocalAdapter,
     geetorusRunnerAdapter,
     openCodeLocalAdapter,
+    openAICompatibleLocalAdapter,
+    lmStudioLocalAdapter,
     ollamaLocalAdapter,
     piLocalAdapter,
     cursorCloudAdapter,
@@ -1084,7 +1172,10 @@ function getDeclaredAdapterModels(): ReturnType<typeof parseAdapterModelsEnv> {
   return value;
 }
 
-export async function listAdapterModels(type: string): Promise<{ id: string; label: string }[]> {
+export async function listAdapterModels(
+  type: string,
+  config?: Record<string, unknown>,
+): Promise<{ id: string; label: string }[]> {
   const declaredModels = getDeclaredAdapterModels();
   if (declaredModels && declaredModels[type]?.length) {
     return declaredModels[type].map((m) => ({ id: m.id, label: m.label ?? m.id }));
@@ -1092,21 +1183,24 @@ export async function listAdapterModels(type: string): Promise<{ id: string; lab
   const adapter = findActiveServerAdapter(type);
   if (!adapter) return [];
   if (adapter.listModels) {
-    const discovered = await adapter.listModels();
+    const discovered = await adapter.listModels(config);
     if (discovered.length > 0) return discovered;
   }
   return adapter.models ?? [];
 }
 
-export async function refreshAdapterModels(type: string): Promise<{ id: string; label: string }[]> {
+export async function refreshAdapterModels(
+  type: string,
+  config?: Record<string, unknown>,
+): Promise<{ id: string; label: string }[]> {
   const adapter = findActiveServerAdapter(type);
   if (!adapter) return [];
   if (adapter.refreshModels) {
-    const refreshed = await adapter.refreshModels();
+    const refreshed = await adapter.refreshModels(config);
     if (refreshed.length > 0) return refreshed;
   }
   if (adapter.listModels) {
-    const discovered = await adapter.listModels();
+    const discovered = await adapter.listModels(config);
     if (discovered.length > 0) return discovered;
   }
   return adapter.models ?? [];
@@ -1131,10 +1225,11 @@ export function listEnabledServerAdapters(): ServerAdapterModule[] {
 
 export async function detectAdapterModel(
   type: string,
+  config?: Record<string, unknown>,
 ): Promise<{ model: string; provider: string; source: string; candidates?: string[] } | null> {
   const adapter = findActiveServerAdapter(type);
   if (!adapter?.detectModel) return null;
-  const detected = await adapter.detectModel();
+  const detected = await adapter.detectModel(config);
   if (!detected) return null;
   return {
     model: detected.model,

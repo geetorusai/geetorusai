@@ -52,6 +52,7 @@ function blockedAttentionLabel(blockerAttention: IssueBlockerAttention | null | 
 
   if (blockerAttention.reason === "attention_required") {
     const count = blockerAttention.attentionBlockerCount || blockerAttention.unresolvedBlockerCount;
+    if (count === 0) return "Blocked · recovery needs attention";
     const attentionCopy = `${count} ${count === 1 ? "blocker needs" : "blockers need"} attention`;
     const coveredCount = blockerAttention.coveredBlockerCount;
     if (coveredCount > 0) {

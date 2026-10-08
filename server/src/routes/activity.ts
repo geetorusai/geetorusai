@@ -356,7 +356,7 @@ export function activityRoutes(db: Db) {
     res.json(result);
   });
 
-  router.get("/heartbeat-runs/:runId/issues", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/issues", "/pulse-runs/:runId/issues"], async (req, res) => {
     assertAuthenticated(req);
     const runId = req.params.runId as string;
     const run = await heartbeat.getRun(runId);

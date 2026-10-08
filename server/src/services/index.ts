@@ -106,6 +106,7 @@ export { routineService } from "./routines.js";
 export { costService } from "./costs.js";
 export { financeService } from "./finance.js";
 export { heartbeatService, resolveHeartbeatSchedulingSuppression } from "./heartbeat.js";
+export { pulseService, resolvePulseSchedulingSuppression, type PulseServiceOptions } from "./pulse.js";
 export {
   runnerGoalService,
   applyRunnerGoalPrpEvent,

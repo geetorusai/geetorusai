@@ -463,14 +463,14 @@ export interface ServerAdapterModule {
   /** How this adapter receives Geetorus's run-scoped control tools. */
   runtimeToolDelivery?: AdapterRuntimeToolDelivery;
   models?: AdapterModel[];
-  listModels?: () => Promise<AdapterModel[]>;
+  listModels?: (config?: Record<string, unknown>) => Promise<AdapterModel[]>;
   /**
    * Optional explicit refresh hook for model discovery.
    * Use this when the adapter caches discovered models and needs a bypass path
    * so the UI can fetch newly released models without waiting for cache expiry
    * or a Geetorus code update.
    */
-  refreshModels?: () => Promise<AdapterModel[]>;
+  refreshModels?: (config?: Record<string, unknown>) => Promise<AdapterModel[]>;
   agentConfigurationDoc?: string;
   /**
    * Optional lifecycle hook when an agent is approved/hired (join-request or hire_agent approval).
@@ -491,7 +491,7 @@ export interface ServerAdapterModule {
    * Returns the detected model/provider and the config source, or null if
    * the adapter does not support detection or no config is found.
    */
-  detectModel?: () => Promise<{ model: string; provider: string; source: string; candidates?: string[] } | null>;
+  detectModel?: (config?: Record<string, unknown>) => Promise<{ model: string; provider: string; source: string; candidates?: string[] } | null>;
   /**
    * Optional: return a declarative config schema so the UI can render
    * adapter-specific form fields without shipping React components.
@@ -700,6 +700,8 @@ export interface CreateConfigValues {
   ollamaModel?: string;
   ollamaHost?: string;
   ollamaTemperature?: number;
+  baseUrl?: string;
+  apiKey?: string;
   search: boolean;
   fastMode: boolean;
   dangerouslyBypassSandbox: boolean;

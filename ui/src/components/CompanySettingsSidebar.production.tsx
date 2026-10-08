@@ -154,7 +154,7 @@ export function CompanySettingsSidebar() {
           {showPage("instance.heartbeats") && (
             <SidebarNavItem
               to={`${INSTANCE_SETTINGS_PATH_PREFIX}/heartbeats`}
-              label="Heartbeats"
+              label="Pulses"
               icon={Clock3}
               end
             />

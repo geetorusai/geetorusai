@@ -49,6 +49,23 @@ describe("adapters", () => {
       expect(outcome).toEqual({ attempted: false, outcome: "no_process_metadata", adapterType: "codex_local" });
     });
 
+    it("treats LM Studio as a sessioned local process adapter", async () => {
+      const adapter = createProcessAdapter();
+
+      const outcome = await adapter.cleanupRunProcess({
+        runId: "run-1",
+        adapterType: "lm_studio_local",
+        fallbackPid: null,
+        fallbackProcessGroupId: null,
+      });
+
+      expect(outcome).toEqual({
+        attempted: false,
+        outcome: "no_process_metadata",
+        adapterType: "lm_studio_local",
+      });
+    });
+
     it("reports not_running when the process is dead", async () => {
       mockedIsPidAlive.mockReturnValue(false);
       mockedIsProcessGroupAlive.mockReturnValue(false);

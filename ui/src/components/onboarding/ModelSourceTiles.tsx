@@ -27,12 +27,28 @@ export type ModelSource = {
   label: string;
   /** The brand mark, rendered into a 30px square. */
   icon: ReactNode;
+  tag?: string;
+  isDetected?: boolean;
+  detectedLabel?: string;
 };
+
 
 const CREDENTIAL_TAG_LABEL: Record<CredentialMode, string> = {
   subscription: "Subscription",
   api: "API",
 };
+
+export function getModelSourceTag(sourceId: string, mode: CredentialMode): string {
+  if (sourceId === "ollama_local") return "Local";
+  if (sourceId === "cursor" || sourceId === "opencode_local") return "CLI / IDE";
+  if (mode === "subscription") {
+    if (sourceId === "claude_local" || sourceId === "codex_local" || sourceId === "grok_local") {
+      return "Subscription";
+    }
+    return "API";
+  }
+  return "API";
+}
 
 /**
  * The credential tag, swapping in a fixed-height slot.
@@ -43,18 +59,19 @@ const CREDENTIAL_TAG_LABEL: Record<CredentialMode, string> = {
  * what makes the outgoing label fall out of frame rather than slide past the
  * tile's padding and over the row below.
  */
-export function CredentialTag({ mode }: { mode: CredentialMode }) {
+export function CredentialTag({ mode, tag }: { mode: CredentialMode; tag?: string }) {
+  const displayTag = tag ?? CREDENTIAL_TAG_LABEL[mode];
   return (
     <span className="relative flex h-4 w-full items-center justify-center overflow-hidden text-(length:--text-micro) text-muted-foreground">
       <AnimatePresence initial={false} mode="sync">
         <motion.span
-          key={mode}
+          key={displayTag}
           className="absolute inset-0 flex items-center justify-center whitespace-nowrap"
           initial={{ opacity: 0, y: TAG_SWAP_TRAVEL }}
           animate={{ opacity: 1, y: 0, transition: TAG_SWAP_ENTER }}
           exit={{ opacity: 0, y: TAG_SWAP_TRAVEL, transition: TAG_SWAP_EXIT }}
         >
-          {CREDENTIAL_TAG_LABEL[mode]}
+          {displayTag}
         </motion.span>
       </AnimatePresence>
     </span>
@@ -76,6 +93,7 @@ function ModelSourceTile({
   buttonRef: (node: HTMLButtonElement | null) => void;
   settling: boolean;
 }) {
+  const tag = source.tag ?? getModelSourceTag(source.id, mode);
   return (
     <button
       ref={buttonRef}
@@ -107,26 +125,27 @@ function ModelSourceTile({
         // "this one is live" rather than "this one is chosen".
         selected
           ? "border-foreground/40 bg-accent"
+          : source.isDetected
+          ? "border-emerald-500/50 bg-emerald-500/10 hover:bg-emerald-500/20"
           : "border-border bg-card hover:bg-accent/40",
       )}
     >
+      {source.isDetected && (
+        <span className="mb-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
+          ✓ {source.detectedLabel ?? "Installed on PC"}
+        </span>
+      )}
       <span className="flex size-(--sz-30px) shrink-0 items-center justify-center">
         {source.icon}
       </span>
-      {/*
-        One step up the named ladder each — the source name from text-xs (12px)
-        to --text-compact (13px), the tag under it from --text-nano (10px) to
-        --text-micro (11px), keeping the two a step apart. Both use the
-        font-size-only token form, so the line box comes from the tile's own
-        rhythm rather than the Tailwind scale's paired line-height.
-      */}
       <span className="text-(length:--text-compact) font-medium text-foreground">
         {source.label}
       </span>
-      <CredentialTag mode={mode} />
+      <CredentialTag mode={mode} tag={tag} />
     </button>
   );
 }
+
 
 export function ModelSourceTiles({
   sources,

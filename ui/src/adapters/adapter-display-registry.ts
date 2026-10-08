@@ -104,6 +104,11 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     icon: Moon,
     recommended: true,
   },
+  lm_studio_local: {
+    label: "LM Studio",
+    description: "Run local models through LM Studio",
+    icon: Cpu,
+  },
   hermes_gateway: {
     label: "Hermes Gateway",
     description: "Remote Hermes API server",
@@ -126,6 +131,12 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     label: "OpenCode",
     description: "OpenCode multi-provider harness",
     icon: OpenCodeLogoIcon,
+    recommended: true,
+  },
+  openai_compatible_local: {
+    label: "OpenAI Compatible",
+    description: "OpenAI Compatible API harness",
+    icon: Cpu,
     recommended: true,
   },
   pi_local: {

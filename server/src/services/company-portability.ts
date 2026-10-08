@@ -69,6 +69,7 @@ import {
   writeGeetorusSkillSyncPreference,
 } from "@geetorusai/adapter-utils/server-utils";
 import { requireOpenCodeModelId } from "@geetorusai/adapter-opencode-local/server";
+import { requireLmStudioModelId } from "@geetorusai/adapter-lm-studio-local/server";
 import { findServerAdapter } from "../adapters/index.js";
 import { formatAttachmentSize, MAX_ATTACHMENT_BYTES } from "../attachment-types.js";
 import { forbidden, notFound, unprocessable } from "../errors.js";
@@ -804,6 +805,10 @@ const ADAPTER_DEFAULT_RULES_BY_TYPE: Record<string, Array<{ path: string[]; valu
     { path: ["graceSec"], value: 15 },
   ],
   opencode_local: [
+    { path: ["timeoutSec"], value: 0 },
+    { path: ["graceSec"], value: 15 },
+  ],
+  lm_studio_local: [
     { path: ["timeoutSec"], value: 0 },
     { path: ["graceSec"], value: 15 },
   ],
@@ -3615,6 +3620,15 @@ export function companyPortabilityService(db: Db, storage?: StorageService) {
           profile.agentCoreProfileId,
           "aws_bedrock_agentcore_harness",
         );
+      }
+      return;
+    }
+    if (adapterType === "lm_studio_local") {
+      try {
+        requireLmStudioModelId(adapterConfig.model);
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : String(err);
+        throw unprocessable(`Invalid lm_studio_local adapterConfig: ${reason}`);
       }
       return;
     }

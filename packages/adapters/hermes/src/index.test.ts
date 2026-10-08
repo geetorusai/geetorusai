@@ -134,7 +134,11 @@ test("Hermes rejects a live symlink owned by another operational skill", async (
     await fs.mkdir(conflictingSource, { recursive: true });
     await fs.writeFile(path.join(conflictingSource, "SKILL.md"), "# External skill\n", "utf8");
     await fs.mkdir(path.dirname(target), { recursive: true });
-    await fs.symlink(conflictingSource, target);
+    if (process.platform === "win32") {
+      await fs.symlink(conflictingSource, target, "junction");
+    } else {
+      await fs.symlink(conflictingSource, target);
+    }
     const adapter = createServerAdapter();
 
     await expect(adapter.syncSkills?.({

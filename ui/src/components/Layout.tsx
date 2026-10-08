@@ -699,13 +699,13 @@ export function Layout({ sidebarSections }: { sidebarSections?: ReactNode }) {
           <div
             className={cn(
               !isMobile && useStreamlinedTaskDetailShell && "hidden",
-              isMobile && "sticky top-0 z-20 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/85",
+              isMobile && "sticky top-0 z-20 bg-background border-b-2 border-black",
             )}
           >
             <StandaloneBrowserControls mobile={isMobile} />
             <BreadcrumbBar />
             {isMobile && isCompanySettingsRoute ? (
-              <div className="border-b border-border px-4 pb-3">
+              <div className="border-b-2 border-black px-4 pb-3">
                 <CompanySettingsNav />
               </div>
             ) : null}

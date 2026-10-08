@@ -25,3 +25,6 @@ export function AiConnectionLegacyNotice({
     </div>
   );
 }
+
+export { AiToolsDiscoveryPanel } from "./AiToolsDiscoveryPanel.js";
+

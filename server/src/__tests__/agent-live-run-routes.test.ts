@@ -556,11 +556,16 @@ describe("agent live run routes", () => {
       const app = await createApp({}, actor);
       const paths = [
         "/api/companies/company-1/heartbeat-runs",
+        "/api/companies/company-1/pulse-runs",
         "/api/companies/company-1/live-runs",
         "/api/heartbeat-runs/run-1",
+        "/api/pulse-runs/run-1",
         "/api/heartbeat-runs/run-1/events",
+        "/api/pulse-runs/run-1/events",
         "/api/heartbeat-runs/run-1/log",
+        "/api/pulse-runs/run-1/log",
         "/api/heartbeat-runs/run-1/workspace-operations",
+        "/api/pulse-runs/run-1/workspace-operations",
         "/api/workspace-operations/operation-1/log",
       ];
 

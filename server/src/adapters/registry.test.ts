@@ -63,6 +63,8 @@ describe("built-in runtime connection tool delivery", () => {
     ["hermes_gateway", "invocation_context"],
     ["hermes_local", "environment"],
     ["kimi_local", "environment"],
+    ["lm_studio_local", "environment"],
+    ["ollama_local", "environment"],
     ["openclaw_gateway", "invocation_context"],
     ["opencode_local", "environment"],
     ["geetorus_runner", "environment"],

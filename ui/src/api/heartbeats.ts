@@ -243,3 +243,7 @@ export const heartbeatsApi = {
     );
   },
 };
+
+export const pulsesApi = heartbeatsApi;
+export const pulseRunsApi = heartbeatsApi;
+

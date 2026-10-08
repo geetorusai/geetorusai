@@ -519,13 +519,20 @@ export function assertSyncOperationsConfined(
   operations: SandboxSyncOperation[],
   roots: { sourceRoots: string[]; targetRoots: string[] },
 ): void {
+  const toPosixPath = (p: string): string => {
+    let s = p.replace(/\\/g, "/");
+    if (/^[a-zA-Z]:/.test(s)) {
+      s = s.slice(2);
+    }
+    return path.posix.normalize(s);
+  };
   const confine = (candidate: string, allowed: string[], label: string): void => {
-    const normalized = path.posix.normalize(candidate);
+    const normalized = toPosixPath(candidate);
     if (!path.posix.isAbsolute(normalized) || normalized === ".." || normalized.includes("/../") || normalized.endsWith("/..")) {
       throw new Error(`sync operation ${label} path is not a confined absolute path: ${candidate}`);
     }
     const within = allowed.some((root) => {
-      const normalizedRoot = path.posix.normalize(root);
+      const normalizedRoot = toPosixPath(root);
       const prefix = normalizedRoot.endsWith("/") ? normalizedRoot : `${normalizedRoot}/`;
       return normalized === normalizedRoot || normalized.startsWith(prefix);
     });
@@ -606,16 +613,17 @@ function asNumber(value: unknown): number {
 }
 
 function shellQuote(value: string) {
-  return `'${value.replace(/'/g, `'\"'\"'`)}'`;
+  return `'${value.replace(/\\/g, "/").replace(/'/g, `'\"'\"'`)}'`;
 }
 
 function buildDefaultExtractRuntimeAssetCommand(input: {
   remoteAssetDir: string;
   remoteAssetTar: string;
 }): string {
+  const forceLocal = input.remoteAssetTar.includes(":") ? " --force-local" : "";
   return `rm -rf ${shellQuote(input.remoteAssetDir)} && ` +
     `mkdir -p ${shellQuote(input.remoteAssetDir)} && ` +
-    `tar -xf ${shellQuote(input.remoteAssetTar)} -C ${shellQuote(input.remoteAssetDir)} && ` +
+    `tar -xf ${shellQuote(input.remoteAssetTar)}${forceLocal} -C ${shellQuote(input.remoteAssetDir)} && ` +
     `rm -f ${shellQuote(input.remoteAssetTar)}`;
 }
 
@@ -643,9 +651,10 @@ function buildWorkspaceTarExtractCommand(input: {
     ? ` && find ${shellQuote(input.workspaceRemoteDir)} -mindepth 1 -maxdepth 1 ` +
       `${preserveFindArgs([...input.wipeExceptNames, ".geetorus-upload-*"])} -exec rm -rf -- {} +`
     : "";
+  const forceLocal = input.remoteTar.includes(":") ? " --force-local" : "";
   return (
     `mkdir -p ${shellQuote(input.workspaceRemoteDir)}${wipe} && ` +
-    `tar -xf ${shellQuote(input.remoteTar)} -C ${shellQuote(input.workspaceRemoteDir)} && ` +
+    `tar -xf ${shellQuote(input.remoteTar)}${forceLocal} -C ${shellQuote(input.workspaceRemoteDir)} && ` +
     `rm -f ${shellQuote(input.remoteTar)}`
   );
 }
@@ -972,6 +981,7 @@ function createRemoteTarballFromDirectoryCommand(input: {
 }): string {
   // Match the local archive path: name top-level entries explicitly so tar
   // does not include a "." self-entry that it later tries to chmod/utime.
+  const forceLocal = input.archivePath.includes(":") ? " --force-local" : "";
   return [
     `mkdir -p ${shellQuote(path.posix.dirname(input.archivePath))}`,
     `cd ${shellQuote(input.remoteDir)}`,
@@ -980,7 +990,7 @@ function createRemoteTarballFromDirectoryCommand(input: {
     `for entry in .[!.]* ..?*; do [ -e "$entry" ] || [ -L "$entry" ] || continue; set -- "$@" "$entry"; done`,
     `if [ "$#" -eq 0 ]; then ` +
       `dd if=/dev/zero of=${shellQuote(input.archivePath)} bs=1024 count=1; ` +
-      `else tar -cf ${shellQuote(input.archivePath)} ${tarExcludeFlags(input.exclude)} -- "$@"; fi`,
+      `else tar -cf ${shellQuote(input.archivePath)}${forceLocal} ${tarExcludeFlags(input.exclude)} -- "$@"; fi`,
   ].join(" && ");
 }
 

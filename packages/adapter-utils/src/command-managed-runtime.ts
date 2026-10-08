@@ -138,7 +138,7 @@ export interface CommandManagedRuntimeSpec {
 export type CommandManagedRuntimeAsset = SandboxManagedRuntimeAsset;
 
 function shellQuote(value: string) {
-  return `'${value.replace(/'/g, `'"'"'`)}'`;
+  return `'${value.replace(/\\/g, "/").replace(/'/g, `'"'"'`)}'`;
 }
 
 function mergeRuntimeExcludes(entries: string[] | undefined): string[] {
@@ -199,10 +199,11 @@ function bufferToArrayBuffer(buffer: Buffer): ArrayBuffer {
 // Every path is shell-quoted; the fallback NEVER concatenates untrusted asset
 // keys / file names into the shell.
 function buildSyncInExtractDirectoryCommand(input: { remoteTarPath: string; targetDir: string }): string {
+  const forceLocal = input.remoteTarPath.includes(":") ? " --force-local" : "";
   return (
     `rm -rf ${shellQuote(input.targetDir)} && ` +
     `mkdir -p ${shellQuote(input.targetDir)} && ` +
-    `tar -xf ${shellQuote(input.remoteTarPath)} -C ${shellQuote(input.targetDir)} && ` +
+    `tar -xf ${shellQuote(input.remoteTarPath)}${forceLocal} -C ${shellQuote(input.targetDir)} && ` +
     `rm -f ${shellQuote(input.remoteTarPath)}`
   );
 }

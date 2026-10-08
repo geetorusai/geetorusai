@@ -97,6 +97,9 @@ importers:
       '@geetorusai/adapter-kimi-local':
         specifier: workspace:*
         version: link:../packages/adapters/kimi-local
+      '@geetorusai/adapter-openai-compatible-local':
+        specifier: workspace:*
+        version: link:../packages/adapters/openai-compatible-local
       '@geetorusai/adapter-openclaw-gateway':
         specifier: workspace:*
         version: link:../packages/adapters/openclaw-gateway
@@ -335,6 +338,22 @@ importers:
         version: 7.0.2
 
   packages/adapters/ollama-local:
+    dependencies:
+      '@geetorusai/adapter-utils':
+        specifier: workspace:*
+        version: link:../../adapter-utils
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
+    devDependencies:
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.13.3
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
+
+  packages/adapters/openai-compatible-local:
     dependencies:
       '@geetorusai/adapter-utils':
         specifier: workspace:*
@@ -925,6 +944,9 @@ importers:
       '@geetorusai/adapter-ollama-local':
         specifier: workspace:*
         version: link:../packages/adapters/ollama-local
+      '@geetorusai/adapter-openai-compatible-local':
+        specifier: workspace:*
+        version: link:../packages/adapters/openai-compatible-local
       '@geetorusai/adapter-openclaw-gateway':
         specifier: workspace:*
         version: link:../packages/adapters/openclaw-gateway
@@ -1136,6 +1158,9 @@ importers:
       '@geetorusai/adapter-ollama-local':
         specifier: workspace:*
         version: link:../packages/adapters/ollama-local
+      '@geetorusai/adapter-openai-compatible-local':
+        specifier: workspace:*
+        version: link:../packages/adapters/openai-compatible-local
       '@geetorusai/adapter-openclaw-gateway':
         specifier: workspace:*
         version: link:../packages/adapters/openclaw-gateway

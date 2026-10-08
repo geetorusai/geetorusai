@@ -221,6 +221,7 @@ import { DEFAULT_GEMINI_LOCAL_MODEL } from "@geetorusai/adapter-gemini-local";
 import { DEFAULT_KIMI_LOCAL_MODEL } from "@geetorusai/adapter-kimi-local";
 import { DEFAULT_OPENCODE_LOCAL_MODEL } from "@geetorusai/adapter-opencode-local";
 import { requireOpenCodeModelId } from "@geetorusai/adapter-opencode-local/server";
+import { requireLmStudioModelId } from "@geetorusai/adapter-lm-studio-local/server";
 import {
   loadDefaultAgentInstructionsBundle,
   resolveDefaultAgentInstructionsBundleRole,
@@ -2632,6 +2633,15 @@ export function agentRoutes(
       await assertFreshGeetorusRunnerProvider(companyId, adapterType, adapterConfig);
       return;
     }
+    if (adapterType === "lm_studio_local") {
+      try {
+        requireLmStudioModelId(adapterConfig.model);
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : String(err);
+        throw unprocessable(`Invalid lm_studio_local adapterConfig: ${reason}`);
+      }
+      return;
+    }
     if (adapterType !== "opencode_local") return;
     try {
       requireOpenCodeModelId(adapterConfig.model);
@@ -3208,6 +3218,9 @@ export function agentRoutes(
       return;
     }
     const provider = asNonEmptyString(req.query.provider);
+    const discoveryConfig = type === "lm_studio_local"
+      ? { baseUrl: asNonEmptyString(req.query.baseUrl) }
+      : undefined;
     if (type === "opencode_local" && provider === "openrouter") {
       res.json(await listOpenRouterModels(refresh));
       return;
@@ -3225,8 +3238,8 @@ export function agentRoutes(
       return;
     }
     const models = refresh
-      ? await refreshAdapterModels(modelAdapterType)
-      : await listAdapterModels(modelAdapterType);
+      ? await refreshAdapterModels(modelAdapterType, discoveryConfig)
+      : await listAdapterModels(modelAdapterType, discoveryConfig);
     res.json(models);
   });
 
@@ -3234,8 +3247,11 @@ export function agentRoutes(
     const companyId = req.params.companyId as string;
     assertCompanyAccess(req, companyId);
     const type = assertKnownAdapterType(req.params.type as string);
+    const discoveryConfig = type === "lm_studio_local"
+      ? { baseUrl: asNonEmptyString(req.query.baseUrl) }
+      : undefined;
 
-    const detected = await detectAdapterModel(type);
+    const detected = await detectAdapterModel(type, discoveryConfig);
     res.json(detected);
   });
 
@@ -5186,6 +5202,7 @@ export function agentRoutes(
     const requestedAdapterType = nextAdapterType === existing.adapterType
       ? nextAdapterType
       : await assertSelectableAdapterType(nextAdapterType);
+    const changingAdapterType = requestedAdapterType !== existing.adapterType;
     let requestedRuntimeConfig: Record<string, unknown> | null = null;
     if (hasOwn(patchData, "runtimeConfig")) {
       const runtimeConfig = asRecord(patchData.runtimeConfig);
@@ -5206,8 +5223,6 @@ export function agentRoutes(
     if (touchesAdapterConfiguration) {
       assertExternalInstructionsAdmin(req, existing);
       const existingAdapterConfig = asRecord(existing.adapterConfig) ?? {};
-      const changingAdapterType =
-        typeof patchData.adapterType === "string" && patchData.adapterType !== existing.adapterType;
       const requestedAdapterConfig = hasOwn(patchData, "adapterConfig")
         ? (asRecord(patchData.adapterConfig) ?? {})
         : null;
@@ -5286,14 +5301,42 @@ export function agentRoutes(
         adapterConfig: patchData.adapterConfig,
       });
     }
-    if (existing.runtimeConfig.aiConnection && requestedRuntimeConfig && !requestedRuntimeConfig.aiConnection) requestedRuntimeConfig.aiConnection = existing.runtimeConfig.aiConnection;
-    const nextAiBinding = aiConnectionBindingSchema.safeParse(requestedRuntimeConfig?.aiConnection ?? existing.runtimeConfig.aiConnection).data;
+    const explicitlyRequestedAiBinding = aiConnectionBindingSchema.safeParse(
+      requestedRuntimeConfig?.aiConnection,
+    ).data;
+    let nextAiBinding = explicitlyRequestedAiBinding
+      ?? aiConnectionBindingSchema.safeParse(existing.runtimeConfig.aiConnection).data;
+    const nextAiConfig = (patchData.adapterConfig ?? existing.adapterConfig) as Record<string, unknown>;
+    if (
+      nextAiBinding
+      && changingAdapterType
+      && !explicitlyRequestedAiBinding
+      && !isAiConnectionCompatible(
+        nextAiBinding,
+        requestedAdapterType,
+        nextAiConfig.model,
+        nextAiConfig.provider,
+        nextAiConfig.acpxAgent,
+      )
+    ) {
+      // A managed account belongs to the harness it authenticates. When the
+      // user switches harnesses, discard an inherited incompatible binding
+      // instead of making an unrelated local adapter impossible to select.
+      // An explicitly supplied binding is still validated below.
+      requestedRuntimeConfig = {
+        ...existing.runtimeConfig,
+        ...(requestedRuntimeConfig ?? {}),
+      };
+      delete requestedRuntimeConfig.aiConnection;
+      nextAiBinding = undefined;
+    } else if (existing.runtimeConfig.aiConnection && requestedRuntimeConfig && !requestedRuntimeConfig.aiConnection) {
+      requestedRuntimeConfig.aiConnection = existing.runtimeConfig.aiConnection;
+    }
     if (nextAiBinding) {
       await assertCanUpdateAgent(req, existing);
       const changed = JSON.stringify(nextAiBinding) !== JSON.stringify(existing.runtimeConfig.aiConnection);
-      const aiConfig = (patchData.adapterConfig ?? existing.adapterConfig) as Record<string, unknown>;
-      if (!isAiConnectionCompatible(nextAiBinding, requestedAdapterType, aiConfig.model, aiConfig.provider, aiConfig.acpxAgent)) throw unprocessable("Select an AI connection compatible with the new harness and model");
-      if (changed) await validateManagedAgentBinding(req, existing.companyId, existing.id, requestedAdapterType, aiConfig, nextAiBinding, (patchData.defaultEnvironmentId !== undefined ? patchData.defaultEnvironmentId : existing.defaultEnvironmentId) as string | null, true);
+      if (!isAiConnectionCompatible(nextAiBinding, requestedAdapterType, nextAiConfig.model, nextAiConfig.provider, nextAiConfig.acpxAgent)) throw unprocessable("Select an AI connection compatible with the new harness and model");
+      if (changed) await validateManagedAgentBinding(req, existing.companyId, existing.id, requestedAdapterType, nextAiConfig, nextAiBinding, (patchData.defaultEnvironmentId !== undefined ? patchData.defaultEnvironmentId : existing.defaultEnvironmentId) as string | null, true);
     }
     if (requestedRuntimeConfig) patchData.runtimeConfig = requestedRuntimeConfig;
     if (touchesAdapterConfiguration || Object.prototype.hasOwnProperty.call(patchData, "defaultEnvironmentId")) {
@@ -6536,7 +6579,9 @@ export function agentRoutes(
     }
   });
 
-  router.get("/companies/:companyId/heartbeat-runs", async (req, res) => {
+  router.get(
+    ["/companies/:companyId/heartbeat-runs", "/companies/:companyId/pulse-runs"],
+    async (req, res) => {
     const companyId = req.params.companyId as string;
     assertCompanyAccess(req, companyId);
     if (!(await assertRunTelemetryReadAllowed(req, res, companyId))) return;
@@ -6668,7 +6713,7 @@ export function agentRoutes(
     })))));
   });
 
-  router.get("/heartbeat-runs/:runId", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId", "/pulse-runs/:runId"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;
@@ -6685,7 +6730,7 @@ export function agentRoutes(
     ));
   });
 
-  router.post("/heartbeat-runs/:runId/cancel", async (req, res) => {
+  router.post(["/heartbeat-runs/:runId/cancel", "/pulse-runs/:runId/cancel"], async (req, res) => {
     assertBoard(req);
     const runId = req.params.runId as string;
     const existing = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
@@ -6716,7 +6761,10 @@ export function agentRoutes(
   });
 
   router.post(
-    "/heartbeat-runs/:runId/runtime-requests/:requestId/resolve",
+    [
+      "/heartbeat-runs/:runId/runtime-requests/:requestId/resolve",
+      "/pulse-runs/:runId/runtime-requests/:requestId/resolve",
+    ],
     async (req, res) => {
       assertBoard(req);
       const runId = req.params.runId as string;
@@ -6923,7 +6971,7 @@ export function agentRoutes(
     },
   );
 
-  router.post("/heartbeat-runs/:runId/watchdog-decisions", async (req, res) => {
+  router.post(["/heartbeat-runs/:runId/watchdog-decisions", "/pulse-runs/:runId/watchdog-decisions"], async (req, res) => {
     const runId = req.params.runId as string;
     const existing = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!existing) return;
@@ -6955,7 +7003,7 @@ export function agentRoutes(
     res.json(row);
   });
 
-  router.get("/heartbeat-runs/:runId/provider-trace", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/provider-trace", "/pulse-runs/:runId/provider-trace"], async (req, res) => {
     assertInstanceAdmin(req);
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(
@@ -6983,7 +7031,10 @@ export function agentRoutes(
   });
 
   router.post(
-    "/heartbeat-runs/:runId/provider-trace/reproject-workspace-diffs",
+    [
+      "/heartbeat-runs/:runId/provider-trace/reproject-workspace-diffs",
+      "/pulse-runs/:runId/provider-trace/reproject-workspace-diffs",
+    ],
     async (req, res) => {
       assertBoard(req);
       const runId = req.params.runId as string;
@@ -7042,7 +7093,10 @@ export function agentRoutes(
   );
 
   router.post(
-    "/heartbeat-runs/:runId/provider-trace/frames/:frameId/reveal",
+    [
+      "/heartbeat-runs/:runId/provider-trace/frames/:frameId/reveal",
+      "/pulse-runs/:runId/provider-trace/frames/:frameId/reveal",
+    ],
     async (req, res) => {
       assertInstanceAdmin(req);
       const runId = req.params.runId as string;
@@ -7082,7 +7136,10 @@ export function agentRoutes(
   );
 
   router.get(
-    "/heartbeat-runs/:runId/provider-trace/download",
+    [
+      "/heartbeat-runs/:runId/provider-trace/download",
+      "/pulse-runs/:runId/provider-trace/download",
+    ],
     async (req, res) => {
       assertInstanceAdmin(req);
       const runId = req.params.runId as string;
@@ -7118,7 +7175,7 @@ export function agentRoutes(
     },
   );
 
-  router.delete("/heartbeat-runs/:runId/provider-trace", async (req, res) => {
+  router.delete(["/heartbeat-runs/:runId/provider-trace", "/pulse-runs/:runId/provider-trace"], async (req, res) => {
     assertInstanceAdmin(req);
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(
@@ -7142,7 +7199,7 @@ export function agentRoutes(
     res.json({ ok: true });
   });
 
-  router.get("/heartbeat-runs/:runId/events", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/events", "/pulse-runs/:runId/events"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;
@@ -7161,7 +7218,7 @@ export function agentRoutes(
     res.json(await runRedactions.redactForRun(run.companyId, run.id, redactedEvents));
   });
 
-  router.get("/heartbeat-runs/:runId/log", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/log", "/pulse-runs/:runId/log"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRunLogAccess(runId), "Heartbeat run not found");
     if (!run) return;
@@ -7178,7 +7235,7 @@ export function agentRoutes(
     res.json(await runRedactions.redactForRun(run.companyId, run.id, result));
   });
 
-  router.get("/heartbeat-runs/:runId/workspace-operations", async (req, res) => {
+  router.get(["/heartbeat-runs/:runId/workspace-operations", "/pulse-runs/:runId/workspace-operations"], async (req, res) => {
     const runId = req.params.runId as string;
     const run = await getAccessibleResource(req, res, heartbeat.getRun(runId), "Heartbeat run not found");
     if (!run) return;

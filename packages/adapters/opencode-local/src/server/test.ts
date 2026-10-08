@@ -27,7 +27,7 @@ import {
 } from "@geetorusai/adapter-utils/execution-target";
 import { discoverOpenCodeModels, ensureOpenCodeModelConfiguredAndAvailable } from "./models.js";
 import { parseOpenCodeJsonl } from "./parse.js";
-import { SANDBOX_INSTALL_COMMAND } from "../index.js";
+import { DEFAULT_OPENCODE_LOCAL_MODEL, SANDBOX_INSTALL_COMMAND } from "../index.js";
 import { prepareOpenCodeRuntimeConfig, prepareManagedOpenCodeRemoteHomes } from "./runtime-config.js";
 
 function summarizeStatus(checks: AdapterEnvironmentCheck[]): AdapterEnvironmentTestResult["status"] {
@@ -221,7 +221,7 @@ export async function testEnvironment(
       checks.every((check) => check.code !== "opencode_cwd_invalid" && check.code !== "opencode_command_unresolvable");
 
     let modelValidationPassed = false;
-    const configuredModel = asString(config.model, "").trim();
+    const configuredModel = asString(config.model, DEFAULT_OPENCODE_LOCAL_MODEL).trim();
 
     // Model discovery and validation use local child processes against
     // OpenCode's `models` subcommand and JSON config; these are not yet
@@ -339,6 +339,9 @@ export async function testEnvironment(
       const probeModel = configuredModel;
 
       const args = ["run", "--format", "json"];
+      if (asBoolean(config.dangerouslySkipPermissions, true)) {
+        args.push("--auto");
+      }
       args.push("--model", probeModel);
       if (variant) args.push("--variant", variant);
       if (extraArgs.length > 0) args.push(...extraArgs);

@@ -169,7 +169,26 @@ function writeRegistryLockOwner(lockPath: string, owner: RegistryLockOwner): voi
     const ownerPath = path.join(lockPath, ownerFile);
     const temporaryPath = `${ownerPath}.${owner.token}.tmp`;
     fs.writeFileSync(temporaryPath, contents, { mode: 0o600 });
-    fs.renameSync(temporaryPath, ownerPath);
+    try {
+      fs.renameSync(temporaryPath, ownerPath);
+    } catch (error) {
+      if (
+        process.platform === "win32" &&
+        error &&
+        typeof error === "object" &&
+        ((error as NodeJS.ErrnoException).code === "EPERM" ||
+          (error as NodeJS.ErrnoException).code === "EEXIST")
+      ) {
+        try {
+          fs.unlinkSync(ownerPath);
+        } catch {
+          // ignore
+        }
+        fs.renameSync(temporaryPath, ownerPath);
+      } else {
+        throw error;
+      }
+    }
   }
 }
 

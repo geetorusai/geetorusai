@@ -1,18 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MemoryRouter } from "react-router-dom";
 import { ExecutionBlockerNotice } from "@/components/ExecutionBlockerNotice";
-import { queryKeys } from "@/lib/queryKeys";
 
 const client = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } });
-client.setQueryData(queryKeys.issues.runs("storybook-recovery"), [
-  { runId: "stopped-run", agentId: "agent", status: "failed" },
-]);
 const meta = {
   title: "Task chat/Recovery notice",
   component: ExecutionBlockerNotice,
-  decorators: [Story => <QueryClientProvider client={client}><div className="max-w-2xl"><Story /></div></QueryClientProvider>],
+  decorators: [Story => <MemoryRouter><QueryClientProvider client={client}><div className="max-w-2xl"><Story /></div></QueryClientProvider></MemoryRouter>],
   args: {
-    companyId: "storybook-company", issueId: "storybook-recovery", onRetried: () => {},
+    companyId: "storybook-company", issueId: "storybook-recovery", onResolved: () => {},
     blocker: {
       recoveryActionId: "recovery", runId: "stopped-run", agentId: "agent",
       cause: "legacy_execution_requires_reconciliation",

@@ -157,3 +157,24 @@ export type {
   SandboxCallbackBridgeWorkerHandle,
   StartedSandboxCallbackBridgeServer,
 } from "./sandbox-callback-bridge.js";
+export type {
+  EnvironmentCategory,
+  ToolAuthStatus,
+  DiscoveredAiTool,
+  DiscoveredMcpServer,
+  DiscoveredDevRuntime,
+  DiscoveredAiProvider,
+  SystemRecommendation,
+  CompleteHostEnvironmentInventory,
+  KnownToolSpec,
+} from "./ai-tool-discovery.js";
+export {
+  EXTENDED_KNOWN_TOOLS,
+  KNOWN_AI_TOOLS,
+  DEV_RUNTIMES_SPEC,
+  AI_PROVIDERS_SPEC,
+  discoverAiTools,
+  discoverCompleteHostEnvironment,
+} from "./ai-tool-discovery.js";
+
+

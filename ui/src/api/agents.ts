@@ -203,21 +203,26 @@ export const agentsApi = {
   adapterModels: (
     companyId: string,
     type: string,
-    options?: { refresh?: boolean; environmentId?: string | null; provider?: string },
+    options?: { refresh?: boolean; environmentId?: string | null; provider?: string; baseUrl?: string },
   ) => {
     const params = new URLSearchParams();
     if (options?.refresh) params.set("refresh", "1");
     if (options?.provider) params.set("provider", options.provider);
     if (options?.environmentId) params.set("environmentId", options.environmentId);
+    if (options?.baseUrl) params.set("baseUrl", options.baseUrl);
     const query = params.size > 0 ? `?${params.toString()}` : "";
     return api.get<AdapterModel[]>(
       `/companies/${encodeURIComponent(companyId)}/adapters/${encodeURIComponent(type)}/models${query}`,
     );
   },
-  detectModel: (companyId: string, type: string) =>
-    api.get<DetectedAdapterModel | null>(
-      `/companies/${encodeURIComponent(companyId)}/adapters/${encodeURIComponent(type)}/detect-model`,
-    ),
+  detectModel: (companyId: string, type: string, options?: { baseUrl?: string }) => {
+    const params = new URLSearchParams();
+    if (options?.baseUrl) params.set("baseUrl", options.baseUrl);
+    const query = params.size > 0 ? `?${params.toString()}` : "";
+    return api.get<DetectedAdapterModel | null>(
+      `/companies/${encodeURIComponent(companyId)}/adapters/${encodeURIComponent(type)}/detect-model${query}`,
+    );
+  },
   testEnvironment: (
     companyId: string,
     type: string,

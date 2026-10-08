@@ -412,6 +412,63 @@ describe("agent routes adapter validation", () => {
     expect(env.CODEX_HOME).toBeUndefined();
   });
 
+  it("drops an inherited managed AI connection when switching to an incompatible adapter", async () => {
+    const existing = await mockAgentService.getById();
+    mockAgentService.getById.mockResolvedValue({
+      ...existing,
+      adapterType: "codex_local",
+      runtimeConfig: {
+        heartbeat: { enabled: false },
+        aiConnection: {
+          provider: "openai",
+          method: "subscription",
+          mode: "responsible_user",
+        },
+      },
+    });
+    const app = await createApp();
+    const res = await requestApp(app, (baseUrl) =>
+      request(baseUrl)
+        .patch("/api/agents/11111111-1111-4111-8111-111111111111")
+        .send({
+          adapterType: "lm_studio_local",
+          adapterConfig: {
+            baseUrl: "http://192.168.1.250:1234/v1",
+            model: "qwen2.5-coder-7b-instruct",
+          },
+        }),
+    );
+
+    expect(res.status, JSON.stringify(res.body)).toBe(200);
+    const patch = mockAgentService.update.mock.calls.at(-1)?.[1] as Record<string, unknown>;
+    expect(patch.runtimeConfig).toEqual({ heartbeat: { enabled: false } });
+  });
+
+  it("rejects an explicitly selected AI connection that is incompatible with the new adapter", async () => {
+    const app = await createApp();
+    const res = await requestApp(app, (baseUrl) =>
+      request(baseUrl)
+        .patch("/api/agents/11111111-1111-4111-8111-111111111111")
+        .send({
+          adapterType: "lm_studio_local",
+          adapterConfig: {
+            baseUrl: "http://192.168.1.250:1234/v1",
+            model: "qwen2.5-coder-7b-instruct",
+          },
+          runtimeConfig: {
+            aiConnection: {
+              provider: "openai",
+              method: "subscription",
+              mode: "responsible_user",
+            },
+          },
+        }),
+    );
+
+    expect(res.status).toBe(422);
+    expect(res.body.error).toBe("Select an AI connection compatible with the new harness and model");
+  });
+
   it("forwards a claude_local→process adapter move that drops the OAuth binding to the service unchanged", async () => {
     // The agent has the fixed Claude Code OAuth binding on the claude_local
     // adapter. A PATCH moves the agent to the process adapter and sends an empty

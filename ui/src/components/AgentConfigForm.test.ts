@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Environment } from "@geetorusai/shared";
 import {
+  canTestAsSavedAgent,
   resolveGeetorusRunnerTransitionModel,
   supportsAdapterModelRefresh,
 } from "./AgentConfigForm";
@@ -14,9 +15,18 @@ describe("supportsAdapterModelRefresh", () => {
   });
 
   it("keeps the refresh action hidden for adapters without a live refresh hook", () => {
+    expect(supportsAdapterModelRefresh("lm_studio_local")).toBe(true);
     expect(supportsAdapterModelRefresh("opencode_local")).toBe(true);
     expect(supportsAdapterModelRefresh("geetorus_runner")).toBe(true);
     expect(supportsAdapterModelRefresh("process")).toBe(false);
+  });
+});
+
+describe("canTestAsSavedAgent", () => {
+  it("uses saved-agent credentials only when the draft adapter still matches", () => {
+    expect(canTestAsSavedAgent("lm_studio_local", "lm_studio_local")).toBe(true);
+    expect(canTestAsSavedAgent("codex_local", "lm_studio_local")).toBe(false);
+    expect(canTestAsSavedAgent(undefined, "lm_studio_local")).toBe(false);
   });
 });
 

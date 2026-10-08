@@ -206,6 +206,7 @@ Agent configuration includes an **adapter** that defines how Geetorus invokes th
 | `http` | Send an HTTP request | `POST https://openclaw.example.com/hook/{id}` |
 | `claude_local` | Local Claude Code process | Claude Code heartbeat worker |
 | `codex_local` | Local Codex process | Codex CLI heartbeat worker |
+| `lm_studio_local` | LM Studio OpenAI-compatible server through a local OpenCode harness | Local LM Studio model with Geetorus tools and skills |
 | `opencode_local` | Local OpenCode process | OpenCode heartbeat worker |
 | `pi_local` | Local Pi process | Pi CLI heartbeat worker |
 | `cursor` | Cursor API/CLI bridge | Cursor-integrated heartbeat worker |

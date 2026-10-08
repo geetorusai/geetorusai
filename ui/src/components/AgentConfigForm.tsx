@@ -172,7 +172,18 @@ const emptyOverlay: AgentConfigOverlay = {
 const EMPTY_ENV: Record<string, EnvBinding> = {};
 
 export function supportsAdapterModelRefresh(adapterType: string): boolean {
-  return adapterType === "claude_local" || adapterType === "codex_local" || adapterType === "geetorus_runner" || adapterType === "opencode_local";
+  return adapterType === "claude_local"
+    || adapterType === "codex_local"
+    || adapterType === "geetorus_runner"
+    || adapterType === "lm_studio_local"
+    || adapterType === "opencode_local";
+}
+
+export function canTestAsSavedAgent(
+  savedAdapterType: string | undefined,
+  draftAdapterType: string,
+): boolean {
+  return Boolean(savedAdapterType && savedAdapterType === draftAdapterType);
 }
 
 export function resolveGeetorusRunnerTransitionModel(
@@ -893,9 +904,22 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
   const modelProvider = adapterType === "opencode_local" && aiConnectionBindingSchema.safeParse(
     (overlay.runtime.runtimeConfig as Record<string, unknown> | undefined)?.aiConnection ?? runtimeConfig.aiConnection,
   ).data?.provider === "openrouter" ? "openrouter" : runnerProvider;
+  const modelDiscoveryBaseUrl = adapterType === "lm_studio_local"
+    ? String(
+        isCreate
+          ? val!.baseUrl ?? ""
+          : eff("adapterConfig", "baseUrl", String(config.baseUrl ?? "")),
+      ).trim() || undefined
+    : undefined;
   // Fetch adapter models for the effective provider, including unsaved changes.
   const modelQueryKey = selectedCompanyId
-    ? queryKeys.agents.adapterModels(selectedCompanyId, adapterType, currentDefaultEnvironmentId || null, modelProvider)
+    ? queryKeys.agents.adapterModels(
+        selectedCompanyId,
+        adapterType,
+        currentDefaultEnvironmentId || null,
+        modelProvider,
+        modelDiscoveryBaseUrl,
+      )
     : ["agents", "none", "adapter-models", adapterType];
   const {
     data: fetchedModels,
@@ -905,6 +929,7 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
     queryFn: () => agentsApi.adapterModels(selectedCompanyId!, adapterType, {
       environmentId: currentDefaultEnvironmentId || null,
       provider: modelProvider,
+      baseUrl: modelDiscoveryBaseUrl,
     }),
     enabled: Boolean(selectedCompanyId),
   });
@@ -917,13 +942,15 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
     refetch: refetchDetectedModel,
   } = useQuery({
     queryKey: selectedCompanyId
-      ? queryKeys.agents.detectModel(selectedCompanyId, adapterType)
+      ? queryKeys.agents.detectModel(selectedCompanyId, adapterType, modelDiscoveryBaseUrl)
       : ["agents", "none", "detect-model", adapterType],
     queryFn: () => {
       if (!selectedCompanyId) {
         throw new Error("Select an organization to detect the model");
       }
-      return agentsApi.detectModel(selectedCompanyId, adapterType);
+      return agentsApi.detectModel(selectedCompanyId, adapterType, {
+        baseUrl: modelDiscoveryBaseUrl,
+      });
     },
     enabled: Boolean(selectedCompanyId && isLocal && adapterType !== "opencode_local" && adapterType !== "geetorus_runner"),
   });
@@ -1059,8 +1086,16 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
         visibleEnvironmentIds: environmentList.map((environment) => environment.id),
       });
       const adapterConfig = buildAdapterConfigForTest(adapterConfigPatch);
-      const agentId = isCreate ? undefined : props.agent.id;
-      const aiConnection = isCreate ? undefined : aiConnectionBindingSchema.safeParse(
+      // A draft adapter switch is a prospective configuration, not a test of
+      // the saved agent. Do not send the saved agent id or reuse its managed
+      // connection: the server intentionally refuses to restore one adapter's
+      // redacted credentials into another adapter's test configuration.
+      const testingSavedAdapter = canTestAsSavedAgent(
+        isCreate ? undefined : props.agent.adapterType,
+        adapterType,
+      );
+      const agentId = !isCreate && testingSavedAdapter ? props.agent.id : undefined;
+      const aiConnection = isCreate || !testingSavedAdapter ? undefined : aiConnectionBindingSchema.safeParse(
         (overlay.runtime.runtimeConfig as Record<string, unknown> | undefined)?.aiConnection ?? props.agent.runtimeConfig.aiConnection,
       ).data;
       if (props.compactTestFeedback) {
@@ -1252,7 +1287,12 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
     setRefreshingModels(true);
     setRefreshModelsError(null);
     try {
-      const refreshed = await agentsApi.adapterModels(selectedCompanyId, adapterType, { refresh: true, environmentId: currentDefaultEnvironmentId || null, provider: modelProvider });
+      const refreshed = await agentsApi.adapterModels(selectedCompanyId, adapterType, {
+        refresh: true,
+        environmentId: currentDefaultEnvironmentId || null,
+        provider: modelProvider,
+        baseUrl: modelDiscoveryBaseUrl,
+      });
       queryClient.setQueryData(modelQueryKey, refreshed);
     } catch (error) {
       setRefreshModelsError(error instanceof Error ? error.message : "Failed to refresh adapter models.");
@@ -1492,7 +1532,7 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
                   />
                 </Field>
                 <div className="rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-100">
-                  Prompt template is replayed on every heartbeat. Keep it compact and dynamic to avoid recurring token cost and cache churn.
+                  Prompt template is replayed on every pulse. Keep it compact and dynamic to avoid recurring token cost and cache churn.
                 </div>
               </>
             )}
@@ -1733,17 +1773,22 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
                 open={modelOpen}
                 onOpenChange={setModelOpen}
                 defaultLabel={adapterType === "claude_local" ? `Default (${DEFAULT_CLAUDE_LOCAL_MODEL})` : undefined}
-                allowDefault={adapterType !== "opencode_local" && adapterType !== "pi_local" && adapterType !== "geetorus_runner"}
-                required={adapterType === "opencode_local" || adapterType === "pi_local"}
+                allowDefault={adapterType !== "lm_studio_local" && adapterType !== "opencode_local" && adapterType !== "pi_local" && adapterType !== "geetorus_runner"}
+                required={adapterType === "lm_studio_local" || adapterType === "opencode_local" || adapterType === "pi_local"}
                 groupByProvider={adapterType === "opencode_local" || adapterType === "pi_local"}
                 creatable
                 detectedModel={detectedModel}
-                detectedModelCandidates={[]}
+                detectedModelCandidates={detectedModelCandidates}
                 onDetectModel={adapterType === "opencode_local" || adapterType === "geetorus_runner"
                   ? undefined
                   : async () => {
                       const result = await refetchDetectedModel();
-                      return result.data?.model ?? null;
+                      // LM Studio discovery can return several loaded models.
+                      // Keep the menu open so the operator can choose instead
+                      // of silently selecting the first alphabetized result.
+                      return adapterType === "lm_studio_local"
+                        ? null
+                        : result.data?.model ?? null;
                     }}
                 onRefreshModels={
                   supportsAdapterModelRefresh(adapterType)
@@ -1934,14 +1979,14 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
           }
           <div className={cn(cards ? "border border-border rounded-lg p-4 space-y-3" : "px-4 pb-3 space-y-3")}>
             <ToggleWithNumber
-              label="Heartbeat on interval"
+              label="Pulse on interval"
               hint={help.heartbeatInterval}
               checked={val!.heartbeatEnabled}
               onCheckedChange={(v) => set!({ heartbeatEnabled: v })}
               number={val!.intervalSec}
               onNumberChange={(v) => set!({ intervalSec: v })}
               numberLabel="sec"
-              numberPrefix="Run heartbeat every"
+              numberPrefix="Run pulse every"
               numberHint={help.intervalSec}
               showNumber={val!.heartbeatEnabled}
             />
@@ -1959,14 +2004,14 @@ export function AgentConfigForm(props: AgentConfigFormProps) {
           <div className={cn(cards ? "border border-border rounded-lg overflow-hidden" : "")}>
             <div className={cn(cards ? "p-4 space-y-3" : "px-4 pb-3 space-y-3")}>
               <ToggleWithNumber
-                label="Heartbeat on interval"
+                label="Pulse on interval"
                 hint={help.heartbeatInterval}
                 checked={eff("heartbeat", "enabled", heartbeat.enabled === true)}
                 onCheckedChange={(v) => mark("heartbeat", "enabled", v)}
                 number={eff("heartbeat", "intervalSec", Number(heartbeat.intervalSec ?? 300))}
                 onNumberChange={(v) => mark("heartbeat", "intervalSec", v)}
                 numberLabel="sec"
-                numberPrefix="Run heartbeat every"
+                numberPrefix="Run pulse every"
                 numberHint={help.intervalSec}
                 showNumber={eff("heartbeat", "enabled", heartbeat.enabled === true)}
               />

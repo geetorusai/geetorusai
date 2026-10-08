@@ -728,6 +728,26 @@ describe("AgentConfigForm environment selector", () => {
     mockAgentsApi.getClaudeOAuthTokenStatus.mockResolvedValue(null);
   });
 
+  it("uses the configured LM Studio URL for model listing and detection", async () => {
+    const baseUrl = "http://192.168.1.250:1234/v1";
+    const result = await renderForm([], {
+      adapterType: "lm_studio_local",
+      adapterConfig: { baseUrl, model: "qwen2.5-coder-7b-instruct" },
+    });
+    roots.push(result.root);
+
+    expect(mockAgentsApi.adapterModels).toHaveBeenCalledWith(
+      expect.any(String),
+      "lm_studio_local",
+      expect.objectContaining({ baseUrl }),
+    );
+    expect(mockAgentsApi.detectModel).toHaveBeenCalledWith(
+      expect.any(String),
+      "lm_studio_local",
+      { baseUrl },
+    );
+  });
+
   afterEach(async () => {
     for (const root of roots) {
       await act(async () => {

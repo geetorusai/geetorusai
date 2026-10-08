@@ -227,6 +227,7 @@ export const queryKeys = {
       adapterType: string,
       environmentId?: string | null,
       provider?: string,
+      baseUrl?: string,
     ) =>
       [
         "agents",
@@ -235,9 +236,10 @@ export const queryKeys = {
         adapterType,
         environmentId ?? null,
         provider ?? null,
+        baseUrl ?? null,
       ] as const,
-    detectModel: (companyId: string, adapterType: string) =>
-      ["agents", companyId, "detect-model", adapterType] as const,
+    detectModel: (companyId: string, adapterType: string, baseUrl?: string) =>
+      ["agents", companyId, "detect-model", adapterType, baseUrl ?? null] as const,
     authSignal: (companyId: string, adapterType: string, environmentId?: string | null) =>
       ["agents", companyId, "auth-signal", adapterType, environmentId ?? null] as const,
     activeLoginSession: (companyId: string, adapterType: string) =>
@@ -595,6 +597,7 @@ export const queryKeys = {
   },
   auth: {
     session: ["auth", "session"] as const,
+    profile: ["auth", "profile"] as const,
   },
   inboxAgentPolicy: {
     mine: (companyId: string) =>

@@ -3434,6 +3434,10 @@ async function resolveCommandPath(
 ): Promise<string | null> {
   const hasPathSeparator = command.includes("/") || command.includes("\\");
   if (hasPathSeparator) {
+    if (process.platform === "win32" && (command === "/bin/sh" || command === "/bin/bash")) {
+      const gitBash = command === "/bin/sh" ? "C:\\Program Files\\Git\\bin\\sh.exe" : "C:\\Program Files\\Git\\bin\\bash.exe";
+      if (await pathExists(gitBash)) return gitBash;
+    }
     const absolute = path.isAbsolute(command)
       ? command
       : path.resolve(cwd, command);
@@ -3443,6 +3447,15 @@ async function resolveCommandPath(
   const pathValue = env.PATH ?? env.Path ?? "";
   const delimiter = process.platform === "win32" ? ";" : ":";
   const dirs = pathValue.split(delimiter).filter(Boolean);
+  if (process.platform === "win32" && (command === "sh" || command === "bash")) {
+    const fallbackDirs = [
+      "C:\\Program Files\\Git\\bin",
+      "C:\\Program Files\\Git\\usr\\bin",
+    ];
+    for (const fb of fallbackDirs) {
+      if (!dirs.includes(fb)) dirs.push(fb);
+    }
+  }
   const exts = process.platform === "win32" ? windowsPathExts(env) : [""];
   const hasExtension =
     process.platform === "win32" && path.extname(command).length > 0;
@@ -4215,14 +4228,30 @@ export function writeGeetorusSkillSyncPreference(
 export async function ensureGeetorusSkillSymlink(
   source: string,
   target: string,
-  linkSkill: (source: string, target: string) => Promise<void> = (
-    linkSource,
-    linkTarget,
-  ) => fs.symlink(linkSource, linkTarget),
+  linkSkill?: (source: string, target: string) => Promise<void>,
 ): Promise<"created" | "repaired" | "skipped"> {
+  const performLink =
+    linkSkill ??
+    (async (linkSource: string, linkTarget: string) => {
+      if (process.platform === "win32") {
+        try {
+          await fs.symlink(linkSource, linkTarget, "junction");
+          return;
+        } catch (err) {
+          const code = (err as NodeJS.ErrnoException)?.code;
+          if (code !== "EPERM" && code !== "EACCES" && code !== "EXDEV") {
+            throw err;
+          }
+          await fs.cp(linkSource, linkTarget, { recursive: true });
+          return;
+        }
+      }
+      await fs.symlink(linkSource, linkTarget);
+    });
+
   const existing = await fs.lstat(target).catch(() => null);
   if (!existing) {
-    await linkSkill(source, target);
+    await performLink(source, target);
     return "created";
   }
 
@@ -4246,8 +4275,8 @@ export async function ensureGeetorusSkillSymlink(
     return "skipped";
   }
 
-  await fs.unlink(target);
-  await linkSkill(source, target);
+  await fs.unlink(target).catch(() => fs.rm(target, { recursive: true, force: true }));
+  await performLink(source, target);
   return "repaired";
 }
 
@@ -4619,8 +4648,13 @@ export async function runChildProcess(
         for (const [key, value] of Object.entries(childEnv)) {
           if (value === undefined) delete childEnv[key];
         }
+        const rawCwd = target.cwd ?? opts.cwd;
+        const spawnCwd =
+          process.platform === "win32" && (rawCwd === "/" || rawCwd === "\\")
+            ? (process.env.SystemDrive ? `${process.env.SystemDrive}\\` : "C:\\")
+            : rawCwd;
         const child = spawn(target.command, target.args, {
-          cwd: target.cwd ?? opts.cwd,
+          cwd: spawnCwd,
           env: childEnv,
           detached: process.platform !== "win32",
           shell: false,
@@ -4749,15 +4783,20 @@ export async function runChildProcess(
           const text = String(chunk);
           stdout = appendWithCap(stdout, text);
           maybeArmTerminalResultCleanup();
-          logChain = logChain
-            .then(() => opts.onLog("stdout", text))
-            .catch((err) =>
-              onLogError(err, runId, "failed to append stdout log chunk"),
-            )
-            .finally(() => {
-              maybeArmTerminalResultCleanup();
-              resumeReadable(readable);
-            });
+          if (opts.onLog) {
+            logChain = logChain
+              .then(() => opts.onLog!("stdout", text))
+              .catch((err) =>
+                onLogError(err, runId, "failed to append stdout log chunk"),
+              )
+              .finally(() => {
+                maybeArmTerminalResultCleanup();
+                resumeReadable(readable);
+              });
+          } else {
+            maybeArmTerminalResultCleanup();
+            resumeReadable(readable);
+          }
         });
 
         child.stderr?.on("data", (chunk: unknown) => {
@@ -4767,15 +4806,20 @@ export async function runChildProcess(
           const text = String(chunk);
           stderr = appendWithCap(stderr, text);
           maybeArmTerminalResultCleanup();
-          logChain = logChain
-            .then(() => opts.onLog("stderr", text))
-            .catch((err) =>
-              onLogError(err, runId, "failed to append stderr log chunk"),
-            )
-            .finally(() => {
-              maybeArmTerminalResultCleanup();
-              resumeReadable(readable);
-            });
+          if (opts.onLog) {
+            logChain = logChain
+              .then(() => opts.onLog!("stderr", text))
+              .catch((err) =>
+                onLogError(err, runId, "failed to append stderr log chunk"),
+              )
+              .finally(() => {
+                maybeArmTerminalResultCleanup();
+                resumeReadable(readable);
+              });
+          } else {
+            maybeArmTerminalResultCleanup();
+            resumeReadable(readable);
+          }
         });
 
         const stdin = child.stdin;

@@ -67,6 +67,27 @@ describe("StatusIcon", () => {
     expect(html).not.toContain("var(--status-task-icon-in_queue)");
   });
 
+  it("does not report zero blockers for a recovery-owned blocked task", () => {
+    const html = renderToStaticMarkup(
+      <StatusIcon
+        status="blocked"
+        blockerAttention={{
+          state: "needs_attention",
+          reason: "attention_required",
+          unresolvedBlockerCount: 0,
+          coveredBlockerCount: 0,
+          stalledBlockerCount: 0,
+          attentionBlockerCount: 0,
+          sampleBlockerIdentifier: null,
+          sampleStalledBlockerIdentifier: null,
+        }}
+      />,
+    );
+
+    expect(html).toContain("Blocked · recovery needs attention");
+    expect(html).not.toContain("0 blockers");
+  });
+
   it("surfaces stalled-review blocked copy on the accessible label", () => {
     const html = renderToStaticMarkup(
       <StatusIcon
