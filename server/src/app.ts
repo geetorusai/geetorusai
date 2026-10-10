@@ -118,6 +118,9 @@ import {
 import { adapterRoutes } from "./routes/adapters.js";
 import { managedAgentProfileRoutes } from "./routes/managed-agent-profiles.js";
 import { remoteAgentProfileRoutes } from "./routes/remote-agent-profiles.js";
+import { modelDiscoveryRoutes } from "./routes/model-discovery.js";
+import { pulseRoutes } from "./routes/pulse.js";
+import { systemRoutes } from "./routes/system.js";
 import { pluginUiStaticRoutes } from "./routes/plugin-ui-static.js";
 import { injectCloudUiSnippet } from "./cloud-ui-snippet.js";
 import { readBrandedStaticIndexHtml } from "./static-index-html.js";
@@ -847,6 +850,8 @@ export async function createApp(
       deploymentExposure: opts.deploymentExposure,
     }),
   );
+  api.use(modelDiscoveryRoutes());
+  api.use(pulseRoutes(db));
   const jobCoordinator = createPluginJobCoordinator({
     db,
     lifecycle,
@@ -932,6 +937,15 @@ export async function createApp(
       bindHost: opts.bindHost,
       allowedHostnames: opts.allowedHostnames,
       authPublicBaseUrl: opts.authPublicBaseUrl,
+    }),
+  );
+  api.use(modelDiscoveryRoutes());
+  api.use(pulseRoutes());
+  api.use(
+    systemRoutes(db, {
+      deploymentMode: opts.deploymentMode,
+      deploymentExposure: opts.deploymentExposure,
+      authReady: opts.authReady,
     }),
   );
   app.use("/api", api);
@@ -1046,7 +1060,43 @@ export async function createApp(
       // Storybook output can reference dependencies that are intentionally not
       // part of the application install, poisoning a clean embedded dev-server
       // cache before the browser opens. The embedded UI has one real entry.
-      optimizeDeps: { entries: [path.resolve(uiRoot, "index.html")] },
+      optimizeDeps: {
+        entries: [path.resolve(uiRoot, "index.html")],
+        include: [
+          "react",
+          "react/jsx-runtime",
+          "react-dom",
+          "react-dom/client",
+          "react-router-dom",
+          "@assistant-ui/react",
+          "@base-ui/react/merge-props",
+          "@base-ui/react/use-render",
+          "@dnd-kit/core",
+          "@dnd-kit/sortable",
+          "@dnd-kit/utilities",
+          "@lexical/link",
+          "@mdxeditor/editor",
+          "@sentry/browser",
+          "@tanstack/react-query",
+          "@xterm/addon-fit",
+          "@xterm/xterm",
+          "class-variance-authority",
+          "clsx",
+          "cmdk",
+          "i18next",
+          "lexical",
+          "lucide-react",
+          "mermaid",
+          "motion/react",
+          "radix-ui",
+          "react-i18next",
+          "react-markdown",
+          "react-resizable-panels",
+          "remark-gfm",
+          "tailwind-merge",
+          "zod",
+        ],
+      },
       server: {
         // Listener binding and browser HMR hostname are deliberately separate:
         // exposed branch runtimes stay loopback-only while the browser uses the

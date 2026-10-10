@@ -132,6 +132,7 @@ import { FooterNav, type FooterPrimaryIcon } from "./onboarding/FooterNav";
 import { OnboardingHeading } from "./onboarding/OnboardingPrimitives";
 import { DEFAULT_AGENT_ROLE } from "../lib/onboarding-agent-role";
 import { capsuleHeroMotion } from "./onboarding/onboarding-motion";
+import { FrontDoor } from "./FrontDoor";
 import { OpenCodeLogoIcon } from "@/components/OpenCodeLogoIcon";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -550,7 +551,7 @@ function OnboardingWizardInner({
   // A fresh run opens on step 1 — "Name your organization". The Build / Grow
   // front door and its own step 0 are gone: there is one path now, so the
   // wizard drops the customer straight onto the first real question.
-  const initialStep = effectiveOnboardingOptions.initialStep ?? 1;
+  const initialStep = effectiveOnboardingOptions.initialStep ?? 0;
   const existingCompanyId = effectiveOnboardingOptions.companyId;
 
   const [step, setStep] = useState<Step>((saved?.step as Step) ?? initialStep);
@@ -560,6 +561,9 @@ function OnboardingWizardInner({
   // customer mid-flow — and here that would quietly re-open the "create a
   // company" step to a run that already holds one.
   const [entryStep, setEntryStep] = useState<number>((saved?.step as Step) ?? initialStep);
+  const [onboardingPath, setOnboardingPath] = useState<"create" | "grow" | null>(
+    (saved?.onboardingPath as "create" | "grow" | null) ?? null,
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [modelOpen, setModelOpen] = useState(false);
@@ -2355,6 +2359,7 @@ function OnboardingWizardInner({
   // naming the organization and naming the agent), so the agent step walks
   // back to step 1 rather than to a screen the customer never saw.
   function backStepFrom(current: Step): Step {
+    if (current === 1 && entryStep === 0) return 0;
     if (current === 3) return 1;
     return (current - 1) as Step;
   }
@@ -2406,10 +2411,21 @@ function OnboardingWizardInner({
           className="fixed inset-0 z-50 flex"
           onKeyDown={handleKeyDown}
         >
-          {/* Form column — the wizard opens directly on step 1, so there is no
-              front-door choice ahead of it, and it fills the width on every
-              step (the mission step's half-width split is gone). */}
-          <div className="w-full flex flex-col overflow-y-auto">
+          {/* Step 0: Front Door — full-screen choice with system preflight panel */}
+          {step === 0 && (
+            <div className="w-full flex flex-col overflow-y-auto">
+              <FrontDoor
+                onChoose={(path) => {
+                  setOnboardingPath(path);
+                  setStep(1);
+                }}
+              />
+            </div>
+          )}
+
+          {/* Form column (steps 1+) */}
+          {step !== 0 && (
+            <div className="w-full flex flex-col overflow-y-auto">
             <div
               className={cn(
                 // my-auto, not items-center on the column: they look identical
@@ -3146,6 +3162,7 @@ function OnboardingWizardInner({
               )}
             </div>
           </div>
+          )}
         </div>
       </DialogPortal>
     </Dialog>
