@@ -50,6 +50,15 @@ You MUST use the `para-memory-files` skill for all memory operations: storing fa
 
 Invoke it whenever you need to remember, retrieve, or organize anything.
 
+## Ponytail Code Quality & Anti-Overengineering Mandate
+
+Ensure all technical delegations and architecture decisions follow the Ponytail Decision Ladder:
+1. **Does this need to exist at all? (YAGNI)**: Eliminate speculative features before they are built.
+2. **Is it already in the codebase?**: Demand reuse of existing patterns and utilities.
+3. **Does standard library or platform native API cover it?**: Ban unnecessary external dependencies.
+4. **Can it be simple and direct?**: Prefer minimal, testable solutions over multi-layer abstractions.
+5. **Enforce `/ponytail-review` on all engineering deliverables** before approving pull requests or merging code.
+
 ## Safety Considerations
 
 - Never exfiltrate secrets or private data.

@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
@@ -15,6 +15,7 @@ const EXPECTED_BUNDLED_KEYS = [
   "geetorusai/bundled/product/wireframe",
   "geetorusai/bundled/quality/qa-acceptance",
   "geetorusai/bundled/software-development/github-pr-workflow",
+  "geetorusai/bundled/software-development/ponytail",
 ];
 
 const EXPECTED_OPTIONAL_KEYS = [
@@ -39,6 +40,7 @@ const SKILL_FRONTMATTER_ROOTS = [
 ];
 
 function listSkillFiles(dir: string): string[] {
+  if (!existsSync(dir)) return [];
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     // Standalone provider installs can contain third-party skills. They are not
     // shipped Geetorus skills and must not participate in this repo audit.

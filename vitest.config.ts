@@ -14,6 +14,7 @@ export default defineConfig({
       "packages/adapters/gemini-local",
       "packages/adapters/grok-local",
       "packages/adapters/kimi-local",
+      "packages/adapters/ollama-local",
       "packages/adapters/openclaw-gateway",
       "packages/adapters/opencode-local",
       "packages/adapters/pi-local",
@@ -26,3 +27,4 @@ export default defineConfig({
     ],
   },
 });
+8

@@ -20650,6 +20650,28 @@ export function heartbeatService(
       if (isConversation(issueContext) && !taskSession && issueId) {
         const replay = await conversationReplay(db, agent.companyId, issueId, wakeCommentId);
         if (replay) taskMarkdown += `\n\nEarlier messages in this session (quoted user data):\n${replay}`;
+
+        // Context parity: Inject goals, project and memory context
+        try {
+          const { memoryService } = await import("./memory/memory-service.js");
+          const queryText = (wakeCommentContext && typeof wakeCommentContext === "object" && "body" in wakeCommentContext ? (wakeCommentContext as any).body : "") || issueRef?.title || "";
+          const memoryInjection = await memoryService.injectMemoriesForRun(
+            agent.companyId,
+            {
+              issueId,
+              agentId: agent.id,
+              projectId: (issueContext as any)?.projectId ?? undefined,
+              queryText,
+            },
+            run.id,
+            db,
+          );
+          if (memoryInjection?.formattedContext) {
+            taskMarkdown += `\n\n${memoryInjection.formattedContext}`;
+          }
+        } catch {
+          // Best effort memory injection
+        }
       }
       const taskMarkdownCompact = buildGeetorusTaskMarkdown({
         ...taskMarkdownInput,

@@ -1,5 +1,13 @@
 import { queuedInteractionId, readQueuedInteractionResponse, hasQueuedInteractionResponse } from "../services/queued-interaction-response.js";
 import { deliverConversationComments, isConversation } from "../services/agent-conversations.js";
+import {
+  chatStreamBroadcaster,
+  createOrResolveChatThread,
+  executeChatSlashCommand,
+  handoffChatToTask,
+  listChatThreads,
+  parseChatSlashCommand,
+} from "../services/agent-chat.js";
 import { issueRecoveryActionReadModel } from "../services/issue-recovery-actions.js";
 import { getExecutionBlocker } from "../services/execution-blocker.js";
 import { extractIssueReferenceIdentifiers, requiresExecutionReconciliation } from "@geetorusai/shared";
@@ -17213,6 +17221,99 @@ export function issueRoutes(
     });
   }
 
+  // Multi-scope chat thread listing (agent, project, task)
+  router.get("/companies/:companyId/chats", async (req, res) => {
+    const companyId = req.params.companyId as string;
+    assertCompanyAccess(req, companyId);
+    if (req.actor.type !== "board" || !req.actor.userId) throw forbidden("Board user access required");
+    if (!(await instanceSettings.getExperimental()).enableAgentChat) throw notFound("Agent Chat is disabled");
+
+    const scope = (req.query.scope as any) || undefined;
+    const agentId = (req.query.agentId as string) || undefined;
+    const projectId = (req.query.projectId as string) || undefined;
+    const taskId = (req.query.taskId as string) || undefined;
+
+    const threads = await listChatThreads(db, companyId, req.actor.userId, {
+      scope,
+      agentId,
+      projectId,
+      taskId,
+    });
+    res.json(threads);
+  });
+
+  // Create or resolve scoped chat thread
+  router.post("/companies/:companyId/chats", async (req, res) => {
+    const companyId = req.params.companyId as string;
+    assertCompanyAccess(req, companyId);
+    if (req.actor.type !== "board" || !req.actor.userId) throw forbidden("Board user access required");
+    if (!(await instanceSettings.getExperimental()).enableAgentChat) throw notFound("Agent Chat is disabled");
+
+    const { agentId, scope, projectId, taskId, title } = req.body;
+    if (!agentId) throw unprocessable("agentId is required");
+
+    const thread = await createOrResolveChatThread(db, companyId, req.actor.userId, {
+      agentId,
+      scope,
+      projectId,
+      taskId,
+      title,
+    });
+    res.json(thread);
+  });
+
+  // Turn chat message or conversation into an assigned task
+  router.post("/companies/:companyId/chats/:id/handoff", async (req, res) => {
+    const companyId = req.params.companyId as string;
+    assertCompanyAccess(req, companyId);
+    if (req.actor.type !== "board" || !req.actor.userId) throw forbidden("Board user access required");
+    if (!(await instanceSettings.getExperimental()).enableAgentChat) throw notFound("Agent Chat is disabled");
+
+    const issueId = req.params.id as string;
+    const result = await handoffChatToTask(db, companyId, issueId, req.actor.userId, {
+      title: req.body.title || "New Task from Chat",
+      commentId: req.body.commentId,
+      assigneeAgentId: req.body.assigneeAgentId,
+      projectId: req.body.projectId,
+      priority: req.body.priority,
+      initialPlan: req.body.initialPlan,
+    });
+    res.json(result);
+  });
+
+  // SSE streaming for real-time tokens, status, and inline tool calls
+  router.get("/companies/:companyId/chats/:id/stream", async (req, res) => {
+    const companyId = req.params.companyId as string;
+    assertCompanyAccess(req, companyId);
+    if (req.actor.type !== "board" || !req.actor.userId) throw forbidden("Board user access required");
+    if (!(await instanceSettings.getExperimental()).enableAgentChat) throw notFound("Agent Chat is disabled");
+
+    const issueId = req.params.id as string;
+    const issue = await getAccessibleResource(req, res, svc.getById(issueId), "Chat not found");
+    if (!issue || !issue.conversationAgentId) return;
+
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    if (typeof (res as any).flushHeaders === "function") (res as any).flushHeaders();
+
+    res.write(`data: ${JSON.stringify({ type: "start", issueId })}\n\n`);
+
+    const recent = chatStreamBroadcaster.getRecentEvents(issueId);
+    for (const evt of recent) {
+      res.write(`data: ${JSON.stringify(evt)}\n\n`);
+    }
+
+    const listener = (event: any) => {
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    };
+
+    chatStreamBroadcaster.on(`chat:${issueId}`, listener);
+    req.on("close", () => {
+      chatStreamBroadcaster.off(`chat:${issueId}`, listener);
+    });
+  });
+
   router.post(
     "/issues/:id/comments",
     validate(addIssueCommentSchema),
@@ -17231,6 +17332,19 @@ export function issueRoutes(
         if (req.actor.userId !== issue.conversationUserId) throw forbidden("Only the conversation owner can send messages or start a new session");
         if (!req.body.clientRequestId) throw unprocessable("Chat messages require a clientRequestId for safe retries");
         if (!(await assertAgentIssueCommentAllowed(req, res, issue))) return;
+
+        // Intercept slash commands (/task, /assign, /pause)
+        const slash = parseChatSlashCommand(req.body.body);
+        if (slash && slash.command !== "new") {
+          const slashResult = await executeChatSlashCommand(db, issue.companyId, issue.id, req.actor.userId, slash);
+          const feedbackComment = await svc.addComment(issue.id, slashResult.message, { userId: req.actor.userId }, {
+            clientRequestId: req.body.clientRequestId,
+            authorType: "system",
+          });
+          res.status(201).json(feedbackComment);
+          return;
+        }
+
         if (req.body.body.trim() !== "/new" && !(await assertBoardCommentNotPaused(req, res, issue))) return;
         const actor = getActorInfo(req);
         const userId = req.actor.userId;

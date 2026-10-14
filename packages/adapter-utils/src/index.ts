@@ -157,3 +157,16 @@ export type {
   SandboxCallbackBridgeWorkerHandle,
   StartedSandboxCallbackBridgeServer,
 } from "./sandbox-callback-bridge.js";
+
+export type {
+  TaskIntent,
+  TaskComplexityAnalysis,
+  ExecutionMetricsRecord,
+} from "./ponytail-optimizer.js";
+export {
+  analyzeTaskComplexity,
+  deduplicateContextChunks,
+  renderPonytailOptimizationMandate,
+  compactExecutionHistory,
+} from "./ponytail-optimizer.js";
+

@@ -31,6 +31,7 @@ export const issues = pgTable(
     conversationAgentId: uuid("conversation_agent_id").references(() => agents.id),
     conversationUserId: text("conversation_user_id"),
     conversationState: text("conversation_state").$type<"active" | "waiting">(),
+    conversationScope: text("conversation_scope").$type<"agent" | "project" | "task">().default("agent"),
     conversationSessionGeneration: integer("conversation_session_generation").notNull().default(0),
     conversationBoundaryCommentId: uuid("conversation_boundary_comment_id"),
     projectId: uuid("project_id").references(() => projects.id),

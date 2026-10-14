@@ -29,6 +29,8 @@ import {
   unregisterServerAdapter,
   isOverridePaused,
   setOverridePaused,
+  listAdapterModels,
+  refreshAdapterModels,
 } from "../adapters/registry.js";
 import {
   listAdapterPlugins,
@@ -41,9 +43,10 @@ import {
 } from "../services/adapter-plugin-store.js";
 import type { AdapterPluginRecord } from "../services/adapter-plugin-store.js";
 import type { ServerAdapterModule, AdapterConfigSchema } from "../adapters/types.js";
-import type {
-  AdapterLoginPanelMode,
-  AdapterLoginTimeoutPolicy,
+import {
+  type AdapterLoginPanelMode,
+  type AdapterLoginTimeoutPolicy,
+  renderPonytailOptimizationMandate,
 } from "@geetorusai/adapter-utils";
 import { loadExternalAdapterPackage, getUiParserSource, getOrExtractUiParserSource, reloadExternalAdapter } from "../adapters/plugin-loader.js";
 import { logger } from "../middleware/logger.js";
@@ -771,6 +774,184 @@ export function adapterRoutes(options: {
       return;
     }
     res.type("application/javascript").send(source);
+  });
+
+  // ── GET /api/adapters/:type/models ──────────────────────────────────────
+  // Dynamically load models for the selected adapter via its real discovery mechanism.
+  router.get("/adapters/:type/models", async (req, res) => {
+    assertBoardOrgAccess(req);
+    const { type } = req.params;
+    const adapter = findActiveServerAdapter(type);
+    if (!adapter) {
+      res.status(404).json({ error: `Adapter "${type}" is not registered.` });
+      return;
+    }
+
+    const refresh = typeof req.query.refresh === "string"
+      ? ["1", "true", "yes"].includes(req.query.refresh.toLowerCase())
+      : false;
+
+    try {
+      const models = refresh
+        ? await refreshAdapterModels(type)
+        : await listAdapterModels(type);
+
+      res.json({
+        adapterType: type,
+        models,
+        liveDiscovered: !!(adapter.listModels || adapter.refreshModels),
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.error({ err, type }, "Failed to discover models for adapter");
+      res.status(500).json({ error: `Failed to load models for ${type}: ${message}` });
+    }
+  });
+
+  // ── POST /api/adapters/:type/validate ───────────────────────────────────
+  // Validate connectivity, credentials, and model readiness without starting a run.
+  router.post("/adapters/:type/validate", async (req, res) => {
+    assertBoardOrgAccess(req);
+    const { type } = req.params;
+    const adapter = findActiveServerAdapter(type);
+    if (!adapter) {
+      res.status(404).json({ error: `Adapter "${type}" is not registered.` });
+      return;
+    }
+
+    const config = (req.body?.config && typeof req.body.config === "object") ? req.body.config : {};
+
+    try {
+      if (!adapter.testEnvironment) {
+        res.json({
+          adapterType: type,
+          status: "pass",
+          checks: [
+            {
+              code: "no_test_needed",
+              level: "info",
+              message: "Adapter does not require an environment test.",
+            },
+          ],
+          testedAt: new Date().toISOString(),
+        });
+        return;
+      }
+
+      const testResult = await adapter.testEnvironment({
+        companyId: (req.body?.companyId as string) || "default",
+        adapterType: type,
+        config,
+      });
+      res.json(testResult);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      res.status(500).json({
+        adapterType: type,
+        status: "fail",
+        checks: [
+          {
+            code: "adapter_validation_error",
+            level: "error",
+            message: `Validation failed: ${message}`,
+          },
+        ],
+        testedAt: new Date().toISOString(),
+      });
+    }
+  });
+
+  // ── POST /api/adapters/:type/execute-task ───────────────────────────────
+  // Run a task through the exact selected adapter and model with Ponytail optimization.
+  router.post("/adapters/:type/execute-task", async (req, res) => {
+    assertBoardOrgAccess(req);
+    const { type } = req.params;
+    const adapter = findActiveServerAdapter(type);
+    if (!adapter) {
+      res.status(404).json({ error: `Adapter "${type}" is not registered.` });
+      return;
+    }
+
+    const { model, prompt, config = {} } = req.body as {
+      model?: string;
+      prompt?: string;
+      config?: Record<string, unknown>;
+    };
+
+    if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
+      res.status(400).json({ error: "Task prompt is required." });
+      return;
+    }
+
+    const targetModel = typeof model === "string" && model.trim() ? model.trim() : (adapter.models?.[0]?.id || "default");
+    const mergedConfig: Record<string, unknown> = {
+      ...config,
+      model: targetModel,
+    };
+
+    // Apply always-on Ponytail optimization mandate
+    const mandate = renderPonytailOptimizationMandate();
+    const optimizedPrompt = `${mandate}\n\nTask:\n${prompt.trim()}`;
+
+    try {
+      const mockAgent = {
+        id: `task-exec-${Date.now()}`,
+        companyId: (req.body?.companyId as string) || "default",
+        name: "Adapter Task Runner",
+        role: "assistant",
+        adapterType: type,
+        status: "active" as const,
+      };
+      const mockRuntime = {
+        sessionId: null,
+        sessionParams: null,
+      };
+      const result = await adapter.execute({
+        runId: `run-${Date.now()}`,
+        agent: mockAgent as any,
+        runtime: mockRuntime as any,
+        config: mergedConfig,
+        context: {
+          prompt: optimizedPrompt,
+        },
+        onLog: async () => {},
+      });
+
+      const finalResp = (result.resultJson?.finalResponse ?? null) as Record<string, unknown> | null;
+      const responseText =
+        (typeof result.resultJson?.finalResponseText === "string" && result.resultJson.finalResponseText) ||
+        (finalResp && typeof (finalResp as Record<string, any>).text === "string" && (finalResp as Record<string, any>).text) ||
+        result.summary ||
+        result.errorMessage ||
+        "Task completed.";
+
+      res.json({
+        success: result.exitCode === 0,
+        exitCode: result.exitCode,
+        adapterType: type,
+        modelUsed: result.model || targetModel,
+        provider: result.provider || type,
+        summary: result.summary,
+        response: responseText,
+        usage: result.usage,
+        errorMessage: result.errorMessage,
+        optimizationApplied: {
+          layer: "ponytail",
+          alwaysOn: true,
+          mandateInjected: true,
+        },
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      logger.error({ err, type, model: targetModel }, "Adapter task execution failed");
+      res.status(500).json({
+        success: false,
+        exitCode: 1,
+        adapterType: type,
+        modelUsed: targetModel,
+        errorMessage: message,
+      });
+    }
   });
 
   return router;

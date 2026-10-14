@@ -1,8 +1,8 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist-tests",
-    "rootDir": "."
+    "rootDir": "..",
+    "outDir": "../../dist-tests"
   },
-  "include": ["."]
+  "include": [".", "../*"]
 }

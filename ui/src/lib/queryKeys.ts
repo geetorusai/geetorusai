@@ -1,5 +1,8 @@
 export const queryKeys = {
   agentChats: {
+    all: ["agent-chats"] as const,
+    list: (companyId: string | null, userId: string | null, scope?: string) =>
+      ["agent-chats", companyId, userId, scope] as const,
     detail: (companyId: string | null, userId: string | null, agentId: string | undefined) =>
       ["agent-chat", companyId, userId, agentId] as const,
   },
@@ -356,6 +359,8 @@ export const queryKeys = {
       ["issues", "interactions", issueId] as const,
     acceptedPlanDecompositions: (issueId: string) =>
       ["issues", "accepted-plan-decompositions", issueId] as const,
+    collaboration: (issueId: string) =>
+      ["issues", "collaboration", issueId] as const,
     feedbackVotes: (issueId: string) =>
       ["issues", "feedback-votes", issueId] as const,
     costSummary: (issueId: string, options: { excludeRoot?: boolean } = {}) =>
@@ -595,6 +600,7 @@ export const queryKeys = {
   },
   auth: {
     session: ["auth", "session"] as const,
+    profile: ["auth", "profile"] as const,
   },
   inboxAgentPolicy: {
     mine: (companyId: string) =>

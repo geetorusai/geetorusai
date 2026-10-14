@@ -218,3 +218,5 @@ export {
   type RemoteAgentProfileInput,
   type RemoteAgentService,
 } from "./remote-agent-profiles.js";
+export { collaborationService } from "./collaboration/index.js";
+export * from "./memory/index.js";

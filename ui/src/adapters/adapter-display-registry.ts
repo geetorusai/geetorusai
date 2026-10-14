@@ -116,6 +116,12 @@ const adapterDisplayMap: Record<string, AdapterDisplayInfo> = {
     icon: Bot,
     recommended: true,
   },
+  lmstudio_local: {
+    label: "LM Studio",
+    description: "Run local LLMs via LM Studio developer server",
+    icon: Cpu,
+    recommended: true,
+  },
   ollama_local: {
     label: "Ollama (Local AI)",
     description: "Run private local open-source models via Ollama",

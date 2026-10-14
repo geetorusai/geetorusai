@@ -2061,7 +2061,10 @@ function isMainModule(metaUrl: string): boolean {
   const entry = process.argv[1];
   if (!entry) return false;
   try {
-    return pathToFileURL(resolve(entry)).href === metaUrl;
+    const entryUrl = pathToFileURL(resolve(entry)).href;
+    return process.platform === "win32"
+      ? entryUrl.toLowerCase() === metaUrl.toLowerCase()
+      : entryUrl === metaUrl;
   } catch {
     return false;
   }

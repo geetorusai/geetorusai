@@ -1066,3 +1066,6 @@ export * from "./app-definition.js";
 export * from "./chat-channels.js";
 
 export * from "./email.js";
+export * from "./collaboration.js";
+export * from "./memory.js";
+export * from "./agent-chat.js";

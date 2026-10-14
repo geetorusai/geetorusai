@@ -323,7 +323,8 @@ async function listJournalMigrationFiles(): Promise<string[]> {
 }
 
 async function readMigrationFileContent(migrationFile: string): Promise<string> {
-  return readFile(new URL(`./migrations/${migrationFile}`, import.meta.url), "utf8");
+  const content = await readFile(new URL(`./migrations/${migrationFile}`, import.meta.url), "utf8");
+  return content.replace(/\r\n/g, "\n");
 }
 
 async function orderMigrationsByJournal(migrationFiles: string[]): Promise<string[]> {
@@ -501,8 +502,12 @@ async function mapHashesToMigrationFiles(migrationFiles: string[]): Promise<Map<
   await Promise.all(
     migrationFiles.map(async (migrationFile) => {
       const content = await readMigrationFileContent(migrationFile);
-      const hash = createHash("sha256").update(content).digest("hex");
-      mapped.set(hash, migrationFile);
+      const lfHash = createHash("sha256").update(content).digest("hex");
+      mapped.set(lfHash, migrationFile);
+
+      const rawContent = await readFile(new URL(`./migrations/${migrationFile}`, import.meta.url), "utf8");
+      const rawHash = createHash("sha256").update(rawContent).digest("hex");
+      mapped.set(rawHash, migrationFile);
     }),
   );
 
@@ -728,6 +733,46 @@ async function migrationStatementAlreadyApplied(
   );
   if (createTriggerMatch) {
     return triggerExists(sql, createTriggerMatch[1]);
+  }
+
+  const alterColumnDefaultMatch = normalized.match(
+    /^ALTER TABLE "([^"]+)" ALTER COLUMN "([^"]+)" (?:SET DEFAULT|DROP DEFAULT)/i,
+  );
+  if (alterColumnDefaultMatch) {
+    return columnExists(sql, alterColumnDefaultMatch[1], alterColumnDefaultMatch[2]);
+  }
+
+  const alterColumnNotNullMatch = normalized.match(
+    /^ALTER TABLE "([^"]+)" ALTER COLUMN "([^"]+)" (?:SET|DROP) NOT NULL/i,
+  );
+  if (alterColumnNotNullMatch) {
+    return columnExists(sql, alterColumnNotNullMatch[1], alterColumnNotNullMatch[2]);
+  }
+
+  const dropIndexMatch = normalized.match(/^DROP INDEX(?: IF EXISTS)? "([^"]+)"/i);
+  if (dropIndexMatch) {
+    const exists = await indexExists(sql, dropIndexMatch[1]);
+    return !exists;
+  }
+
+  const dropConstraintMatch = normalized.match(
+    /^ALTER TABLE "([^"]+)" DROP CONSTRAINT(?: IF EXISTS)? "([^"]+)"/i,
+  );
+  if (dropConstraintMatch) {
+    const exists = await constraintExists(sql, dropConstraintMatch[2]);
+    return !exists;
+  }
+
+  const dropTriggerMatch = normalized.match(/^DROP TRIGGER(?: IF EXISTS)? "?([A-Za-z_][A-Za-z0-9_]*)"?/i);
+  if (dropTriggerMatch) {
+    const exists = await triggerExists(sql, dropTriggerMatch[1]);
+    return !exists;
+  }
+
+  const dropTableMatch = normalized.match(/^DROP TABLE(?: IF EXISTS)? "([^"]+)"/i);
+  if (dropTableMatch) {
+    const exists = await tableExists(sql, dropTableMatch[1]);
+    return !exists;
   }
 
   // These native-runner repairs have persistent postconditions. Verify them

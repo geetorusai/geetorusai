@@ -50,6 +50,7 @@ export const CONNECT_SOURCE_NAMES: Record<string, string> = {
   claude_local: "Claude",
   codex_local: "OpenAI",
   grok_local: "Grok",
+  lmstudio_local: "LM Studio",
   ollama_local: "Ollama",
   gemini_local: "Gemini",
   opencode_local: "OpenCode",

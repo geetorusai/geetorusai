@@ -2340,6 +2340,7 @@ function renderGeetorusWakePromptBody(
       : includeExecutionContract
         ? [
             "Execution contract: take concrete action in this heartbeat when the issue is actionable; do not stop at a plan unless planning was requested. Leave durable progress and then give the issue a clear final disposition before ending the heartbeat: `done`, `in_review` with a real reviewer/approval/interaction path, `blocked` with first-class blockers or a named unblock owner/action, delegated follow-up issues with blockers, or `in_progress` only when a live continuation path exists. Immediately before returning, verify that Geetorus records one of those dispositions; a successful process exit or final response is not sufficient. If no valid disposition is recorded, record it now and do not end the run. After 2 consecutive failures of the same control-plane write, stop retrying it for the rest of the heartbeat, continue useful work, report the failure in the final response, and rely on the adapter/runtime status channel as the sanctioned fallback. Use child issues for long or parallel delegated work instead of polling. Comments, documents, screenshots, work products, and `Remaining` bullets are evidence, not valid liveness paths by themselves.",
+            "Ponytail Engineering Mandate: Apply the 5-step Decision Ladder before modifying code: (1) Does this need to exist at all? (YAGNI); (2) Is it already in the codebase? (Reuse existing patterns); (3) Does standard library or platform native API cover it? (No unnecessary npm packages); (4) Can it be a clean, direct expression?; (5) Write the minimum code that works. Avoid premature abstractions and code bloat. Perform a `/ponytail-review` audit on your diff before finalizing.",
             "",
           ]
         : [];
@@ -4843,3 +4844,15 @@ export async function runChildProcess(
       .catch(reject);
   });
 }
+
+export {
+  analyzeTaskComplexity,
+  deduplicateContextChunks,
+  renderPonytailOptimizationMandate,
+  compactExecutionHistory,
+} from "./ponytail-optimizer.js";
+export type {
+  TaskIntent,
+  TaskComplexityAnalysis,
+  ExecutionMetricsRecord,
+} from "./ponytail-optimizer.js";

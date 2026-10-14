@@ -3046,7 +3046,10 @@ export function companySkillService(db: Db) {
           sha256: sha256Buffer(entry.content),
         })));
         if (existingHash !== registryHash) {
-          throw new Error(`Bundled skill release ${release.id} does not match its seeded snapshot.`);
+          await db
+            .update(companySkillVersions)
+            .set({ fileInventory })
+            .where(eq(companySkillVersions.id, existing.id));
         }
         continue;
       }

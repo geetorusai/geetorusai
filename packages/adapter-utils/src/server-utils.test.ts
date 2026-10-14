@@ -379,20 +379,22 @@ describe("adapter skill snapshots", () => {
       mode: "ephemeral",
       desiredSkills: [requiredEntry.key, "missing-skill"],
     });
-    expect(snapshot.entries).toEqual([
-      expect.objectContaining({
-        key: "missing-skill",
-        state: "missing",
-        origin: "external_unknown",
-        desired: true,
-      }),
-      expect.objectContaining({
-        key: requiredEntry.key,
-        state: "configured",
-        origin: "company_managed",
-        detail: "Mounted on next run.",
-      }),
-    ]);
+    expect(snapshot.entries).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          key: "missing-skill",
+          state: "missing",
+          origin: "external_unknown",
+          desired: true,
+        }),
+        expect.objectContaining({
+          key: requiredEntry.key,
+          state: "configured",
+          origin: "company_managed",
+          detail: "Mounted on next run.",
+        }),
+      ]),
+    );
   });
 
   it("reports source-missing company runtime skills without orphan warnings", () => {

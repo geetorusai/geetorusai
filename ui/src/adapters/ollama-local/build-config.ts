@@ -8,6 +8,9 @@ export function buildOllamaLocalConfig(values: CreateConfigValues): Record<strin
   if (typeof values.ollamaHost === "string" && values.ollamaHost.trim()) {
     result.host = values.ollamaHost.trim();
   }
+  if (typeof values.ollamaApiKey === "string" && values.ollamaApiKey.trim()) {
+    result.apiKey = values.ollamaApiKey.trim();
+  }
   if (typeof values.ollamaTemperature === "number") {
     result.temperature = values.ollamaTemperature;
   }

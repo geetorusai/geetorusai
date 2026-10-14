@@ -24,12 +24,12 @@ export function OllamaLocalConfigFields({
   hideInstructionsFile,
 }: AdapterConfigFieldsProps) {
   const currentModel = isCreate
-    ? values!.ollamaModel ?? "qwen2.5-coder:latest"
-    : eff("adapterConfig", "model", String(config.model ?? "qwen2.5-coder:latest"));
+    ? values!.ollamaModel ?? "gemma3:4b"
+    : eff("adapterConfig", "model", String(config.model ?? "gemma3:4b"));
 
   return configFieldsForSection(section, (
     <>
-      <Field label="Ollama host endpoint" hint="Host URL where Ollama is running. Defaults to http://127.0.0.1:11434">
+      <Field label="Ollama host endpoint" hint="Host URL where Ollama is running. Defaults to http://127.0.0.1:11434 (Local) or your Ollama Cloud URL">
         <DraftInput
           value={
             isCreate
@@ -44,6 +44,25 @@ export function OllamaLocalConfigFields({
           immediate
           className={inputClass}
           placeholder="http://127.0.0.1:11434"
+        />
+      </Field>
+
+      <Field label="API Key (Ollama Cloud / Remote)" hint="Optional authentication token or bearer key for remote or Ollama Cloud endpoints. Never exposed.">
+        <DraftInput
+          value={
+            isCreate
+              ? values!.ollamaApiKey ?? ""
+              : eff("adapterConfig", "apiKey", String(config.apiKey ?? ""))
+          }
+          onCommit={(v) =>
+            isCreate
+              ? set!({ ollamaApiKey: v })
+              : mark("adapterConfig", "apiKey", v || undefined)
+          }
+          immediate
+          type="password"
+          className={inputClass}
+          placeholder="Optional bearer key / API key"
         />
       </Field>
 

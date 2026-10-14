@@ -135,11 +135,26 @@ import {
   syncOllamaSkills,
   testEnvironment as ollamaTestEnvironment,
   sessionCodec as ollamaSessionCodec,
+  listOllamaModels,
+  refreshOllamaModels,
 } from "@geetorusai/adapter-ollama-local/server";
 import {
   agentConfigurationDoc as ollamaAgentConfigurationDoc,
   models as ollamaModels,
 } from "@geetorusai/adapter-ollama-local";
+import {
+  execute as lmStudioExecute,
+  listLmStudioSkills,
+  syncLmStudioSkills,
+  testEnvironment as lmStudioTestEnvironment,
+  sessionCodec as lmStudioSessionCodec,
+  listLmStudioModels,
+  refreshLmStudioModels,
+} from "@geetorusai/adapter-lmstudio-local/server";
+import {
+  agentConfigurationDoc as lmStudioAgentConfigurationDoc,
+  models as lmStudioModels,
+} from "@geetorusai/adapter-lmstudio-local";
 import { agentConfigurationDoc as piAgentConfigurationDoc } from "@geetorusai/adapter-pi-local";
 import { BUILTIN_ADAPTER_TYPES } from "./builtin-adapter-types.js";
 import { buildExternalAdapters } from "./plugin-loader.js";
@@ -860,6 +875,8 @@ const ollamaLocalAdapter: ServerAdapterModule = {
   sessionCodec: ollamaSessionCodec,
   sessionManagement: getAdapterSessionManagement("ollama_local") ?? undefined,
   models: ollamaModels,
+  listModels: listOllamaModels,
+  refreshModels: refreshOllamaModels,
   supportsLocalAgentJwt: false,
   supportsInstructionsBundle: true,
   instructionsPathKey: "instructionsFilePath",
@@ -879,9 +896,55 @@ const ollamaLocalAdapter: ServerAdapterModule = {
         key: "model",
         label: "Model",
         type: "select",
-        default: "qwen2.5-coder:latest",
+        default: "gemma3:4b",
         options: ollamaModels.map((m: { id: string; label: string }) => ({ value: m.id, label: m.label })),
         hint: "Ollama model tag to run.",
+      },
+      {
+        key: "temperature",
+        label: "Temperature",
+        type: "number",
+        default: 0.2,
+        hint: "Sampling temperature between 0.0 and 1.0.",
+      },
+    ],
+  }),
+};
+
+const lmstudioLocalAdapter: ServerAdapterModule = {
+  type: "lmstudio_local",
+  runtimeToolDelivery: "environment",
+  execute: lmStudioExecute,
+  testEnvironment: lmStudioTestEnvironment,
+  listSkills: listLmStudioSkills,
+  syncSkills: syncLmStudioSkills,
+  sessionCodec: lmStudioSessionCodec,
+  sessionManagement: getAdapterSessionManagement("lmstudio_local") ?? undefined,
+  models: lmStudioModels,
+  listModels: listLmStudioModels,
+  refreshModels: refreshLmStudioModels,
+  supportsLocalAgentJwt: false,
+  supportsInstructionsBundle: true,
+  instructionsPathKey: "instructionsFilePath",
+  requiresMaterializedRuntimeSkills: false,
+  agentConfigurationDoc: lmStudioAgentConfigurationDoc,
+  getConfigSchema: () => ({
+    fields: [
+      {
+        key: "host",
+        label: "LM Studio Host Endpoint",
+        type: "text",
+        default: "http://127.0.0.1:1234/v1",
+        placeholder: "http://127.0.0.1:1234/v1",
+        hint: "URL where LM Studio developer server is running. Defaults to http://127.0.0.1:1234/v1.",
+      },
+      {
+        key: "model",
+        label: "Model",
+        type: "select",
+        default: "local-model",
+        options: lmStudioModels.map((m: { id: string; label: string }) => ({ value: m.id, label: m.label })),
+        hint: "LM Studio model identifier to run.",
       },
       {
         key: "temperature",
@@ -913,6 +976,7 @@ function registerBuiltInAdapters() {
     geetorusRunnerAdapter,
     openCodeLocalAdapter,
     ollamaLocalAdapter,
+    lmstudioLocalAdapter,
     piLocalAdapter,
     cursorCloudAdapter,
     cursorLocalAdapter,
@@ -1087,7 +1151,7 @@ function getDeclaredAdapterModels(): ReturnType<typeof parseAdapterModelsEnv> {
 export async function listAdapterModels(type: string): Promise<{ id: string; label: string }[]> {
   const declaredModels = getDeclaredAdapterModels();
   if (declaredModels && declaredModels[type]?.length) {
-    return declaredModels[type].map((m) => ({ id: m.id, label: m.label ?? m.id }));
+    return declaredModels[type].map((m: { id: string; label?: string }) => ({ id: m.id, label: m.label ?? m.id }));
   }
   const adapter = findActiveServerAdapter(type);
   if (!adapter) return [];

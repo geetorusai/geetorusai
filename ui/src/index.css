@@ -2321,6 +2321,7 @@ a.geetorus-mention-chip[data-mention-kind="external-object"],
 span.geetorus-mention-chip[data-mention-kind="external-object"] {
   /* Inherit base chip styling; status colour comes from inline classes so the
      host can vary tone per category without defining a CSS variant per state. */
+  color: inherit;
 }
 
 /* When the identifier inside a chip is backtick-wrapped in markdown, strip the

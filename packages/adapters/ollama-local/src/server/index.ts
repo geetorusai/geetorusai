@@ -22,3 +22,4 @@ export { execute } from "./execute.js";
 export { listOllamaSkills, syncOllamaSkills } from "./skills.js";
 export { testEnvironment } from "./test.js";
 export { parseOllamaStdoutLine } from "./parse.js";
+export { listOllamaModels, refreshOllamaModels } from "./models.js";

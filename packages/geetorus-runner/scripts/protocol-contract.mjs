@@ -18,7 +18,8 @@ function contractError(code, detail) {
 }
 
 export async function readJson(path) {
-  const source = await readFile(path, "utf8");
+  const raw = await readFile(path, "utf8");
+  const source = raw.replace(/\r\n/g, "\n");
   try {
     return { source, value: JSON.parse(source) };
   } catch (error) {

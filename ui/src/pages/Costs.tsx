@@ -890,7 +890,7 @@ export function Costs({
                   <MetricTile
                     label="Paused agents"
                     value={String(budgetData?.pausedAgentCount ?? 0)}
-                    subtitle="Agent heartbeats blocked by budget"
+                    subtitle="Agent pulse runs blocked by budget"
                     icon={Coins}
                   />
                   <MetricTile

@@ -2765,3 +2765,8 @@ export * from "./types/email.js";
 export * from "./validators/email.js";
 export { configureRailwaySshSchema, type ConfigureRailwaySsh, type RailwaySshSetup } from "./railway-connection.js";
 export * from "./announcements.js";
+export * from "./types/self-healing.js";
+export * from "./types/collaboration.js";
+export * from "./validators/collaboration.js";
+export * from "./types/memory.js";
+export * from "./types/agent-chat.js";

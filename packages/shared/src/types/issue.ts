@@ -771,6 +771,7 @@ export interface Issue {
   conversationAgentId?: string | null;
   conversationUserId?: string | null;
   conversationState?: "active" | "waiting" | null;
+  conversationScope?: "agent" | "project" | "task" | null;
   conversationSessionGeneration?: number;
   conversationBoundaryCommentId?: string | null;
   activeRun?: { id: string; status: string; agentId: string; invocationSource: string;

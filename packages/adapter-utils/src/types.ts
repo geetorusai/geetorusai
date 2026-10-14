@@ -699,7 +699,12 @@ export interface CreateConfigValues {
   geminiAcpWarmHandleIdleMs?: number;
   ollamaModel?: string;
   ollamaHost?: string;
+  ollamaApiKey?: string;
   ollamaTemperature?: number;
+  lmStudioModel?: string;
+  lmStudioHost?: string;
+  lmStudioApiKey?: string;
+  lmStudioTemperature?: number;
   search: boolean;
   fastMode: boolean;
   dangerouslyBypassSandbox: boolean;

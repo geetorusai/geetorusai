@@ -209,3 +209,15 @@ export { aiConnectionDefaults } from "./ai_connection_defaults.js";
 export { aiProviderDefaults } from "./ai_provider_defaults.js";
 export * from "./email.js";
 export { announcementDismissals, announcementPublications } from "./announcement_dismissals.js";
+export {
+  collaborationWorkflows,
+  collaborationSubtasks,
+  collaborationSharedContexts,
+  companyCollaborationSettings,
+} from "./collaboration.js";
+export {
+  memoryItems,
+  memoryEmbeddings,
+  memoryUsages,
+  companyMemorySettings,
+} from "./memory.js";

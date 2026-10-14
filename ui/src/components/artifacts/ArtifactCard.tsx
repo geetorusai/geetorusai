@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect, type SyntheticEvent } from "react";
 import { Download, ExternalLink, Play } from "lucide-react";
 import { AttachmentIcon } from "@/components/icons/AttachmentIcon";
 import type { CompanyArtifact } from "@/api/artifacts";

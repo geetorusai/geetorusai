@@ -44,6 +44,8 @@ export const LEGACY_SESSIONED_ADAPTER_TYPES = new Set([
   "gemini_local",
   "hermes_local",
   "kimi_local",
+  "lmstudio_local",
+  "ollama_local",
   "opencode_local",
   "pi_local",
 ]);
@@ -79,6 +81,16 @@ export const ADAPTER_SESSION_MANAGEMENT: Record<string, AdapterSessionManagement
     nativeContextManagement: "unknown",
     defaultSessionCompaction: DEFAULT_SESSION_COMPACTION_POLICY,
   },
+  lmstudio_local: {
+    supportsSessionResume: true,
+    nativeContextManagement: "unknown",
+    defaultSessionCompaction: DEFAULT_SESSION_COMPACTION_POLICY,
+  },
+  ollama_local: {
+    supportsSessionResume: true,
+    nativeContextManagement: "unknown",
+    defaultSessionCompaction: DEFAULT_SESSION_COMPACTION_POLICY,
+  },
   opencode_local: {
     supportsSessionResume: true,
     nativeContextManagement: "unknown",
@@ -93,11 +105,6 @@ export const ADAPTER_SESSION_MANAGEMENT: Record<string, AdapterSessionManagement
     supportsSessionResume: true,
     nativeContextManagement: "confirmed",
     defaultSessionCompaction: ADAPTER_MANAGED_SESSION_POLICY,
-  },
-  ollama_local: {
-    supportsSessionResume: true,
-    nativeContextManagement: "unknown",
-    defaultSessionCompaction: DEFAULT_SESSION_COMPACTION_POLICY,
   },
 };
 

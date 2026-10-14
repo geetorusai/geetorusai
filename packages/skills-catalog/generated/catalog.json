@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "packageName": "@geetorusai/skills-catalog",
   "packageVersion": "0.3.1",
-  "generatedAt": "2026-09-19T12:04:58.475Z",
+  "generatedAt": "2026-10-11T06:40:24.336Z",
   "skills": [
     {
       "id": "geetorusai:bundled:docs:doc-maintenance",
@@ -32,11 +32,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4477,
-          "sha256": "540f7458f2425ce3efc77485567f726f3b6a3e840e6accebd14ce456d0f3606a"
+          "sizeBytes": 4552,
+          "sha256": "7869705c4d796c9710485e98411f64558ec8b44f119e43b4b3d3f0a7c59e0ad5"
         }
       ],
-      "contentHash": "sha256:35d2f530bfe992ec39aa68e82e4af8a11021deed67ea317a4a516512de2412bf"
+      "contentHash": "sha256:e2fa1fe9aa982d202e39982f226e0ecdae47c2ab97e611866447c983d9e4db38"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:issue-triage",
@@ -67,11 +67,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4038,
-          "sha256": "1d3de96a01837b78c6e08720b570c4efa6a1865839f0f53a4a10e67ddd4d811c"
+          "sizeBytes": 4112,
+          "sha256": "16799a4a6e0df466b5d94a59be2e66815b125d9707f1187a3778e3029d4e4306"
         }
       ],
-      "contentHash": "sha256:7a1450a3338bb790b713fe64da1c656c1758773e92e1598156c803e839f98d05"
+      "contentHash": "sha256:b26ee12e4aaf38e48541029a7d5797ccf8ebbf5d6329a3315a5174c5d915dffe"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:reflection-coach",
@@ -102,11 +102,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 12012,
-          "sha256": "1dd38f95ea436313087cd948dde3ee523166459412dba6dc637d7acb86d1c7f8"
+          "sizeBytes": 12214,
+          "sha256": "0b6a7a7f6b2d4705fd917b568d7554de4e0644ffa380ba73e0734776ddf7aad4"
         }
       ],
-      "contentHash": "sha256:cfbcf8493617e9cd030f52481d2799da9c92fda4adfeaee7dd3d6cbf83168a9b"
+      "contentHash": "sha256:2cbf6a5d0938d2c922465c85445d7f296a37e7b02f686f9195959d5d90e9c9bf"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:status-card-query",
@@ -137,11 +137,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 6352,
-          "sha256": "e73def890e82d2b981e971dfc3a9557ae02b44b5c5a23a66dfe3725aecceb47a"
+          "sizeBytes": 6489,
+          "sha256": "3fda10069387a45ab459a572dd8162f0a7f421195c1349eed40c61b3d97969e2"
         }
       ],
-      "contentHash": "sha256:6f7223449fbf5b92b5d96010ef5939501a164856c3fddbe54215c7db8d880403"
+      "contentHash": "sha256:bf15935807d2f75cc68a0de46c23506880a21b304a3293a577ace0c51566947d"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:summarize-status",
@@ -172,11 +172,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 8868,
-          "sha256": "e1208adbaf34b831a94f20f5f98cac5da5d11e54e307790409e10cce067dbe21"
+          "sizeBytes": 8989,
+          "sha256": "9de4d480dbb62dece9d928254e7521655ce2ec6dd7ecbc2ba62a3aeaf2ae45b9"
         }
       ],
-      "contentHash": "sha256:4c605e26c0f607cce2ca1dee424ed9599735e638be61124b25822f581bc573fa"
+      "contentHash": "sha256:be7e5fd232560714fb223c44cf0823bee035c7ef2eaa2e93caab01515d439854"
     },
     {
       "id": "geetorusai:bundled:geetorus-operations:task-planning",
@@ -207,11 +207,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4931,
-          "sha256": "aacf833ac805cc94d3404429f011bf31bc7ac267e3468f9f6cc540d31cd4f9d2"
+          "sizeBytes": 5015,
+          "sha256": "c2b0157f6d133674fde2944519d269b673ebaf961528cae064ca95979bf63804"
         }
       ],
-      "contentHash": "sha256:6bf6c663c7b2d3ef4b0bff8c9a19caf404eb6b5a2f3fd5aa8ee299ab4115592e"
+      "contentHash": "sha256:32d568c35fefa0e8a29cc96e64854dbc2154d3ff3f9d0ea2e1e98eb515de2132"
     },
     {
       "id": "geetorusai:bundled:product:geetorus-capsules",
@@ -245,35 +245,35 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 5819,
-          "sha256": "e541392ed465a964a1b143dad7e20e2e6755e4cea34da13fe9e43f825221b377"
+          "sizeBytes": 5918,
+          "sha256": "f1c185ec54720338d6dc6e39ee74b98a3f453bf3e44716944acc36f6cebe42a0"
         },
         {
           "path": "references/generator-workflows.md",
           "kind": "reference",
-          "sizeBytes": 4345,
-          "sha256": "ab22d3accb0e7232333057fc165028d3ea352e352bba35f71e52430ce5430ece"
+          "sizeBytes": 4465,
+          "sha256": "607620de63841c6681e7d1271081b437edb58773ff6bb527e61306bbd1303725"
         },
         {
           "path": "references/hero-capsule-bank.md",
           "kind": "reference",
-          "sizeBytes": 5977,
-          "sha256": "5d3ea5d3dd6a4065e7fa90a239dd797c1b599ace72943f808ef6fcdd4a90914c"
+          "sizeBytes": 6166,
+          "sha256": "303c77f2db33a4f5b986208819009dfdeb761dc8c6b59842e8a490f195625468"
         },
         {
           "path": "references/identicon-prototyper.md",
           "kind": "reference",
-          "sizeBytes": 6660,
-          "sha256": "8e77281e90931d200b40912d45252b53e4ddcad4182d3ac92d1222468d5f237a"
+          "sizeBytes": 6873,
+          "sha256": "7af10e7189fe499da39b0df3ed32ef00a80516cc96daa5863a6cd50dcb213964"
         },
         {
           "path": "references/individual-status-capsules.md",
           "kind": "reference",
-          "sizeBytes": 5029,
-          "sha256": "da43b2369f8f3df1dd314eb3f6534135c220895253fb27b055f1a353f01c4e0f"
+          "sizeBytes": 5142,
+          "sha256": "e9014c3d197b7bac36595a1e05506a151c1a568b6817881f85c6569957066799"
         }
       ],
-      "contentHash": "sha256:c99e633e25cfb9feba5ec8a20c5ed77f93612bc2ac538439b0f0d931d9c15f46"
+      "contentHash": "sha256:010997db6590422d4dbddd9db6b3945f70dc2582b690388b9b4270db0ed81b6e"
     },
     {
       "id": "geetorusai:bundled:product:wireframe",
@@ -305,47 +305,47 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 11508,
-          "sha256": "269df1bb9bd8d9eefa46a0b155404b00ea0b7444f2ef777f2c3cd26a44bc04a1"
+          "sizeBytes": 11701,
+          "sha256": "881251c4946b748906f3a0c229dac6e5c363c1cce1a16ce9bbf1b93c2004e40e"
         },
         {
           "path": "assets/site-template.html",
           "kind": "asset",
-          "sizeBytes": 14791,
-          "sha256": "8886ad77c386c17b0457f11624aab136c33db7f28dcd6f10fc18e9d833d0950f"
+          "sizeBytes": 15147,
+          "sha256": "1a8f00bf7cfdc6ad8190b1384997ccb7d932c267d25e4bacb7292e7a18d22dea"
         },
         {
           "path": "assets/template-mobile.svg",
           "kind": "asset",
-          "sizeBytes": 925,
-          "sha256": "dc32af257df1f986b87a7b30a6104de825057dc4d6f12b381f5a28308f0002f0"
+          "sizeBytes": 946,
+          "sha256": "ee8841865f83c2d44b39899b3b877fc3a25f85e90cab1acbefc56fac92d4f83d"
         },
         {
           "path": "assets/template.svg",
           "kind": "asset",
-          "sizeBytes": 1262,
-          "sha256": "63f8adb8eb4b21dea6fd442b9e9312704c419535eb577d4ef0bfb54410fd576b"
+          "sizeBytes": 1286,
+          "sha256": "a21daf45a4b4908a5d2eeafee44a4dd34543762b1cb4f3cb5b6be390e6ef23c9"
         },
         {
           "path": "references/components.md",
           "kind": "reference",
-          "sizeBytes": 14806,
-          "sha256": "4ce18f418d78b13cdfa6fe8070173044a631576cd2b999571e6703f58894496c"
+          "sizeBytes": 15288,
+          "sha256": "1fba5ad8e6f678ab01c1bb8af9f8c71a203c6b7fcefd267936951d2dd213be88"
         },
         {
           "path": "references/examples.md",
           "kind": "reference",
-          "sizeBytes": 16108,
-          "sha256": "18f486e95a578a50cf6c9f93394b82534392771320692e4876edf17054bfae55"
+          "sizeBytes": 16470,
+          "sha256": "07f4093670f9cdb4bb6a3f27d275bbe76c49e44c97e88c3f632f7a550ad3a7fc"
         },
         {
           "path": "references/grid-system.md",
           "kind": "reference",
-          "sizeBytes": 4581,
-          "sha256": "017260d2216859d57e5fa869e0efc6b88c7ed4d8a8a4f5af04fe89a3ef2445bd"
+          "sizeBytes": 4688,
+          "sha256": "fcb8010755fc443e6ab1a1de4fdaa5954908d7923db554677fadd71194a6cc19"
         }
       ],
-      "contentHash": "sha256:ffa5d6eaeedcbc7b7a4ff1f2ee4f177994b2ebca849bcfa2e235d0c0afe786e0"
+      "contentHash": "sha256:f6162e41df564e274aca2ac174d4991e745f27031cc97b993c9191cae0d19ea0"
     },
     {
       "id": "geetorusai:bundled:quality:qa-acceptance",
@@ -376,11 +376,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 3860,
-          "sha256": "c079081a0bf7e675ff193308debd6964167cadbaee4322e182fb4604b6ae9b18"
+          "sizeBytes": 3953,
+          "sha256": "2266f961a798bfd48e36197901aef8f363c8c106a50c9199ec8308c2cc1a4ec9"
         }
       ],
-      "contentHash": "sha256:7091e69e9d4e44a3025aad770ebabf7fb63a22d56803167116196f1b1c83a6f7"
+      "contentHash": "sha256:2af15d2b737d09e179a1e607a42bd9b1966672d7b46af3e9fd462986f6145c2a"
     },
     {
       "id": "geetorusai:bundled:software-development:github-pr-workflow",
@@ -409,11 +409,51 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 3969,
-          "sha256": "55d449eaf1dc0e8289dfcfc2a3a7f7be34e0606bd5f59dc7427b53c670847529"
+          "sizeBytes": 4062,
+          "sha256": "47606179cc8593a9eaf8fe168aaad86c945037714ee8585686ff3dd72156e6ac"
         }
       ],
-      "contentHash": "sha256:465d04de1178cf5b5d29940848d57fef40df93ac41382b17fb54602524f96b65"
+      "contentHash": "sha256:fbd328908d0b37e7771fd89266b4c0e3fe824df5422784e2f20ef4ec96301f1e"
+    },
+    {
+      "id": "geetorusai:bundled:software-development:ponytail",
+      "key": "geetorusai/bundled/software-development/ponytail",
+      "kind": "bundled",
+      "category": "software-development",
+      "slug": "ponytail",
+      "name": "ponytail",
+      "description": "Senior engineer anti-overengineering ruleset and decision ladder. Enforces minimal code, YAGNI, standard library reuse, token efficiency, and automated /ponytail-review audits.",
+      "path": "catalog/bundled/software-development/ponytail",
+      "entrypoint": "SKILL.md",
+      "trustLevel": "markdown_only",
+      "compatibility": "compatible",
+      "defaultInstall": true,
+      "recommendedForRoles": [
+        "engineer",
+        "cto",
+        "ceo",
+        "developer",
+        "qa"
+      ],
+      "requires": [],
+      "tags": [
+        "code-quality",
+        "anti-overengineering",
+        "architecture",
+        "yagni",
+        "ponytail",
+        "performance",
+        "token-efficiency"
+      ],
+      "files": [
+        {
+          "path": "SKILL.md",
+          "kind": "skill",
+          "sizeBytes": 4465,
+          "sha256": "9ffa28723e8b22f74dddf3c06fb9d95466470210701ff676e10e66b9cfa4298d"
+        }
+      ],
+      "contentHash": "sha256:0b6d70532831169f840c645e94a9984b3a63313e3c7788ab37b87c4f32bb02e1"
     },
     {
       "id": "geetorusai:optional:browser:agent-browser",
@@ -444,11 +484,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 5132,
-          "sha256": "1eac0aa628fc472ec0564b1e03573b3847cd70eb85e126688241e2d7117af56a"
+          "sizeBytes": 5225,
+          "sha256": "325ea6b41d8726790ba6319bd61c7f4ea2487702e8aa87d2de91c4803e912d29"
         }
       ],
-      "contentHash": "sha256:5e4ef1dcc93d0d8dc991f9f900af5be1e9ecdc2f3f7b9a65765866133fbc281f"
+      "contentHash": "sha256:fbd10c24f527038c0ab85ce04dddea5c20c1b33c8083c2cae3e77e63d02596dd"
     },
     {
       "id": "geetorusai:optional:content:release-announcement",
@@ -479,11 +519,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 6932,
-          "sha256": "a370a87473febf2b74f9de1aadff58b8e90ee846f0bd2c7dd6665971b3f00bbc"
+          "sizeBytes": 7150,
+          "sha256": "2c3920be0d30fea10481df7269c8d460bd82ed594f6ba6873c40d4505467095b"
         }
       ],
-      "contentHash": "sha256:874e1ddf1b7da112a96718a9f2ac753b6ae320a127b45503b7778fdd177c9e69"
+      "contentHash": "sha256:3a1a1103a6f8405a726d62dfa2cceb7d20312bad0cfbb5ae7bc48ecea961d2ca"
     },
     {
       "id": "geetorusai:optional:content:simplified-english",
@@ -515,11 +555,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 1577,
-          "sha256": "b48d9cbbf4ad51d15e66d6455a2ff5990cac582581bf970d7f232ad1b7dc4214"
+          "sizeBytes": 1617,
+          "sha256": "c36ea4903aede2db69c55a32c7d57012e327a45a23ebe5554e0085cf68e60f3d"
         }
       ],
-      "contentHash": "sha256:d9b1e01ea68bf33671c446b11004c33cf4726edb6abfeec3d644779792bf6b14"
+      "contentHash": "sha256:315aba67b1f3bdf33cdfbf2b558e930f5e008d1c04ef69f3b8e6d579baceede3"
     },
     {
       "id": "geetorusai:optional:finance:ramp",
@@ -552,11 +592,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 6998,
-          "sha256": "2d032137b812dd6b3d4951520383a64797f7c1556d16d49646ee41a33bbd59e4"
+          "sizeBytes": 7096,
+          "sha256": "3c392334200e36d3969a8e101847998ae0fc15e7460e42657e1d7fdc5d2eec57"
         }
       ],
-      "contentHash": "sha256:6722ea57988c3b65401e7d4d5fc1449efa7ac11d939b8f46dc6aab59369567f5"
+      "contentHash": "sha256:de3491c34fc50ec1cdbebe12b4a51067c7ef0895ad9e9470b8244108e35257a1"
     },
     {
       "id": "geetorusai:optional:product:design-critique",
@@ -587,11 +627,11 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 4850,
-          "sha256": "617411c980fb10960b8f7136b9ee7e5de4ce5f615f3de76c1c275353c0b4005d"
+          "sizeBytes": 4971,
+          "sha256": "f20cc8c1722ab3744b2bcafe81cde1cca1df43312fc2c43315b6db1a91663690"
         }
       ],
-      "contentHash": "sha256:200c2610d31273d286b8496139f4683e290eaf820d0678f0c76cccb72c0d2c26"
+      "contentHash": "sha256:27e0e20eca1ed638f3fba64c217f6ccb22d2ea48e18fe23c925814485dfa9861"
     },
     {
       "id": "geetorusai:optional:research:last30days",
@@ -1149,17 +1189,17 @@
         {
           "path": "SKILL.md",
           "kind": "skill",
-          "sizeBytes": 12386,
-          "sha256": "9b7341430f0729fa27f38b93477f49b69c334ca4a360b2cd5ff8de2b819ba703"
+          "sizeBytes": 12616,
+          "sha256": "4e182f5170f91f96e75e782cca2642f60d56d7e6bcbab384d8ab1f581c44fc66"
         },
         {
           "path": "examples/notion-mcp-research-gate.md",
           "kind": "markdown",
-          "sizeBytes": 1893,
-          "sha256": "108131c083a013705b4731237c2db06cf010caf7f029e5d7de457cefcf8771bc"
+          "sizeBytes": 1936,
+          "sha256": "6ef9a04d8ccd265d1f1b5e2ad4a2e903d3c99d6ccf9d4c1e64a0f052e1f927c5"
         }
       ],
-      "contentHash": "sha256:354edc6025aa679515d2a85e25523acc2a00669683ddcea38a159c0f0d635873"
+      "contentHash": "sha256:282e0425ca4154a5619aae0781f64d8934264626ffdd1e3b6800c5d70a00b63e"
     }
   ]
 }

@@ -185,6 +185,7 @@ import { workModeMetaFor } from "../lib/work-mode-meta";
 import { IssueContinuationHandoff } from "../components/IssueContinuationHandoff";
 import { IssueAttachmentsSection } from "../components/IssueAttachmentsSection";
 import { IssueDocumentsSection } from "../components/IssueDocumentsSection";
+import { CollaborativeExecutionDashboard } from "../components/CollaborativeExecutionDashboard";
 import { IssuePlanDecompositionsSection } from "../components/IssuePlanDecompositionsSection";
 import { IssueOutputSection } from "../components/issue-output/IssueOutputSection";
 import { isImageAttachment, isVideoAttachment } from "../lib/issue-attachments";
@@ -7473,6 +7474,15 @@ export function TaskDetailSurface({ conversation, tasksTab }: { tasksTab?: TaskS
               issueId={issue.id}
               issueIdentifier={issue.identifier}
               agentMap={agentMap}
+            />
+          ) : null}
+
+          {!taskChatShellEnabled ? (
+            <CollaborativeExecutionDashboard
+              companyId={issue.companyId}
+              issueId={issue.id}
+              issueTitle={issue.title}
+              agents={agents}
             />
           ) : null}
 
