@@ -1,77 +1,68 @@
 ---
 title: CLI Overview
-summary: CLI installation and setup
+summary: Industrial CLI toolchain for Geetorus control-plane management
 ---
 
-The Geetorus CLI handles instance setup, diagnostics, and control-plane operations.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ COMMAND LINE INTERFACE // INSTANCE SUPERVISION & CONTROL PLANE OPERATOR     │
+│ PROFILES • DATA ROOTS • ATOMIC DEPLOYMENTS • HEADLESS GOVERNANCE            │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-## Usage
+## [ 01 // CLI INVOCATION ]
 
-```sh
+The Geetorus CLI provides headless control over instances, database provisioning, and agent execution.
+
+```bash
+# Production NPX invocation
+npx geetorusai --help
+
+# Monorepo developer invocation
 pnpm geetorusai --help
 ```
 
-## Global Options
+---
 
-All commands support:
+## [ 02 // GLOBAL OPERATIONAL FLAGS ]
 
-| Flag | Description |
-|------|-------------|
-| `--data-dir <path>` | Local Geetorus data root (isolates from `~/.geetorus`) |
-| `--api-base <url>` | API base URL |
-| `--api-key <token>` | API authentication token |
-| `--context <path>` | Context file path |
-| `--profile <name>` | Context profile name |
-| `--json` | Output as JSON |
+| PARAMETER | TYPE | DEFAULT | OPERATIONAL FUNCTION |
+| :--- | :--- | :--- | :--- |
+| `--data-dir <path>` | Path | `~/.geetorus` | Isolates state, SQLite/PG runtime, and workspace assets. |
+| `--api-base <url>` | URL | `http://localhost:3100` | Target Geetorus daemon base URL. |
+| `--api-key <token>` | Token | Env fallback | Authentication bearer token. |
+| `--company-id <id>` | UUID | Active context | Target organization scope identifier. |
+| `--profile <name>` | String | `default` | Swappable operator credentials context profile. |
+| `--json` | Flag | `false` | Machine-readable stdout pipe (JSON format). |
 
-Company-scoped commands also accept `--company-id <id>`.
+> **OPERATOR TIP**: Run isolated test instances without polluting your global root:
+> ```bash
+> npx geetorusai run --data-dir ./tmp/isolated-node
+> ```
 
-For clean local instances, pass `--data-dir` on the command you run:
+---
 
-```sh
-npx geetorusai run --data-dir ./tmp/geetorus-dev
-```
+## [ 03 // CONTEXT & IDENTITY PROFILES ]
 
-## Context Profiles
+Persist connection configurations across terminal sessions:
 
-Store defaults to avoid repeating flags:
+```bash
+# 1. Set default endpoint and organization scope
+npx geetorusai context set --api-base http://localhost:3100 --company-id <ORG_UUID>
 
-```sh
-# Set defaults
-npx geetorusai context set --api-base http://localhost:3100 --company-id <id>
-
-# View current context
+# 2. Inspect active profile state
 pnpm geetorusai context show
 
-# List profiles
+# 3. List stored contexts
 pnpm geetorusai context list
 
-# Switch profile
-npx geetorusai context use default
+# 4. Switch context profile
+npx geetorusai context use production-us-east
 ```
 
-To avoid storing secrets in context, use an env var:
-
-```sh
+### SECRET SAFETY BEST PRACTICE:
+Do not write plaintext API tokens to disk. Delegate to an environment pointer:
+```bash
 npx geetorusai context set --api-key-env-var-name GEETORUS_API_KEY
-export GEETORUS_API_KEY=...
+export GEETORUS_API_KEY="gtk_live_..."
 ```
-
-Secret operations are available under `geetorusai secrets`:
-
-```sh
-npx geetorusai secrets declarations --company-id <company-id> --kind secret
-npx geetorusai secrets create --company-id <company-id> --name anthropic-api-key --value-env ANTHROPIC_API_KEY
-npx geetorusai secrets link --company-id <company-id> --name prod-stripe-key --provider aws_secrets_manager --external-ref <provider-ref>
-npx geetorusai secrets doctor --company-id <company-id>
-npx geetorusai secrets migrate-inline-env --company-id <company-id> --apply
-```
-
-Context is stored at `~/.geetorus/context.json`.
-
-## Command Categories
-
-The CLI has two categories:
-
-1. **[Setup commands](/cli/setup-commands)** — instance bootstrap, diagnostics, configuration
-2. **[Control-plane commands](/cli/control-plane-commands)** — issues, agents, approvals, activity

@@ -1,42 +1,54 @@
-# GeetorusAI — Always-On Ponytail Integration
+# PONYTAIL // ALWAYS-ON EFFICIENCY & EXECUTION PROTOCOL
 
-## Executive Summary
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ OPTIMIZATION KERNEL // DIETRICHGEBERT/PONYTAIL SPECIFICATION                │
+│ PREBUILT • ZERO MODES • ALWAYS ON • SURGICAL CODE DELIVERY                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-GeetorusAI embeds [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail.git) as a permanently enabled, prebuilt execution and coding-efficiency layer across all agent runtimes, models, and tasks.
+## [ 01 // CORE INVARIANT ]
 
-**Core Invariant**: There are **no modes** (no Lite, Full, Ultra, or Off selectors) and **no manual activation steps**. The optimization pipeline runs automatically as part of GeetorusAI's core task execution lifecycle.
+Geetorus embeds the **Ponytail Optimization Engine** as an immutable, always-active execution contract across all models, agents, and runtimes.
+- **NO MODES**: No "Lite", "Full", or "Ultra" toggles.
+- **NO ACTIVATION DELAYS**: Runs automatically as a first-class filter in the execution lifecycle.
+- **SURGICAL CODE DELIVERY**: Rejects speculative bloat, duplicate helpers, and multi-layer abstractions.
 
 ---
 
-## 🪜 The Ponytail 5-Step Decision Ladder
+## [ 02 // THE 5-STEP DECISION LADDER ]
 
-Every operation executed by GeetorusAI strictly evaluates against the 5-step Decision Ladder:
+Every single tool invocation, file edit, and agent response is evaluated against the ladder:
 
 ```
-[THE PONYTAIL DECISION LADDER]
-1. Does this need to exist at all? (YAGNI — reject speculative requirements)
-2. Is it already in the codebase? (Audit existing utilities before authoring; never duplicate)
-3. Does the platform native API cover it? (Use standard built-ins; avoid unneeded packages)
-4. Can it be expressed directly? (Pure functions and single expressions beat multi-layer wrappers)
-5. Write the MINIMAL code that works (Surgical diffs, no dead code, preserve safety & error handling)
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        THE PONYTAIL DECISION LADDER                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ [1] DOES THIS NEED TO EXIST AT ALL?                                         │
+│     Reject speculative features. YAGNI is enforced.                         │
+│                                                                             │
+│ [2] IS IT ALREADY IN THE CODEBASE?                                          │
+│     Audit existing helpers before authoring. Duplication is forbidden.       │
+│                                                                             │
+│ [3] DOES THE PLATFORM NATIVE API COVER IT?                                  │
+│     Rely on standard built-ins; avoid unnecessary dependencies.             │
+│                                                                             │
+│ [4] CAN IT BE EXPRESSED DIRECTLY?                                           │
+│     Pure functions and single expressions beat multi-layer indirection.     │
+│                                                                             │
+│ [5] WRITE THE MINIMAL CODE THAT WORKS.                                      │
+│     Surgical diffs, clean contracts, zero dead code, robust error paths.    │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📂 Documentation Directory Map
+## [ 03 // ARCHITECTURAL DOCUMENTATION SUITE ]
 
-| Document | Focus & Scope |
+| SPECIFICATION CHAPTER | FOCUS & SCOPE |
 | :--- | :--- |
-| [01 — Execution Pipeline](./01-execution-pipeline.md) | Request lifecycle: Intent detection, context retrieval, targeted tool selection, verification. |
-| [02 — Token & Cost Optimization](./02-token-and-cost-optimization.md) | Context deduplication, prompt structuring, search-before-read, exact metric tracking. |
-| [03 — Model Runtime Compatibility](./03-model-runtime-compatibility.md) | Universal execution contract for Local Ollama, Ollama Cloud, Claude, Codex, Gemini, Grok. |
-| [04 — Benchmarks & Measurements](./04-benchmarks-and-measurements.md) | Measured before vs. after empirical benchmarks across representative tasks. |
-| [05 — Operations & Troubleshooting](./05-operations-and-troubleshooting.md) | Startup verification, error recovery, persistence across restarts, diagnostic guides. |
-
----
-
-## ⚡ Always-On Architecture Highlights
-
-1. **Prebuilt & Idempotent**: Bundled directly in `packages/adapter-utils/src/ponytail-optimizer.ts` and seeded into standard instructions (`AGENTS.md`). Preserved across sessions, restarts, and background workers.
-2. **Extreme Token Minimization**: Automatically deduplicates context blocks, prevents full-repository dumps, limits histories to compact state ledgers, and captures measured token frames.
-3. **Honest Model Routing**: Never silently switches to paid models upon local model errors. Model selection explicitly follows user configuration.
+| [01 — Execution Pipeline](./01-execution-pipeline.md) | Request lifecycle: Intent detection, context retrieval, tool selection. |
+| [02 — Token & Cost Optimization](./02-token-and-cost-optimization.md) | Context deduplication, prompt structuring, search-before-read rules. |
+| [03 — Model Runtime Compatibility](./03-model-runtime-compatibility.md) | Universal execution contracts across Local Ollama, Claude, Codex, Gemini. |
+| [04 — Benchmarks & Measurements](./04-benchmarks-and-measurements.md) | Empirical before vs. after performance measurements. |
+| [05 — Operations & Troubleshooting](./05-operations-and-troubleshooting.md) | Diagnostic runbooks, error recovery, persistence across restarts. |

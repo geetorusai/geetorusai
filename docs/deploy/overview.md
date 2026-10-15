@@ -1,55 +1,52 @@
 ---
 title: Deployment Overview
-summary: Deployment modes at a glance
+summary: Production deployment modes and network topologies
 ---
 
-Geetorus supports three deployment configurations, from zero-friction local to internet-facing production.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ OPERATIONAL DEPLOYMENT MODES // INFRASTRUCTURE TOPOLOGY                     │
+│ LOCAL TRUSTED • PRIVATE VPN/TAILSCALE • INTERNET-FACING PRODUCTION          │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-## Deployment Modes
+## [ 01 // THREE DEPLOYMENT TOPOLOGIES ]
 
-| Mode | Auth | Best For |
-|------|------|----------|
-| `local_trusted` | No login required | Single-operator local machine |
-| `authenticated` + `private` | Login required | Private network (Tailscale, VPN, LAN) |
-| `authenticated` + `public` | Login required | Internet-facing cloud deployment |
+| TOPOLOGY MODE | AUTHENTICATION GATE | NETWORK BINDING | BEST USE-CASE |
+| :--- | :--- | :--- | :--- |
+| `local_trusted` | None (Single Operator) | `127.0.0.1` Loopback | Solo dev, local experimentation, fast boot |
+| `authenticated` + `private` | Better Auth Sessions | `0.0.0.0` (Tailscale / VPN) | Distributed engineering team on mesh network |
+| `authenticated` + `public` | Strict Better Auth + RBAC | Public FQDN / HTTPS | Cloud hosting (AWS ECS, Docker, Kubernetes) |
 
-## Quick Comparison
+---
 
-### Local Trusted (Default)
+## [ 02 // TECHNICAL MATRIX ]
 
-- Loopback-only host binding (localhost)
-- No human login flow
-- Fastest local startup
-- Best for: solo development and experimentation
+### 1. LOCAL TRUSTED (DEFAULT)
+- Binds strictly to loopback (`localhost`).
+- Skips interactive credential gates for zero friction.
+- Provisions embedded PostgreSQL runtime automatically.
 
-### Authenticated + Private
+### 2. AUTHENTICATED + PRIVATE
+- Requires user sign-in via Better Auth.
+- Accessible across team overlay networks (Tailscale, WireGuard, VPC).
+- Auto base URL discovery for dynamic LAN/mesh IP addresses.
 
-- Login required via Better Auth
-- Binds to all interfaces for network access
-- Auto base URL mode (lower friction)
-- Best for: team access over Tailscale or local network
+### 3. AUTHENTICATED + PUBLIC
+- Enforces strict Origin headers, CSRF protection, and session encryption.
+- Requires explicit public domain configuration (`BETTER_AUTH_URL`).
+- Audit logging enabled for all external invocations.
 
-### Authenticated + Public
+---
 
-- Login required
-- Explicit public URL required
-- Stricter security checks
-- Best for: cloud hosting, internet-facing deployment
+## [ 03 // CONFIGURATION COMMANDS ]
 
-## Choosing a Mode
-
-- **Just trying Geetorus?** Use `local_trusted` (the default)
-- **Sharing with a team on private network?** Use `authenticated` + `private`
-- **Deploying to the cloud?** Use `authenticated` + `public` — see [AWS ECS Fargate guide](aws-ecs.md)
-
-Set the mode during onboarding:
-
-```sh
+Select topology during initial boot:
+```bash
 pnpm geetorusai onboard
 ```
 
-Or update it later:
-
-```sh
+Or reconfigure an existing deployment:
+```bash
 pnpm geetorusai configure --section server
 ```

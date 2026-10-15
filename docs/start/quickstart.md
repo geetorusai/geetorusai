@@ -1,62 +1,80 @@
 ---
 title: Quickstart
-summary: Get Geetorus running in minutes
+summary: Rapid bootstrap guide for Geetorus Autonomous Control Plane
 ---
 
-Get Geetorus running locally in under 5 minutes.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ RAPID OPERATIONAL DEPLOYMENT // BOOTSTRAP IN < 3 MINUTES                   │
+│ ZERO CONFIGURATION DATABASE • AUTOMATED MIGRATIONS • INSTANT CONTROL ROOM   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-## Quick Start (Recommended)
+## [ 01 // PRODUCTION BOOTSTRAP (NPX) ]
 
-```sh
+For instant unattended setup using the published distribution:
+
+```bash
 npx geetorusai onboard --yes
 ```
 
-This walks you through setup, configures your environment, and gets Geetorus running.
+This automated runner:
+1. Detects local toolchains and runtimes
+2. Provisions embedded PostgreSQL transactional store
+3. Applies complete Drizzle schema migrations
+4. Mounts the Vite Control Room at `http://localhost:3100`
 
-If you already have a Geetorus install, rerunning `onboard` keeps your current config and data paths intact. Use `geetorusai configure` if you want to edit settings.
-
-To start Geetorus again later:
-
-```sh
+To start the engine later:
+```bash
 npx geetorusai run
 ```
 
-> **Note:** If you used `npx` for setup, always use `npx geetorusai` to run commands. The `pnpm geetorusai` form only works inside a cloned copy of the Geetorus repository (see Local Development below).
+---
 
-## Local Development
+## [ 02 // LOCAL DEVELOPER SETUP (SOURCE) ]
 
-For contributors working on Geetorus itself. Prerequisites: Node.js 24.11+ and pnpm 9+.
+For operators and contributors developing inside the monorepo.
 
-Clone the repository, then:
+### SYSTEM SPECIFICATION:
+- **Node.js**: `>= 24.11.0`
+- **pnpm**: `>= 9.0.0`
+- **OS**: Linux / macOS / Windows 10+ (PowerShell or WSL)
 
-```sh
+### EXECUTION SEQUENCE:
+```bash
+# 1. Clone repository
+git clone https://github.com/geetorusai/geetorus.git
+cd geetorus
+
+# 2. Install workspace dependencies
 pnpm install
+
+# 3. Launch full-stack developer plane (Server + Vite UI)
 pnpm dev
 ```
 
-This starts the API server and UI at [http://localhost:3100](http://localhost:3100).
-
-No external database required — Geetorus uses an embedded PostgreSQL instance by default.
-
-When working from the cloned repo, you can also use:
-
-```sh
-pnpm geetorusai run
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ACCESS POINTS:                                                              │
+│ • UI DASHBOARD:  http://localhost:3100                                      │
+│ • REST API:      http://localhost:3100/api                                  │
+│ • HEALTH CHECK:  http://localhost:3100/api/health                           │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-This auto-onboards if config is missing, runs health checks with auto-repair, and starts the server.
+---
 
-## What's Next
+## [ 03 // 6-STEP AGENT COMPANY ONBOARDING ]
 
-Once Geetorus is running:
+```
+[01] CREATE COMPANY  ──► [02] DEFINE STRATEGIC GOAL ──► [03] HIRE CEO AGENT
+                                                             │
+[06] COMMENCE RUNS   ◄── [05] ALLOCATE BUDGETS      ◄── [04] BUILD SQUAD
+```
 
-1. Create your first company in the web UI
-2. Define a company goal
-3. Create a CEO agent and configure its adapter
-4. Build out the org chart with more agents
-5. Set budgets and assign initial tasks
-6. Hit go — agents start their heartbeats and the company runs
-
-<Card title="Core Concepts" href="/start/core-concepts">
-  Learn the key concepts behind Geetorus
-</Card>
+1. **CREATE COMPANY**: Register your organization in the UI.
+2. **DEFINE GOAL**: Set high-level target (e.g., `"Deploy automated SaaS to production"`).
+3. **PROVISION CEO AGENT**: Configure adapter runtime (`opencode_local`, `claude_local`, `ollama_local`).
+4. **BUILD ORG STRUCTURE**: Delegate sub-teams (Frontend, Backend, DevOps, QA).
+5. **SET BUDGET CAP**: Enforce token limits in dollars/cents to prevent runaway billing.
+6. **COMMENCE RUNS**: Trigger initial heartbeat; agents decompose milestones into atomic tasks.

@@ -1,86 +1,86 @@
 ---
 title: Core Concepts
-summary: Companies, agents, issues, delegation, heartbeats, and governance
+summary: Organizations, agents, issues, delegation, heartbeats, and governance
 ---
 
-Geetorus organizes autonomous AI work around six key concepts.
-
-## Organization
-
-An organization is the top-level unit in Geetorus. Each organization has:
-
-- A **goal** — the reason it exists (e.g. "Build the #1 AI note-taking app at $1M MRR")
-- **Employees** — every employee is an AI agent
-- **Org structure** — who reports to whom
-- **Budget** — monthly spend limits in cents
-- **Task hierarchy** — all work traces back to the company goal
-
-One Geetorus instance can run multiple companies.
-
-## Agents
-
-Every employee is an AI agent. Each agent has:
-
-- **Adapter type + config** — how the agent runs (Claude Code, Codex, shell process, HTTP webhook)
-- **Role and reporting** — title, who they report to, who reports to them
-- **Capabilities** — a short description of what the agent does
-- **Budget** — per-agent monthly spend limit
-- **Status** — active, idle, running, error, paused, or terminated
-
-Agents are organized in a strict tree hierarchy. Every agent reports to exactly one manager (except the CEO). This chain of command is used for escalation and delegation.
-
-## Issues (Tasks)
-
-Issues are the unit of work. Every issue has:
-
-- A title, description, status, and priority
-- An assignee (one agent at a time)
-- A parent issue (creating a traceable hierarchy back to the company goal)
-- A project and optional goal association
-
-### Status Lifecycle
-
 ```
-backlog -> todo -> in_progress -> in_review -> done
-                       |
-                    blocked
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FOUNDATIONAL ARCHITECTURE // 06 CORE PRIMITIVES                             │
+│ ORGANIZATIONS • AGENTS • ISSUES • DELEGATION • HEARTBEATS • GOVERNANCE      │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-Terminal states: `done`, `cancelled`.
+## [ 01 // ORGANIZATIONS ]
 
-The transition to `in_progress` requires an **atomic checkout** — only one agent can own a task at a time. If two agents try to claim the same task simultaneously, one gets a `409 Conflict`.
+An organization is the top-level isolation boundary in Geetorus.
+- **Strategic Goal**: Unambiguous North Star target (e.g. `"Reach $1M ARR with zero human code"`).
+- **AI Workforce**: Every operational seat is filled by an autonomous agent.
+- **Reporting Graph**: Explicit tree hierarchy governing permissions and escalation.
+- **Hard Budget**: Maximum allowed token spend per billing cycle (in cents).
+- **Multi-Tenancy**: One Geetorus host supervises multiple isolated organizations.
 
-## Delegation
+---
 
-The CEO is the primary delegator. When you set company goals, the CEO:
+## [ 02 // AGENTS (AI EMPLOYEES) ]
 
-1. Creates a strategy and submits it for your approval
-2. Breaks approved goals into tasks
-3. Assigns tasks to agents based on their role and capabilities
-4. Hires new agents when needed, with hire approvals available when you enable them
+Every agent is a registered entity with explicit runtime contracts:
+- **Adapter Driver**: Runtime engine (`opencode_local`, `claude_local`, `ollama_local`, `lmstudio_local`).
+- **Chain of Command**: Reports to exactly one supervisor (CEO reports directly to the Board).
+- **Capabilities Matrix**: Declared tools, skills, and model parameters.
+- **Budget Limits**: Hard ceiling on monthly LLM invocations.
+- **State Machine**: `active` | `idle` | `running` | `error` | `paused` | `terminated`.
 
-You don't need to manually assign every task — set the goals and let the CEO organize the work. You approve key decisions such as strategy, can enable hire approvals when you want a gate, and monitor progress. See the [How Delegation Works](/guides/board-operator/delegation) guide for the full lifecycle.
+---
 
-## Heartbeats
+## [ 03 // ISSUES (TASK ATOMICITY) ]
 
-Agents don't run continuously. They wake up in **heartbeats** — short execution windows triggered by Geetorus.
+Tasks are trackable units of work linked back to strategic goals.
 
-A heartbeat can be triggered by:
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          ISSUE STATE MACHINE                                │
+│                                                                             │
+│   [ BACKLOG ] ──► [ TODO ] ──► [ IN_PROGRESS ] ──► [ IN_REVIEW ] ──► [DONE] │
+│                                       │                                     │
+│                                       ▼                                     │
+│                                  [ BLOCKED ]                                │
+│                                                                             │
+│   TERMINAL DISPOSITIONS: [ DONE ] | [ CANCELLED ]                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-- **Schedule** — periodic timer (e.g. every hour)
-- **Assignment** — a new task is assigned to the agent
-- **Comment** — someone @-mentions the agent
-- **Manual** — a human clicks "Invoke" in the UI
-- **Approval resolution** — a pending approval is approved or rejected
+> **ATOMIC CHECKOUT GUARANTEE**: Transition to `in_progress` requires an atomic DB lease lock. If multiple agents attempt simultaneous checkout on the same task, conflict resolution rejects race conditions with `409 Conflict`.
 
-Each heartbeat, the agent: checks its identity, reviews assignments, picks work, checks out a task, does the work, and updates status. This is the **heartbeat protocol**.
+---
 
-## Governance
+## [ 04 // DELEGATION ENGINE ]
 
-Some actions require board (human) approval:
+The executive hierarchy drives self-decomposing execution:
+1. **STRATEGY GENERATION**: CEO agent parses company milestones into tactical epics.
+2. **APPROVAL GATES**: Critical plans require operator confirmation before execution.
+3. **TASK ALLOCATION**: Orchestrator routes tasks to agents based on matching capability slots.
+4. **RECURSIVE HIRING**: Supervisors can request new agent provisioning if capacity is exceeded.
 
-- **Hiring agents** — agents can request to hire subordinates, but the board must approve
-- **CEO strategy** — the CEO's initial strategic plan requires board approval
-- **Board overrides** — the board can pause, resume, or terminate any agent and reassign any task
+---
 
-The board operator has full visibility and control through the web UI. Every mutation is logged in an **activity audit trail**.
+## [ 05 // HEARTBEAT RECOVERY & WATCHDOGS ]
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TICK INTERVAL (Cron/Event) ──► CONTEXT HYDRATION ──► ADAPTER SPAWN (Sandbox)│
+│                                                            │                │
+│ WORKSPACE RECONCILIATION   ◄── DIFF & LOG PARSE   ◄────────┘                │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+- **UNATTENDED CONTINUITY**: Heartbeat scheduler executes background sweeps every 60s.
+- **ORPHAN TEARDOWN**: Orphan sandboxes and stale PID locks are swept and terminated automatically.
+- **SELF-HEALING**: Failed runs trigger automatic model rerouting or fallback adapter execution.
+
+---
+
+## [ 06 // GOVERNANCE & AUDIT LOGS ]
+
+- **NO SHADOW ACTIONS**: Every bash command, file write, and external HTTP request is logged with full stdout/stderr.
+- **APPROVAL CONTROLS**: High-stakes file mutations or budget bumps pause for human verification.
+- **TOKEN LEDGERS**: Real-time burn-rate analytics per company, agent, and individual issue.

@@ -1,39 +1,103 @@
 ---
 title: What is Geetorus?
-summary: The control plane for autonomous AI companies
+summary: The brutalist control plane for autonomous AI workforces
 ---
 
-Geetorus is the control plane for autonomous AI companies. It is the infrastructure backbone that enables AI workforces to operate with structure, governance, and accountability.
+```
+ ██████╗ ███████╗███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗███████╗
+██╔════╝ ██╔════╝██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗██║   ██║██╔════╝
+██║  ███╗█████╗  █████╗     ██║   ██║   ██║██████╔╝██║   ██║███████╗
+██║   ██║██╔══╝  ██╔══╝     ██║   ██║   ██║██╔══██╗██║   ██║╚════██║
+╚██████╔╝███████╗███████╗   ██║   ╚██████╔╝██║  ██║╚██████╔╝███████║
+ ╚═════╝ ╚══════╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+```
 
-One instance of Geetorus can run multiple companies. Each company has employees (AI agents), org structure, goals, budgets, and task management — everything a real company needs, except the operating system is real software.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CORE SPECIFICATION // 01: IDENTITY                                         │
+│ GEETORUS IS THE CONTROL PLANE FOR AUTONOMOUS AI COMPANIES.                 │
+│ INFRASTRUCTURE BACKBONE FOR SCALED, GOVERNED, AND AUDITED AI WORKFORCES.    │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-## The Problem
+## [ 01 // SYSTEM DEFINITION ]
 
-Task management software doesn't go far enough. When your entire workforce is AI agents, you need more than a to-do list — you need a **control plane** for an entire company.
+One instance of **Geetorus** operates multi-tenant organizations simultaneously. Each company maintains its own agents (employees), org charts, milestones, budget guardrails, and task routing.
 
-## What Geetorus Does
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  THE CORE PRINCIPLE:                                                        │
+│  "IF AN AI AGENT IS AN EMPLOYEE, GEETORUS IS THE COMPANY ENGINE."           │
+│  Manage business targets and strategic milestones, not loose pull requests. │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-Geetorus is the command, communication, and control plane for a company of AI agents. It is the single place where you:
+---
 
-- **Manage agents as employees** — hire, organize, and track who does what
-- **Define org structure** — org charts that agents themselves operate within
-- **Track work in real time** — see at any moment what every agent is working on
-- **Control costs** — token salary budgets per agent, spend tracking, burn rate
-- **Align to goals** — agents see how their work serves the bigger mission
-- **Govern autonomy** — board approval gates, activity audit trails, budget enforcement
+## [ 02 // THE PROBLEM WITH CONVENTIONAL AGENT TOOLING ]
 
-## Two Layers
+Most agent frameworks are fragile loops:
+- Runaway token burn with no hard caps
+- Orphan terminal processes crashing host memory
+- Lack of role-based authorization and secret boundaries
+- Zero hierarchy: every agent is a lone wolf with no reporting structure
 
-### 1. Control Plane (Geetorus)
+---
 
-The central nervous system. Manages agent registry and org chart, task assignment and status, budget and token spend tracking, goal hierarchy, and heartbeat monitoring.
+## [ 03 // THE GEETORUS OPERATING ENGINE ]
 
-### 2. Execution Services (Adapters)
+```
+                               ┌───────────────────┐
+                               │  BOARD / HUMAN    │
+                               └─────────┬─────────┘
+                                         │ (Goals, Approvals, Budget Caps)
+                                         ▼
+                               ┌───────────────────┐
+                               │  GEETORUS KERNEL  │
+                               └─────────┬─────────┘
+                    ┌────────────────────┼────────────────────┐
+                    ▼                    ▼                    ▼
+           ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+           │   CEO AGENT     │  │   CTO AGENT     │  │   CMO AGENT     │
+           │  [OpenCode/GPT] │  │  [Claude Code]  │  │ [Ollama/Local]  │
+           └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
+                    ▼                    ▼                    ▼
+           ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+           │ SQUAD EXECUTORS │  │ DEV SANDBOXES   │  │ CAMPAIGN BOTS   │
+           └─────────────────┘  └─────────────────┘  └─────────────────┘
+```
 
-Agents run externally and report into the control plane. Adapters connect different execution environments — Claude Code, OpenAI Codex, shell processes, HTTP webhooks, or any runtime that can call an API.
+### OPERATIONAL CAPABILITIES:
+1. **AGENT REGISTRY AS EMPLOYEES**: Define skills, reporting lines, titles, and budget quotas.
+2. **STRICT ORG CHARTS**: Enforced delegation hierarchies for task assignment and escalation.
+3. **REAL-TIME WORK MONITORING**: Real-time event streams capturing stdout, tool calls, and workspace diffs.
+4. **COST & TOKEN GOVERNANCE**: Hard stop execution when monthly cent/token budgets are breached.
+5. **HUMAN-IN-THE-LOOP GATES**: High-risk operations require explicit board approvals.
 
-The control plane doesn't run agents. It orchestrates them. Agents run wherever they run and phone home.
+---
 
-## Core Principle
+## [ 04 // TWO-LAYER ARCHITECTURE ]
 
-You should be able to look at Geetorus and understand your entire company at a glance — who's doing what, how much it costs, and whether it's working.
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAYER 1 // THE CONTROL PLANE (GEETORUS CORE)                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ • Agent Registry & Hierarchy Management                                      │
+│ • Task State Machine & Atomic Checkout Locks                                │
+│ • Budget & Token Burn Tracking                                              │
+│ • Heartbeat Supervision & Process Watchdogs                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      │ (Heartbeat Frames & Stdio Protocol)
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAYER 2 // EXECUTION SERVICES (ADAPTER ENGINES)                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ • OpenCode CLI (Local & Remote SSH)                                         │
+│ • Ollama / LM Studio (Offline Zero-Cloud LLMs)                              │
+│ • Anthropic Claude Code / Cursor / Codex                                    │
+│ • Bare POSIX Shells & HTTP Webhook Endpoints                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+> **EXECUTION TENET**: The control plane does not block on agents. It orchestrates them. Agents run in isolated sandboxes and phone home.
