@@ -35,7 +35,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@lexical/link": "0.48.0",
-    "@mdxeditor/editor": "^4.2.3",
+    "@mdxeditor/editor": "^4.2.5",
     "@geetorusai/adapter-claude-local": "workspace:*",
     "@geetorusai/adapter-codex-local": "workspace:*",
     "@geetorusai/adapter-cursor-cloud": "workspace:*",
