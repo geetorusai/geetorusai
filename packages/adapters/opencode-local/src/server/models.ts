@@ -264,6 +264,49 @@ export function isTruthyEnvFlag(value: string | undefined): boolean {
   return v === "true" || v === "1" || v === "yes";
 }
 
+export function resolveOpenCodeModelCandidate(
+  model: string,
+  availableModels: AdapterModel[],
+): string | null {
+  if (availableModels.some((entry) => entry.id === model)) {
+    return model;
+  }
+  const slashIndex = model.indexOf("/");
+  if (slashIndex > 0) {
+    const provider = model.slice(0, slashIndex);
+    const subName = model.slice(slashIndex + 1);
+
+    // 1. Direct prefix swaps: openai/ <-> opencode/
+    const directAlias = provider === "openai"
+      ? `opencode/${subName}`
+      : provider === "opencode"
+        ? `openai/${subName}`
+        : null;
+    if (directAlias && availableModels.some((entry) => entry.id === directAlias)) {
+      return directAlias;
+    }
+
+    // 2. If provider is not opencode, check if opencode/<subName> is available
+    if (provider !== "opencode") {
+      const opencodeCandidate = `opencode/${subName}`;
+      if (availableModels.some((entry) => entry.id === opencodeCandidate)) {
+        return opencodeCandidate;
+      }
+    }
+
+    // 3. If provider is opencode, check common upstream providers
+    if (provider === "opencode") {
+      for (const upstream of ["openai", "anthropic", "google", "ollama"]) {
+        const upstreamCandidate = `${upstream}/${subName}`;
+        if (availableModels.some((entry) => entry.id === upstreamCandidate)) {
+          return upstreamCandidate;
+        }
+      }
+    }
+  }
+  return null;
+}
+
 export async function ensureOpenCodeModelConfiguredAndAvailable(input: {
   model?: unknown;
   command?: unknown;
@@ -317,40 +360,51 @@ export async function ensureOpenCodeModelConfiguredAndAvailable(input: {
     return [{ id: model, label: model }];
   }
 
-  if (!models.some((entry) => entry.id === model)) {
-    // `opencode models` reads a persistent models.dev cache. Long-lived runner
-    // hosts can therefore report a stale non-empty catalog even while the
-    // configured provider serves the model. Refresh once before treating a
-    // cached miss as authoritative; a successful refresh that still omits the
-    // model retains the strict availability rejection below.
-    try {
-      const refreshedModels = await refreshOpenCodeModelsCached({
-        command: input.command,
-        cwd: input.cwd,
-        env: input.env,
-      });
-      if (refreshedModels.some((entry) => entry.id === model)) {
-        return refreshedModels;
-      }
-      if (refreshedModels.length > 0) models = refreshedModels;
-    } catch (err) {
-      console.warn(
-        `[opencode-local] Model availability refresh failed for "${model}" (${
-          err instanceof Error ? err.message : String(err)
-        }); preserving the cached availability rejection.`,
-      );
+  const candidate = resolveOpenCodeModelCandidate(model, models);
+  if (candidate) {
+    if (candidate !== model) {
+      return [{ id: candidate, label: candidate }, ...models.filter((m) => m.id !== candidate)];
     }
+    return models;
+  }
 
-    const sample = models
-      .slice(0, 12)
-      .map((entry) => entry.id)
-      .join(", ");
-    throw new Error(
-      `Configured OpenCode model is unavailable: ${model}. Available models: ${sample}${models.length > 12 ? ", ..." : ""}`,
+  // `opencode models` reads a persistent models.dev cache. Long-lived runner
+  // hosts can therefore report a stale non-empty catalog even while the
+  // configured provider serves the model. Refresh once before treating a
+  // cached miss as authoritative; a successful refresh that still omits the
+  // model retains the strict availability rejection below.
+  try {
+    const refreshedModels = await refreshOpenCodeModelsCached({
+      command: input.command,
+      cwd: input.cwd,
+      env: input.env,
+    });
+    const refreshedCandidate = resolveOpenCodeModelCandidate(model, refreshedModels);
+    if (refreshedCandidate) {
+      if (refreshedCandidate !== model) {
+        return [
+          { id: refreshedCandidate, label: refreshedCandidate },
+          ...refreshedModels.filter((m) => m.id !== refreshedCandidate),
+        ];
+      }
+      return refreshedModels;
+    }
+    if (refreshedModels.length > 0) models = refreshedModels;
+  } catch (err) {
+    console.warn(
+      `[opencode-local] Model availability refresh failed for "${model}" (${
+        err instanceof Error ? err.message : String(err)
+      }); preserving the cached availability rejection.`,
     );
   }
 
-  return models;
+  const sample = models
+    .slice(0, 12)
+    .map((entry) => entry.id)
+    .join(", ");
+  throw new Error(
+    `Configured OpenCode model is unavailable: ${model}. Available models: ${sample}${models.length > 12 ? ", ..." : ""}`,
+  );
 }
 
 export const DEFAULT_OPENCODE_MODELS: AdapterModel[] = [

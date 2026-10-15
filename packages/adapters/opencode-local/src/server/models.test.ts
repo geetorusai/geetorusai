@@ -6,6 +6,8 @@ import {
   listOpenCodeModels,
   requireOpenCodeModelId,
   resetOpenCodeModelsCacheForTests,
+  DEFAULT_OPENCODE_MODELS,
+  resolveOpenCodeModelCandidate,
 } from "./models.js";
 
 describe("openCode models", () => {
@@ -17,10 +19,10 @@ describe("openCode models", () => {
     vi.useRealTimers();
   });
 
-  it("returns an empty list when discovery command is unavailable", async () => {
+  it("returns fallback default list when discovery command is unavailable", async () => {
     process.env.GEETORUS_OPENCODE_COMMAND =
       "__geetorus_missing_opencode_command__";
-    await expect(listOpenCodeModels()).resolves.toEqual([]);
+    await expect(listOpenCodeModels()).resolves.toEqual(DEFAULT_OPENCODE_MODELS);
   });
 
   it("rejects when model is missing", async () => {
@@ -314,5 +316,22 @@ describe("openCode models", () => {
     await vi.runAllTimersAsync();
     await assertion;
     expect(spy).toHaveBeenCalledTimes(3);
+  });
+
+  it("resolves openai/ model to opencode/ alias when available", async () => {
+    vi.spyOn(serverUtils, "runChildProcess").mockResolvedValue({
+      exitCode: 0,
+      signal: null,
+      timedOut: false,
+      stdout: "opencode/gpt-5.2-codex\n",
+      stderr: "",
+      pid: 1,
+      startedAt: new Date().toISOString(),
+    });
+
+    const result = await ensureOpenCodeModelConfiguredAndAvailable({
+      model: "openai/gpt-5.2-codex",
+    });
+    expect(result[0]?.id).toBe("opencode/gpt-5.2-codex");
   });
 });

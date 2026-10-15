@@ -57,6 +57,7 @@ import {
   isTruthyEnvFlag,
   parseOpenCodeModelsOutput,
   requireOpenCodeModelId,
+  resolveOpenCodeModelCandidate,
 } from "./models.js";
 import { removeMaintainerOnlySkillSymlinks } from "@geetorusai/adapter-utils/server-utils";
 import { prepareOpenCodeRuntimeConfig, prepareManagedOpenCodeRemoteHomes } from "./runtime-config.js";
@@ -161,7 +162,8 @@ export async function ensureRemoteOpenCodeModelConfiguredAndAvailable(input: {
     return;
   }
 
-  if (!models.some((entry) => entry.id === model)) {
+  const resolved = resolveOpenCodeModelCandidate(model, models);
+  if (!resolved) {
     const sample = models.slice(0, 12).map((entry) => entry.id).join(", ");
     throw new Error(
       `Configured OpenCode model is unavailable on the remote execution target: ${model}. Available models: ${sample}${models.length > 12 ? ", ..." : ""}`,
@@ -363,13 +365,18 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
       includeRuntimeKeys: ["HOME"],
       resolvedCommand,
     });
+    let effectiveModel = model;
     if (!executionTargetIsRemote) {
-      await ensureOpenCodeModelConfiguredAndAvailable({
+      const availableModels = await ensureOpenCodeModelConfiguredAndAvailable({
         model,
         command,
         cwd,
         env: runtimeEnv,
       });
+      const resolved = resolveOpenCodeModelCandidate(model, availableModels);
+      if (resolved) {
+        effectiveModel = resolved;
+      }
     }
 
     const extraArgs = (() => {
@@ -616,7 +623,7 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
       const args = ["run", "--format", "json"];
       if (printLogs) args.push("--print-logs");
       if (resumeSessionId) args.push("--session", resumeSessionId);
-      if (model) args.push("--model", model);
+      if (effectiveModel) args.push("--model", effectiveModel);
       if (variant) args.push("--variant", variant);
       if (extraArgs.length > 0) args.push(...extraArgs);
       return args;
