@@ -203,7 +203,7 @@ export const EmptyQueryWithRecentAndAllGroups: Story = {
 export const FuzzyQueryMatches: Story = {
   render: () => (
     <div className="w-80">
-      <WorkspaceSelect triggerClassName={COMPACT_TRIGGER} autoOpen autoQuery="pclip selector" />
+      <WorkspaceSelect triggerClassName={COMPACT_TRIGGER} autoOpen autoQuery="workspace selector" />
     </div>
   ),
 };

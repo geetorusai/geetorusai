@@ -441,7 +441,7 @@ describe("SearchableSelect", () => {
     expect(container.textContent).toContain("Recent");
     expect(container.textContent).toContain("All workspaces");
 
-    setInputValue(input!, "pclip reusable");
+    setInputValue(input!, "geetorus reusable");
     await flush();
 
     expect(container.textContent).toContain("Geetorus app");
